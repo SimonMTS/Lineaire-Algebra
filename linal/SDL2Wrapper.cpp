@@ -23,7 +23,7 @@ unique_ptr<SDL_Renderer, void(*)(SDL_Renderer*)> SDL2Wrapper::InitRenderer() {
 SDL2Wrapper::SDL2Wrapper(int width, int height, const RGB& backgroundColor) :
     Width(width), Height(height), BackgroundColor(backgroundColor),
     SDLWindow(InitWindow(width, height)), SDLRenderer(InitRenderer()) {
-    SDL_RenderSetScale(SDLRenderer.get(), 2.0f, 2.0f);
+    //SDL_RenderSetScale(SDLRenderer.get(), 2.0f, 2.0f);
     SetBackground();
     SDL_RenderPresent(SDLRenderer.get());
 }
@@ -71,9 +71,9 @@ void SDL2Wrapper::SetBackground() {
 
 void SDL2Wrapper::DrawLine(int ax, int ay, int bx, int by, const RGB& rgb) {
     const int sdl_ax = ax;
-    const int sdl_ay = Height/2 - ay;
+    const int sdl_ay = Height - ay;
     const int sdl_bx = bx;
-    const int sdl_by = Height/2 - by;
+    const int sdl_by = Height - by;
 
     SDL_SetRenderDrawColor(SDLRenderer.get(), rgb.R, rgb.G, rgb.B, rgb.A);
     SDL_RenderDrawLine(SDLRenderer.get(), sdl_ax, sdl_ay, sdl_bx, sdl_by);
@@ -81,7 +81,7 @@ void SDL2Wrapper::DrawLine(int ax, int ay, int bx, int by, const RGB& rgb) {
 
 void SDL2Wrapper::DrawPoint(int centreX, int centreY, int radius, const RGB& rgb) {
     const int sdl_x = centreX;
-    const int sdl_y = Height/2 - centreY;
+    const int sdl_y = Height - centreY;
 
     SDL_SetRenderDrawColor(SDLRenderer.get(), rgb.R, rgb.G, rgb.B, rgb.A);
     const int32_t diameter = (radius * 2);

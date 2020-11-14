@@ -15,7 +15,7 @@ void Renderer3D::Init() {
     Sdl->OnEvent(*this);
 }
 
-void Renderer3D::AddLine(const Line3D& l) {
+void Renderer3D::AddLine(Line3D& l) {
     Lines.push_back(l);
 }
 
@@ -36,6 +36,17 @@ void Renderer3D::OnKey(int event, int key) {
 
     if (event == SDL_KEYUP && key == SDL_SCANCODE_PAGEUP) { Move(0, 1, 0); std::cout << "Move +y\n"; }
     if (event == SDL_KEYUP && key == SDL_SCANCODE_PAGEDOWN) { Move(0, -1, 0); std::cout << "Move -y\n"; }
+
+    if (event == SDL_KEYUP && key == SDL_SCANCODE_KP_1) { Rotate(1); std::cout << "Rotate +x\n"; }
+    if (event == SDL_KEYUP && key == SDL_SCANCODE_KP_3) { Rotate(-1); std::cout << "Rotate -x\n"; }
+
+    if (event == SDL_KEYUP && key == SDL_SCANCODE_KP_4) { Rotate(2); std::cout << "Rotate +y\n"; }
+    if (event == SDL_KEYUP && key == SDL_SCANCODE_KP_6) { Rotate(-2); std::cout << "Rotate -y\n"; }
+
+    if (event == SDL_KEYUP && key == SDL_SCANCODE_KP_7) { Rotate(3); std::cout << "Rotate +z\n"; }
+    if (event == SDL_KEYUP && key == SDL_SCANCODE_KP_9) { Rotate(-3); std::cout << "Rotate -z\n"; }
+
+    if (event == SDL_KEYUP && key == SDL_SCANCODE_KP_0) { Rotate(1); Rotate(2); Rotate(3); std::cout << "Rotate all axis\n"; }
 }
 
 void Renderer3D::OnMouse(int event) {
@@ -123,6 +134,20 @@ void Renderer3D::Move(const double x, const double y, const double z) {
     for (auto& line : Lines) {
         line.P1 = line.P1 * tm;
         line.P2 = line.P2 * tm;
+    }
+}
+
+void Renderer3D::Rotate(const int dir) {
+    Point3D localOrigin = Lines.at(0).P1;
+
+    Matrix3D tm1 = Matrix3D::GetTranslationMatrix((-localOrigin.X), (-localOrigin.Y), (-localOrigin.Z));
+    Matrix3D tm2 = Matrix3D::GetTranslationMatrix(localOrigin.X, localOrigin.Y, localOrigin.Z);
+    Matrix3D rm = Matrix3D::GetRotationMatrix(abs(dir), (dir > 0 ? 5.625 : -5.625));
+    Matrix3D cm = tm2 * rm * tm1;
+
+    for (auto& line : Lines) {
+        line.P1 = line.P1 * cm;
+        line.P2 = line.P2 * cm;
     }
 }
 

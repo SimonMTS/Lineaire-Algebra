@@ -31,6 +31,12 @@
     <Filter Include="Header Files\render3D">
       <UniqueIdentifier>{868bc673-91b0-4f8b-b9c7-06240a35b441}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\renderPerspective">
+      <UniqueIdentifier>{267a9452-ebfb-4099-9087-7df371b0feca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\renderPerspective">
+      <UniqueIdentifier>{0e0040eb-3b07-4b0e-a329-095f26cb2d3c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RGB.cpp">
@@ -69,6 +75,9 @@
     <ClCompile Include="linal.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="rendererPerspective.cpp">
+      <Filter>Source Files\renderPerspective</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SDL2Wrapper.h">
@@ -106,6 +115,9 @@
     </ClInclude>
     <ClInclude Include="Matrix2D.h">
       <Filter>Header Files\render2D</Filter>
+    </ClInclude>
+    <ClInclude Include="rendererPerspective.h">
+      <Filter>Header Files\renderPerspective</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

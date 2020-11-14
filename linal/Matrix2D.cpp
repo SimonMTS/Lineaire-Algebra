@@ -29,8 +29,8 @@ Matrix2D Matrix2D::GetScalingMatrix(const double x, const double y) {
 }
 
 Matrix2D Matrix2D::GetRotationMatrix(const double angle) {
-    double r = angle * M_PI / 180;
     vector<vector<double>> s(3, vector<double>(3, 0));
+    double r = angle * M_PI / 180;
 
     s[0][0] = cos(r);
     s[0][1] = sin(r);

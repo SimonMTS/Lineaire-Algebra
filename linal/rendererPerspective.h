@@ -1,21 +1,14 @@
 #pragma once
-#include <vector>
 #include "Renderer.h"
 #include "SDL2Wrapper.h"
-#include "Point3D.h"
 #include "Line3D.h"
-using std::vector;
 
-enum Perspective3D { Topview, Frontview, Sideview };
-
-class Renderer3D : public Renderer {
+class rendererPerspective : public Renderer {
 private:
-    Perspective3D Perspective = Perspective3D::Frontview;
-
-    const double GridStep = 20;
-    double OriginX = 20;
-    double OriginY = 20;
-    double OriginZ = 20;
+    const double GridStep = 1;
+    double OriginX = 1;
+    double OriginY = 1;
+    double OriginZ = 1;
 
     unique_ptr<SDL2Wrapper> Sdl;
     vector<Line3D> Lines;
@@ -33,7 +26,7 @@ private:
     void Rotate(const int dir);
 
 public:
-    Renderer3D();
+    rendererPerspective();
     void Init();
 
     void AddLine(Line3D& l) override;

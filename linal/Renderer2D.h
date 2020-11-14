@@ -8,11 +8,11 @@
 #include "Matrix2D.h"
 using std::vector;
 
-class Renderer2D : Renderer {
+class Renderer2D : public Renderer {
 private:
-    const double GridStep = 10;
-    double OriginX = 10;
-    double OriginY = 10;
+    const double GridStep = 20;
+    double OriginX = 20;
+    double OriginY = 20;
 
     unique_ptr<SDL2Wrapper> Sdl;
     vector<Point2D> Points;
@@ -35,5 +35,6 @@ public:
 
     void AddVector(const Vector2D& v);
     void AddPoint(const Point2D& p);
-    void AddLine(const Line2D& l);
+    void AddLine(Line2D& l);
+    void AddLine(Line3D& l) override { };
 };

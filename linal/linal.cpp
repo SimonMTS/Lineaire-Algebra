@@ -1,13 +1,14 @@
 #include "Renderer2D.h"
 #include "Renderer3D.h"
+#include "rendererPerspective.h"
 
-void addSquare(Renderer3D& r3d);
-void addPyramid(Renderer3D& r3d);
+void addSquare(Renderer& r);
+void addPyramid(Renderer& r);
 
 int main() {
 
-    int v = 2;
-    std::cin >> v;
+    int v = 4;
+    //std::cin >> v;
 
     if (v == 0) {
         // 2D Week 1
@@ -63,7 +64,7 @@ int main() {
     }
 
     if (v == 2) {
-        // 3D
+        // 3D Week 4, alleen axis x/y/z
         Renderer3D r3d;
 
         addPyramid(r3d);
@@ -71,10 +72,35 @@ int main() {
         r3d.Init();
     }
 
+    if (v == 3) {
+        // 3D Week 5
+        Renderer3D r3d;
+
+        Point3D p1(2, 4, 0);
+        Point3D p2(4, 1, 0);
+        Line3D l1(p1, p2);
+        r3d.AddLine(l1);
+
+        Point3D p3{0, 0, 0};
+        Point3D p4 = p1.OutProduct(p2);
+        Line3D l2(p3, p4);
+        r3d.AddLine(l2);
+
+        r3d.Init();
+    }
+
+    if (v == 4) {
+        rendererPerspective rPer;
+
+        addPyramid(rPer);
+
+        rPer.Init();
+    }
+
     return 0;
 }
 
-void addSquare(Renderer3D& r3d) {
+void addSquare(Renderer& r) {
     Point3D p1(2, 2, 2);
     Point3D p2(2, 4, 2);
     Point3D p3(4, 2, 2);
@@ -100,22 +126,21 @@ void addSquare(Renderer3D& r3d) {
     Line3D l11(p3, p7);
     Line3D l12(p4, p8);
 
-    r3d.AddLine(l1);
-    r3d.AddLine(l2);
-    r3d.AddLine(l3);
-    r3d.AddLine(l4);
-    r3d.AddLine(l5);
-    r3d.AddLine(l6);
-    r3d.AddLine(l7);
-    r3d.AddLine(l8);
-    r3d.AddLine(l9);
-    r3d.AddLine(l10);
-    r3d.AddLine(l11);
-    r3d.AddLine(l12);
+    r.AddLine(l1);
+    r.AddLine(l2);
+    r.AddLine(l3);
+    r.AddLine(l4);
+    r.AddLine(l5);
+    r.AddLine(l6);
+    r.AddLine(l7);
+    r.AddLine(l8);
+    r.AddLine(l9);
+    r.AddLine(l10);
+    r.AddLine(l11);
+    r.AddLine(l12);
 }
 
-
-void addPyramid(Renderer3D& r3d) {
+void addPyramid(Renderer& r) {
     Point3D p1(2, 2, 2);
     Point3D p2(2, 2, 5);
     Point3D p3(5, 2, 2);
@@ -132,12 +157,12 @@ void addPyramid(Renderer3D& r3d) {
     Line3D l7(p3, p5);
     Line3D l8(p4, p5);
 
-    r3d.AddLine(l1);
-    r3d.AddLine(l2);
-    r3d.AddLine(l3);
-    r3d.AddLine(l4);
-    r3d.AddLine(l5);
-    r3d.AddLine(l6);
-    r3d.AddLine(l7);
-    r3d.AddLine(l8);
+    r.AddLine(l1);
+    r.AddLine(l2);
+    r.AddLine(l3);
+    r.AddLine(l4);
+    r.AddLine(l5);
+    r.AddLine(l6);
+    r.AddLine(l7);
+    r.AddLine(l8);
 }

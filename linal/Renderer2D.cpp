@@ -8,8 +8,8 @@ Renderer2D::Renderer2D() {
     RGB bgColor = RGB(255, 255, 255);
     Sdl = std::make_unique<SDL2Wrapper>(width, height, bgColor);
 
-    OriginX = ((width/2) / GridStep) / 2;
-    OriginY = ((height/2) / GridStep) / 2;
+    OriginX = (width / GridStep) / 2;
+    OriginY = (height / GridStep) / 2;
     OriginX = ((int)OriginX);
     OriginY = ((int)OriginY);
 }
@@ -26,7 +26,7 @@ void Renderer2D::AddVector(const Vector2D& v) {
     Vectors.push_back(v);
 }
 
-void Renderer2D::AddLine(const Line2D& l) {
+void Renderer2D::AddLine(Line2D& l) {
     Lines.push_back(l);
 }
 
@@ -52,8 +52,8 @@ void Renderer2D::OnMouse(int event) {
 }
 
 void Renderer2D::OnResize(int width, int height) {
-    OriginX = ((width/2) / GridStep) / 2;
-    OriginY = ((height/2) / GridStep) / 2;
+    OriginX = (width / GridStep) / 2;
+    OriginY = (height / GridStep) / 2;
     OriginX = ((int)OriginX);
     OriginY = ((int)OriginY);
 }

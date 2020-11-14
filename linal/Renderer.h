@@ -1,4 +1,5 @@
 #pragma once
+#include "Line3D.h"
 
 class Renderer {
 public:
@@ -6,5 +7,7 @@ public:
     virtual void OnKey(int event, int key) = 0;
     virtual void OnMouse(int event) = 0;
     virtual void OnResize(int width, int height) = 0;
+
+    virtual void AddLine(Line3D& l) = 0;
 };
 

@@ -14,7 +14,8 @@ public:
 
     static Matrix3D GetTranslationMatrix(const double x, const double y, const double z);
     static Matrix3D GetScalingMatrix(const double x, const double y, const double z);
-    static Matrix3D GetRotationMatrix(const double angle);
+    static Matrix3D GetRotationMatrix(const int axis, const double angle);
+    static Matrix3D GetProjectionMatrix(const double near, const double far, const double fovy);
 
     vector<double> operator[] (int i);
     auto begin() const { return State.begin(); }
