@@ -152,33 +152,47 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Camera2D.cpp" />
+    <ClCompile Include="CameraPerspective.cpp" />
     <ClCompile Include="linal.cpp" />
     <ClCompile Include="Line2D.cpp" />
     <ClCompile Include="Line3D.cpp" />
     <ClCompile Include="Matrix2D.cpp" />
     <ClCompile Include="Matrix3D.cpp" />
+    <ClCompile Include="Object.cpp" />
     <ClCompile Include="Point2D.cpp" />
     <ClCompile Include="Point3D.cpp" />
+    <ClCompile Include="Polygon.cpp" />
+    <ClCompile Include="RenderEngine.cpp" />
     <ClCompile Include="Renderer2D.cpp" />
     <ClCompile Include="Renderer3D.cpp" />
     <ClCompile Include="rendererPerspective.cpp" />
     <ClCompile Include="RGB.cpp" />
     <ClCompile Include="SDL2Wrapper.cpp" />
+    <ClCompile Include="Structure.cpp" />
     <ClCompile Include="Vector2D.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="Camera2D.h" />
+    <ClInclude Include="CameraPerspective.h" />
     <ClInclude Include="Line2D.h" />
     <ClInclude Include="Line3D.h" />
     <ClInclude Include="Matrix2D.h" />
     <ClInclude Include="Matrix3D.h" />
+    <ClInclude Include="Object.h" />
     <ClInclude Include="Point2D.h" />
     <ClInclude Include="Point3D.h" />
+    <ClInclude Include="Polygon.h" />
+    <ClInclude Include="RenderEngine.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Renderer2D.h" />
     <ClInclude Include="Renderer3D.h" />
     <ClInclude Include="rendererPerspective.h" />
     <ClInclude Include="RGB.h" />
     <ClInclude Include="SDL2Wrapper.h" />
+    <ClInclude Include="Structure.h" />
     <ClInclude Include="Vector2D.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

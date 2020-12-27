@@ -37,6 +37,30 @@
     <Filter Include="Source Files\renderPerspective">
       <UniqueIdentifier>{0e0040eb-3b07-4b0e-a329-095f26cb2d3c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\renderEngine">
+      <UniqueIdentifier>{0d3e3427-4b44-44b5-ba14-cc2ac9836dd4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\renderEngine">
+      <UniqueIdentifier>{a2db0d16-62a8-4b3a-8b43-bdbae776949c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\renderEngine\models">
+      <UniqueIdentifier>{35e80706-ca2d-4e33-8807-1524b5f526e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\renderEngine\builders">
+      <UniqueIdentifier>{0cd40ad1-9cc9-47c0-930d-652376a3fc75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\renderEngine\cameras">
+      <UniqueIdentifier>{574e4b41-a527-46bf-bb02-3d6a800f446d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\renderEngine\models">
+      <UniqueIdentifier>{4913682d-c970-42d3-bacc-923e4f32021c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\renderEngine\builders">
+      <UniqueIdentifier>{e7213486-0fb4-4f7c-b190-c48ee6cf1947}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\renderEngine\cameras">
+      <UniqueIdentifier>{fd6de102-8429-4079-aeb5-85ebd3d55119}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RGB.cpp">
@@ -78,6 +102,27 @@
     <ClCompile Include="rendererPerspective.cpp">
       <Filter>Source Files\renderPerspective</Filter>
     </ClCompile>
+    <ClCompile Include="RenderEngine.cpp">
+      <Filter>Source Files\renderEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>Source Files\renderEngine\models</Filter>
+    </ClCompile>
+    <ClCompile Include="Polygon.cpp">
+      <Filter>Source Files\renderEngine\models</Filter>
+    </ClCompile>
+    <ClCompile Include="Structure.cpp">
+      <Filter>Source Files\renderEngine\models</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Source Files\renderEngine\cameras</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera2D.cpp">
+      <Filter>Source Files\renderEngine\cameras</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraPerspective.cpp">
+      <Filter>Source Files\renderEngine\cameras</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SDL2Wrapper.h">
@@ -118,6 +163,27 @@
     </ClInclude>
     <ClInclude Include="rendererPerspective.h">
       <Filter>Header Files\renderPerspective</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderEngine.h">
+      <Filter>Header Files\renderEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>Header Files\renderEngine\models</Filter>
+    </ClInclude>
+    <ClInclude Include="Polygon.h">
+      <Filter>Header Files\renderEngine\models</Filter>
+    </ClInclude>
+    <ClInclude Include="Structure.h">
+      <Filter>Header Files\renderEngine\models</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Header Files\renderEngine\cameras</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera2D.h">
+      <Filter>Header Files\renderEngine\cameras</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraPerspective.h">
+      <Filter>Header Files\renderEngine\cameras</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
