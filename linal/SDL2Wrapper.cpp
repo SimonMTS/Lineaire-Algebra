@@ -11,7 +11,7 @@ unique_ptr<SDL_Window, void (*)(SDL_Window*)> SDL2Wrapper::InitWindow(
 
 unique_ptr<SDL_Renderer, void (*)(SDL_Renderer*)> SDL2Wrapper::InitRenderer() {
   return unique_ptr<SDL_Renderer, void (*)(SDL_Renderer*)>(
-      SDL_CreateRenderer(SDLWindow.get(), -1, SDL_RENDERER_ACCELERATED),
+      SDL_CreateRenderer(SDLWindow.get(), -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC),
       SDL_DestroyRenderer);
 }
 
@@ -53,16 +53,17 @@ void SDL2Wrapper::OnEvent(Renderer& renderer) {
           break;
 
         case SDL_MOUSEMOTION:
-          renderer.OnMouse(SDL_MOUSEMOTION);
+          renderer.OnMouse(SDL_MOUSEMOTION, event.motion.x, event.motion.y);
           break;
         case SDL_MOUSEBUTTONDOWN:
-          renderer.OnMouse(SDL_MOUSEBUTTONDOWN);
+          renderer.OnMouse(SDL_MOUSEBUTTONDOWN, event.button.x, event.button.y);
           break;
         case SDL_MOUSEBUTTONUP:
-          renderer.OnMouse(SDL_MOUSEBUTTONUP);
+          renderer.OnMouse(SDL_MOUSEBUTTONUP, event.button.x, event.button.y);
           break;
         case SDL_MOUSEWHEEL:
-          renderer.OnMouse(SDL_MOUSEWHEEL + (event.wheel.y > 0 ? 100 : 200));
+          renderer.OnMouse(SDL_MOUSEWHEEL + (event.wheel.y > 0 ? 100 : 200),
+                           event.wheel.x, event.wheel.y);
           break;
       }
     }

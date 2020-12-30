@@ -28,11 +28,11 @@ class SDL2Wrapper {
   SDL2Wrapper(int width, int height, const RGB& backgroundColor);
   ~SDL2Wrapper();
 
-  void OnEvent(Renderer& renderer);
+  virtual void OnEvent(Renderer& renderer);
 
-  void SetBackground();
+  virtual void SetBackground();
 
-  void DrawLine(int ax, int ay, int bx, int by, const RGB& rgb);
+  virtual void DrawLine(int ax, int ay, int bx, int by, const RGB& rgb);
 
-  void DrawPoint(int centreX, int centreY, int radius, const RGB& rgb);
+  virtual void DrawPoint(int centreX, int centreY, int radius, const RGB& rgb);
 };

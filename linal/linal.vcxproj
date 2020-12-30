@@ -163,13 +163,14 @@
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Point2D.cpp" />
     <ClCompile Include="Point3D.cpp" />
-    <ClCompile Include="Polygon.cpp" />
     <ClCompile Include="RenderEngine.cpp" />
     <ClCompile Include="Renderer2D.cpp" />
     <ClCompile Include="Renderer3D.cpp" />
     <ClCompile Include="rendererPerspective.cpp" />
     <ClCompile Include="RGB.cpp" />
     <ClCompile Include="SDL2Wrapper.cpp" />
+    <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="Square.cpp" />
     <ClCompile Include="Structure.cpp" />
     <ClCompile Include="Vector2D.cpp" />
   </ItemGroup>
@@ -184,7 +185,6 @@
     <ClInclude Include="Object.h" />
     <ClInclude Include="Point2D.h" />
     <ClInclude Include="Point3D.h" />
-    <ClInclude Include="Polygon.h" />
     <ClInclude Include="RenderEngine.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Renderer2D.h" />
@@ -192,6 +192,8 @@
     <ClInclude Include="rendererPerspective.h" />
     <ClInclude Include="RGB.h" />
     <ClInclude Include="SDL2Wrapper.h" />
+    <ClInclude Include="Shader.h" />
+    <ClInclude Include="Square.h" />
     <ClInclude Include="Structure.h" />
     <ClInclude Include="Vector2D.h" />
   </ItemGroup>

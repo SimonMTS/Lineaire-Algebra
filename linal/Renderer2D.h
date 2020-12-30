@@ -22,7 +22,7 @@ class Renderer2D : public Renderer {
 
   void BeforeEach();
   void OnKey(int event, int key);
-  void OnMouse(int event);
+  void OnMouse(int event, int x, int y);
   void OnResize(int width, int height);
 
   void DrawGrid();

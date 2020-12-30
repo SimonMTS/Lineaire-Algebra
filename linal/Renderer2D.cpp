@@ -26,7 +26,7 @@ void Renderer2D::OnKey(int event, int key) {
   // std::cout << "key\n";
 }
 
-void Renderer2D::OnMouse(int event) {
+void Renderer2D::OnMouse(int event, int x, int y) {
   // std::cout << "mouse\n";
   if (event == SDL_MOUSEWHEEL + 100 || event == SDL_MOUSEWHEEL + 200) {
     std::cout << "mouse scroll\n";

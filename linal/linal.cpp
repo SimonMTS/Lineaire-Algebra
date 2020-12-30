@@ -104,8 +104,150 @@ int main() {
   if (v == 5) {
     RenderEngine rEng;
 
-    rEng.AddCamera({0, 0, 0}, make_unique<Camera2D>());
-    rEng.AddCamera({0, 0, 0}, make_unique<CameraPerspective>());
+    rEng.AddCamera({0, 0, 1000}, make_unique<CameraPerspective>());
+    rEng.AddCamera({50, 50, 50}, make_unique<Camera2D>());
+    
+    {
+      Structure s;
+      {
+        {
+          Object o;
+
+          Point3D p1(-10, -10, -10);
+          Point3D p2(-10, 10, -10);
+          Point3D p3(10, -10, -10);
+          Point3D p4(10, 10, -10);
+
+          Point3D p5(-10, -10, 10);
+          Point3D p6(-10, 10, 10);
+          Point3D p7(10, -10, 10);
+          Point3D p8(10, 10, 10);
+
+          Line3D l1(p1, p2);
+          Line3D l2(p1, p3);
+          Line3D l3(p4, p2);
+          Line3D l4(p4, p3);
+
+          Line3D l5(p5, p6);
+          Line3D l6(p5, p7);
+          Line3D l7(p8, p6);
+          Line3D l8(p8, p7);
+
+          Line3D l9(p1, p5);
+          Line3D l10(p2, p6);
+          Line3D l11(p3, p7);
+          Line3D l12(p4, p8);
+
+          o.AddLine(l1);
+          o.AddLine(l2);
+          o.AddLine(l3);
+          o.AddLine(l4);
+          o.AddLine(l5);
+          o.AddLine(l6);
+          o.AddLine(l7);
+          o.AddLine(l8);
+          o.AddLine(l9);
+          o.AddLine(l10);
+          o.AddLine(l11);
+          o.AddLine(l12);
+
+          pair<Point3D, Object> po = {{0, 0, 0}, o};
+          s.AddObject(po);
+        }
+
+        {
+          Object o;
+
+          Point3D p1(-5, -5, -5);
+          Point3D p2(-5, 5, -5);
+          Point3D p3(5, -5, -5);
+          Point3D p4(5, 5, -5);
+
+          Point3D p5(-5, -5, 5);
+          Point3D p6(-5, 5, 5);
+          Point3D p7(5, -5, 5);
+          Point3D p8(5, 5, 5);
+
+          Line3D l1(p1, p2);
+          Line3D l2(p1, p3);
+          Line3D l3(p4, p2);
+          Line3D l4(p4, p3);
+
+          Line3D l5(p5, p6);
+          Line3D l6(p5, p7);
+          Line3D l7(p8, p6);
+          Line3D l8(p8, p7);
+
+          Line3D l9(p1, p5);
+          Line3D l10(p2, p6);
+          Line3D l11(p3, p7);
+          Line3D l12(p4, p8);
+
+          o.AddLine(l1);
+          o.AddLine(l2);
+          o.AddLine(l3);
+          o.AddLine(l4);
+          o.AddLine(l5);
+          o.AddLine(l6);
+          o.AddLine(l7);
+          o.AddLine(l8);
+          o.AddLine(l9);
+          o.AddLine(l10);
+          o.AddLine(l11);
+          o.AddLine(l12);
+
+          pair<Point3D, Object> po = {{15, 0, 0}, o};
+          s.AddObject(po);
+        }
+
+        {
+          Object o;
+
+          Point3D p1(-5, -5, -5);
+          Point3D p2(-5, 5, -5);
+          Point3D p3(5, -5, -5);
+          Point3D p4(5, 5, -5);
+
+          Point3D p5(-5, -5, 5);
+          Point3D p6(-5, 5, 5);
+          Point3D p7(5, -5, 5);
+          Point3D p8(5, 5, 5);
+
+          Line3D l1(p1, p2);
+          Line3D l2(p1, p3);
+          Line3D l3(p4, p2);
+          Line3D l4(p4, p3);
+
+          Line3D l5(p5, p6);
+          Line3D l6(p5, p7);
+          Line3D l7(p8, p6);
+          Line3D l8(p8, p7);
+
+          Line3D l9(p1, p5);
+          Line3D l10(p2, p6);
+          Line3D l11(p3, p7);
+          Line3D l12(p4, p8);
+
+          o.AddLine(l1);
+          o.AddLine(l2);
+          o.AddLine(l3);
+          o.AddLine(l4);
+          o.AddLine(l5);
+          o.AddLine(l6);
+          o.AddLine(l7);
+          o.AddLine(l8);
+          o.AddLine(l9);
+          o.AddLine(l10);
+          o.AddLine(l11);
+          o.AddLine(l12);
+
+          pair<Point3D, Object> po = {{-15, 0, 0}, o};
+          s.AddObject(po);
+        }
+      }
+      pair<Point3D, Structure> ps = {{0, 0, 90}, s};
+      rEng.AddStructure(ps);
+    }
 
     rEng.Init();
   }

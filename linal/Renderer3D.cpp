@@ -101,7 +101,7 @@ void Renderer3D::OnKey(int event, int key) {
   }
 }
 
-void Renderer3D::OnMouse(int event) {
+void Renderer3D::OnMouse(int event, int x, int y) {
   // std::cout << "mouse\n";
 }
 

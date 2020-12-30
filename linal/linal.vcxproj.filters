@@ -108,9 +108,6 @@
     <ClCompile Include="Object.cpp">
       <Filter>Source Files\renderEngine\models</Filter>
     </ClCompile>
-    <ClCompile Include="Polygon.cpp">
-      <Filter>Source Files\renderEngine\models</Filter>
-    </ClCompile>
     <ClCompile Include="Structure.cpp">
       <Filter>Source Files\renderEngine\models</Filter>
     </ClCompile>
@@ -122,6 +119,12 @@
     </ClCompile>
     <ClCompile Include="CameraPerspective.cpp">
       <Filter>Source Files\renderEngine\cameras</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>Source Files\renderEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="Square.cpp">
+      <Filter>Source Files\renderEngine\models</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -170,9 +173,6 @@
     <ClInclude Include="Object.h">
       <Filter>Header Files\renderEngine\models</Filter>
     </ClInclude>
-    <ClInclude Include="Polygon.h">
-      <Filter>Header Files\renderEngine\models</Filter>
-    </ClInclude>
     <ClInclude Include="Structure.h">
       <Filter>Header Files\renderEngine\models</Filter>
     </ClInclude>
@@ -184,6 +184,12 @@
     </ClInclude>
     <ClInclude Include="CameraPerspective.h">
       <Filter>Header Files\renderEngine\cameras</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>Header Files\renderEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="Square.h">
+      <Filter>Header Files\renderEngine\models</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

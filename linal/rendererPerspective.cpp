@@ -24,7 +24,7 @@ void rendererPerspective::AddCamera(Point3D pos, int type) {
 //    //std::cout << "key press\n";
 //}
 
-void rendererPerspective::OnMouse(int event) {
+void rendererPerspective::OnMouse(int event, int x, int y) {
   // std::cout << "mouse\n";
 }
 
