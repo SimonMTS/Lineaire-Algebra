@@ -32,12 +32,6 @@ void RenderEngine::OnResize(int width, int height) {
 void RenderEngine::DrawGrid() { Sdl->SetBackground(); }
 
 void RenderEngine::BeforeEach() {
-  Structures.at(0).second.Rotate(1);
-  Structures.at(0).second.Rotate(2);
-  Structures.at(0).second.Rotate(3);
-
-  // Structures.at(0).second.Objects.at(1).second.Rotate(1);
-
   DrawGrid();
   Cameras[ActiveCamera].second->DrawGrid(*Sdl, Cameras[ActiveCamera].first);
   Cameras[ActiveCamera].second->DrawStructures(*Sdl, Structures,
@@ -82,6 +76,15 @@ void RenderEngine::OnKey(int event, int key) {
   if (event == SDL_KEYDOWN && key == SDL_SCANCODE_PAGEDOWN) {
     Cameras[ActiveCamera].first.Z++;
     std::cout << "Move +z\n";
+  }
+
+  if (event == SDL_KEYDOWN && key == SDL_SCANCODE_R) {
+    Structures.at(0).second.Rotate(1);
+    Structures.at(0).second.Rotate(2);
+    Structures.at(0).second.Rotate(3);
+
+    // Structures.at(0).second.Objects.at(1).second.Rotate(1);
+
   }
 }
 

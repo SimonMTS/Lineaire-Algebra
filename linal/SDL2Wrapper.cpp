@@ -134,3 +134,6 @@ void SDL2Wrapper::DrawPoint(int centreX, int centreY, int radius,
     }
   }
 }
+
+void SDL2Wrapper::DrawSquare(int ax, int ay, int bx, int by, int cx, int cy,
+                             int dx, int dy, const RGB& rgb) {}

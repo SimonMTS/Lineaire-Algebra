@@ -123,33 +123,21 @@ int main() {
           Point3D p7(10, -10, 10);
           Point3D p8(10, 10, 10);
 
-          Line3D l1(p1, p2);
-          Line3D l2(p1, p3);
-          Line3D l3(p4, p2);
-          Line3D l4(p4, p3);
+          Square s1(p2, p4, p1, p3);
+          Square s2(p6, p8, p5, p7);
 
-          Line3D l5(p5, p6);
-          Line3D l6(p5, p7);
-          Line3D l7(p8, p6);
-          Line3D l8(p8, p7);
+          Square s3(p2, p6, p1, p5);
+          Square s4(p4, p8, p3, p7);
 
-          Line3D l9(p1, p5);
-          Line3D l10(p2, p6);
-          Line3D l11(p3, p7);
-          Line3D l12(p4, p8);
+          Square s5(p5, p7, p1, p3);
+          Square s6(p6, p8, p2, p4);
 
-          o.AddLine(l1);
-          o.AddLine(l2);
-          o.AddLine(l3);
-          o.AddLine(l4);
-          o.AddLine(l5);
-          o.AddLine(l6);
-          o.AddLine(l7);
-          o.AddLine(l8);
-          o.AddLine(l9);
-          o.AddLine(l10);
-          o.AddLine(l11);
-          o.AddLine(l12);
+          o.AddSquare(s1);
+          o.AddSquare(s2);
+          o.AddSquare(s3);
+          o.AddSquare(s4);
+          o.AddSquare(s5);
+          o.AddSquare(s6);
 
           pair<Point3D, Object> po = {{0, 0, 0}, o};
           s.AddObject(po);
@@ -168,33 +156,21 @@ int main() {
           Point3D p7(5, -5, 5);
           Point3D p8(5, 5, 5);
 
-          Line3D l1(p1, p2);
-          Line3D l2(p1, p3);
-          Line3D l3(p4, p2);
-          Line3D l4(p4, p3);
+          Square s1(p2, p4, p1, p3);
+          Square s2(p6, p8, p5, p7);
 
-          Line3D l5(p5, p6);
-          Line3D l6(p5, p7);
-          Line3D l7(p8, p6);
-          Line3D l8(p8, p7);
+          Square s3(p2, p6, p1, p5);
+          Square s4(p4, p8, p3, p7);
 
-          Line3D l9(p1, p5);
-          Line3D l10(p2, p6);
-          Line3D l11(p3, p7);
-          Line3D l12(p4, p8);
+          Square s5(p5, p7, p1, p3);
+          Square s6(p6, p8, p2, p4);
 
-          o.AddLine(l1);
-          o.AddLine(l2);
-          o.AddLine(l3);
-          o.AddLine(l4);
-          o.AddLine(l5);
-          o.AddLine(l6);
-          o.AddLine(l7);
-          o.AddLine(l8);
-          o.AddLine(l9);
-          o.AddLine(l10);
-          o.AddLine(l11);
-          o.AddLine(l12);
+          o.AddSquare(s1);
+          o.AddSquare(s2);
+          o.AddSquare(s3);
+          o.AddSquare(s4);
+          o.AddSquare(s5);
+          o.AddSquare(s6);
 
           pair<Point3D, Object> po = {{15, 0, 0}, o};
           s.AddObject(po);
@@ -213,33 +189,21 @@ int main() {
           Point3D p7(5, -5, 5);
           Point3D p8(5, 5, 5);
 
-          Line3D l1(p1, p2);
-          Line3D l2(p1, p3);
-          Line3D l3(p4, p2);
-          Line3D l4(p4, p3);
+          Square s1(p2, p4, p1, p3);
+          Square s2(p6, p8, p5, p7);
 
-          Line3D l5(p5, p6);
-          Line3D l6(p5, p7);
-          Line3D l7(p8, p6);
-          Line3D l8(p8, p7);
+          Square s3(p2, p6, p1, p5);
+          Square s4(p4, p8, p3, p7);
 
-          Line3D l9(p1, p5);
-          Line3D l10(p2, p6);
-          Line3D l11(p3, p7);
-          Line3D l12(p4, p8);
+          Square s5(p5, p7, p1, p3);
+          Square s6(p6, p8, p2, p4);
 
-          o.AddLine(l1);
-          o.AddLine(l2);
-          o.AddLine(l3);
-          o.AddLine(l4);
-          o.AddLine(l5);
-          o.AddLine(l6);
-          o.AddLine(l7);
-          o.AddLine(l8);
-          o.AddLine(l9);
-          o.AddLine(l10);
-          o.AddLine(l11);
-          o.AddLine(l12);
+          o.AddSquare(s1);
+          o.AddSquare(s2);
+          o.AddSquare(s3);
+          o.AddSquare(s4);
+          o.AddSquare(s5);
+          o.AddSquare(s6);
 
           pair<Point3D, Object> po = {{-15, 0, 0}, o};
           s.AddObject(po);

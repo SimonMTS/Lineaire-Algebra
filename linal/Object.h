@@ -1,11 +1,12 @@
 #pragma once
 #include "Line3D.h"
+#include "Square.h"
 
 class Object {
  public:
-  vector<Line3D> Lines;
+  vector<Square> Squares;
 
-  void AddLine(Line3D& l);
+  void AddSquare(Square& l);
 
   void Scale(const double x, const double y, const double z);
   void Move(const double x, const double y, const double z);

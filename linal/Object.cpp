@@ -1,7 +1,6 @@
 #include "Object.h"
 
-void Object::AddLine(Line3D& l) {
-  Lines.push_back(l); }
+void Object::AddSquare(Square& s) { Squares.push_back(s); }
 
 void Object::Scale(const double x, const double y, const double z) {}
 
@@ -17,8 +16,10 @@ void Object::Rotate(const int dir) {
   Matrix3D rm = Matrix3D::GetRotationMatrix(abs(dir), (dir > 0 ? 1 : -1));
   Matrix3D cm = tm2 * rm * tm1;
 
-  for (auto& line : Lines) {
-    line.P1 = line.P1 * cm;
-    line.P2 = line.P2 * cm;
+  for (auto& square : Squares) {
+    square.P1 = square.P1 * cm;
+    square.P2 = square.P2 * cm;
+    square.P3 = square.P3 * cm;
+    square.P4 = square.P4 * cm;
   }
 }

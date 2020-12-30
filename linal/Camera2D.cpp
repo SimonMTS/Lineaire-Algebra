@@ -28,19 +28,32 @@ void Camera2D::DrawStructures(SDL2Wrapper& Sdl,
     auto sOffset = structure.first;
     for (auto& object : structure.second.Objects) {
       auto oOffset = object.first;
-      for (auto& line : object.second.Lines) {
-        double startFrameX = line.P1.X + oOffset.X + sOffset.X;
-        double startFrameY = line.P1.Z + oOffset.Z + sOffset.Z;
-        double endFrameX = line.P2.X + oOffset.X + sOffset.X;
-        double endFrameY = line.P2.Z + oOffset.Z + sOffset.Z;
-        RGB color = RGB(0, 0, 0);
+      for (auto& line : object.second.Squares) {
+        double l1x = line.P1.X + oOffset.X + sOffset.X;
+        double l1y = line.P1.Z + oOffset.Z + sOffset.Z;
+        double l2x = line.P2.X + oOffset.X + sOffset.X;
+        double l2y = line.P2.Z + oOffset.Z + sOffset.Z;
 
-        startFrameX = (startFrameX * GridStep) + (pos.X * GridStep);
-        startFrameY = (startFrameY * GridStep) + (pos.Y * GridStep);
-        endFrameX = (endFrameX * GridStep) + (pos.X * GridStep);
-        endFrameY = (endFrameY * GridStep) + (pos.Y * GridStep);
+        double l3x = line.P3.X + oOffset.X + sOffset.X;
+        double l3y = line.P3.Z + oOffset.Z + sOffset.Z;
+        double l4x = line.P4.X + oOffset.X + sOffset.X;
+        double l4y = line.P4.Z + oOffset.Z + sOffset.Z;
 
-        Sdl.DrawLine(startFrameX, startFrameY, endFrameX, endFrameY, color);
+        l1x = (l1x * GridStep) + (pos.X * GridStep);
+        l1y = (l1y * GridStep) + (pos.Y * GridStep);
+        l2x = (l2x * GridStep) + (pos.X * GridStep);
+        l2y = (l2y * GridStep) + (pos.Y * GridStep);
+
+        l3x = (l3x * GridStep) + (pos.X * GridStep);
+        l3y = (l3y * GridStep) + (pos.Y * GridStep);
+        l4x = (l4x * GridStep) + (pos.X * GridStep);
+        l4y = (l4y * GridStep) + (pos.Y * GridStep);
+
+        //Sdl.DrawLine(l1x, l1y, l2x, l2y, {0, 0, 0});
+        Sdl.DrawLine(l1x, l1y, l2x, l2y, {0, 0, 0});
+        Sdl.DrawLine(l1x, l1y, l3x, l3y, {0, 0, 0});
+        Sdl.DrawLine(l4x, l4y, l2x, l2y, {0, 0, 0});
+        Sdl.DrawLine(l4x, l4y, l3x, l3y, {0, 0, 0});
       }
     }
   }

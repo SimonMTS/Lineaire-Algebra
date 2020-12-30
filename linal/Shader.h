@@ -15,5 +15,10 @@ class Shader : public SDL2Wrapper {
 
   void DrawPoint(int centreX, int centreY, int radius, const RGB& rgb) override;
 
+  void DrawSquare(int ax, int ay, 
+                  int bx, int by, 
+                  int cx, int cy,
+                  int dx, int dy, const RGB& rgb) override;
+
   void PushLines();
 };

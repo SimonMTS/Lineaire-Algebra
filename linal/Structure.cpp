@@ -18,9 +18,11 @@ void Structure::Rotate(const int dir) {
     Matrix3D rm = Matrix3D::GetRotationMatrix(abs(dir), (dir > 0 ? 1 : -1));
     Matrix3D cm = tm2 * rm * tm1;
 
-    for (auto& line : object.second.Lines) {
-      line.P1 = line.P1 * cm;
-      line.P2 = line.P2 * cm;
+    for (auto& square : object.second.Squares) {
+      square.P1 = square.P1 * cm;
+      square.P2 = square.P2 * cm;
+      square.P3 = square.P3 * cm;
+      square.P4 = square.P4 * cm;
     }
   }
 }

@@ -10,7 +10,7 @@ using std::function;
 using std::unique_ptr;
 
 class SDL2Wrapper {
- private:
+ protected:
   unique_ptr<SDL_Window, void (*)(SDL_Window*)> SDLWindow;
   unique_ptr<SDL_Renderer, void (*)(SDL_Renderer*)> SDLRenderer;
 
@@ -35,4 +35,9 @@ class SDL2Wrapper {
   virtual void DrawLine(int ax, int ay, int bx, int by, const RGB& rgb);
 
   virtual void DrawPoint(int centreX, int centreY, int radius, const RGB& rgb);
+
+  virtual void DrawSquare(int ax, int ay, 
+                          int bx, int by, 
+                          int cx, int cy,
+                          int dx, int dy, const RGB& rgb);
 };
