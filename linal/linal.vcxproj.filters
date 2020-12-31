@@ -111,9 +111,6 @@
     <ClCompile Include="Structure.cpp">
       <Filter>Source Files\renderEngine\models</Filter>
     </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>Source Files\renderEngine\cameras</Filter>
-    </ClCompile>
     <ClCompile Include="Camera2D.cpp">
       <Filter>Source Files\renderEngine\cameras</Filter>
     </ClCompile>

@@ -73,6 +73,36 @@ Matrix3D Matrix3D::GetProjectionMatrix(const double near, const double far,
   return Matrix3D(s);
 }
 
+Matrix3D Matrix3D::RotationInverse(Matrix3D& m) {
+  vector<vector<double>> s(4, vector<double>(4, 0));
+
+  {
+    s[3][0] = m[3][0];
+    s[3][1] = m[3][2];
+    s[3][2] = m[3][2];
+
+    s[3][3] = m[3][3];
+
+    s[0][3] = m[0][3];
+    s[1][3] = m[1][3];
+    s[2][3] = m[2][3];
+  }
+
+  s[0][0] = m[0][0];
+  s[1][0] = m[0][1];
+  s[2][0] = m[0][2];
+
+  s[0][1] = m[1][0];
+  s[1][1] = m[1][1];
+  s[2][1] = m[1][2];
+
+  s[0][2] = m[2][0];
+  s[1][2] = m[2][1];
+  s[2][2] = m[2][2];
+
+  return Matrix3D(s);
+}
+
 vector<double> Matrix3D::operator[](int i) { return State.at(i); }
 
 Matrix3D Matrix3D::operator-(Matrix3D m) {
@@ -122,4 +152,16 @@ Matrix3D Matrix3D::operator*(Matrix3D m) {
   }
 
   return Matrix3D(s);
+}
+
+ostream& operator<<(ostream& Str, Matrix3D m) {
+  for (const auto& row : m) {
+    Str << "[ ";
+    for (const auto& col : row) {
+      Str << col << " ";
+    }
+    Str << "]\n";
+  }
+
+  return Str;
 }

@@ -13,7 +13,7 @@ using std::get;
 using std::unique_ptr;
 
 class RenderEngine : public Renderer {
- private:
+ public:
   double OriginX = 5;
   double OriginY = 5;
   double OriginZ = 5;
@@ -23,8 +23,7 @@ class RenderEngine : public Renderer {
   vector<pair<Point3D, unique_ptr<Camera>>> Cameras;
 
   int ActiveCamera = 0;
-
-  tuple<bool, int, int> IsDragging = {false, 0, 0};
+  int FrameLoop200 = 0;
 
   void BeforeEach();
   void OnKey(int event, int key);

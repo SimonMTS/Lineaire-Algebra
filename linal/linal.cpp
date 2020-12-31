@@ -1,7 +1,10 @@
-#include "RenderEngine.h"
 #include "Renderer2D.h"
 #include "Renderer3D.h"
 #include "rendererPerspective.h"
+#include "RenderEngine.h"
+#include "Camera.h"
+#include "CameraPerspective.h"
+#include "Camera2D.h"
 
 void addSquare(Renderer& r);
 void addSquareOffset(Renderer& r, int offsetZ);
@@ -104,8 +107,282 @@ int main() {
   if (v == 5) {
     RenderEngine rEng;
 
-    rEng.AddCamera({0, 0, 1000}, make_unique<CameraPerspective>());
+    auto perCam = make_unique<CameraPerspective>();
+    perCam->Rotation = {90, 180, 0};
+    rEng.AddCamera({0, -1000, 0}, std::move(perCam));
     rEng.AddCamera({50, 50, 50}, make_unique<Camera2D>());
+    
+
+    /*{
+      Structure s;
+      {
+        {
+          Object o;
+
+          Point3D p1(-2, -2, -20);
+          Point3D p2(-2, 2, -20);
+          Point3D p3(2, -2, -20);
+          Point3D p4(2, 2, -20);
+
+          Point3D p5(-2, -2, 20);
+          Point3D p6(-2, 2, 20);
+          Point3D p7(2, -2, 20);
+          Point3D p8(2, 2, 20);
+
+          Square s1(p2, p4, p1, p3);
+          Square s2(p6, p8, p5, p7);
+
+          Square s3(p2, p6, p1, p5);
+          Square s4(p4, p8, p3, p7);
+
+          Square s5(p5, p7, p1, p3);
+          Square s6(p6, p8, p2, p4);
+
+          o.AddSquare(s1);
+          o.AddSquare(s2);
+          o.AddSquare(s3);
+          o.AddSquare(s4);
+          o.AddSquare(s5);
+          o.AddSquare(s6);
+
+          pair<Point3D, Object> po = {{0, 0, 0}, o};
+          s.AddObject(po);
+        }
+
+        {
+          Object o;
+
+          Point3D p1(-6, -2, -2);
+          Point3D p2(-6, 2, -2);
+          Point3D p3(6, -2, -2);
+          Point3D p4(6, 2, -2);
+
+          Point3D p5(-6, -2, 2);
+          Point3D p6(-6, 2, 2);
+          Point3D p7(6, -2, 2);
+          Point3D p8(6, 2, 2);
+
+          Square s1(p2, p4, p1, p3);
+          Square s2(p6, p8, p5, p7);
+
+          Square s3(p2, p6, p1, p5);
+          Square s4(p4, p8, p3, p7);
+
+          Square s5(p5, p7, p1, p3);
+          Square s6(p6, p8, p2, p4);
+
+          o.AddSquare(s1);
+          o.AddSquare(s2);
+          o.AddSquare(s3);
+          o.AddSquare(s4);
+          o.AddSquare(s5);
+          o.AddSquare(s6);
+
+          pair<Point3D, Object> po = {{0, 0, 22}, o};
+          s.AddObject(po);
+        }
+
+        {
+          Object o;
+
+          Point3D p1(-2, -2, -2);
+          Point3D p2(-2, 2, -2);
+          Point3D p3(2, -2, -2);
+          Point3D p4(2, 2, -2);
+
+          Point3D p5(-2, -2, 2);
+          Point3D p6(-2, 2, 2);
+          Point3D p7(2, -2, 2);
+          Point3D p8(2, 2, 2);
+
+          Square s1(p2, p4, p1, p3);
+          Square s2(p6, p8, p5, p7);
+
+          Square s3(p2, p6, p1, p5);
+          Square s4(p4, p8, p3, p7);
+
+          Square s5(p5, p7, p1, p3);
+          Square s6(p6, p8, p2, p4);
+
+          o.AddSquare(s1);
+          o.AddSquare(s2);
+          o.AddSquare(s3);
+          o.AddSquare(s4);
+          o.AddSquare(s5);
+          o.AddSquare(s6);
+
+          pair<Point3D, Object> po = {{4, 0, -15}, o};
+          s.AddObject(po);
+        }
+
+        {
+          Object o;
+
+          Point3D p1(-2, -2, -2);
+          Point3D p2(-2, 2, -2);
+          Point3D p3(2, -2, -2);
+          Point3D p4(2, 2, -2);
+
+          Point3D p5(-2, -2, 2);
+          Point3D p6(-2, 2, 2);
+          Point3D p7(2, -2, 2);
+          Point3D p8(2, 2, 2);
+
+          Square s1(p2, p4, p1, p3);
+          Square s2(p6, p8, p5, p7);
+
+          Square s3(p2, p6, p1, p5);
+          Square s4(p4, p8, p3, p7);
+
+          Square s5(p5, p7, p1, p3);
+          Square s6(p6, p8, p2, p4);
+
+          o.AddSquare(s1);
+          o.AddSquare(s2);
+          o.AddSquare(s3);
+          o.AddSquare(s4);
+          o.AddSquare(s5);
+          o.AddSquare(s6);
+
+          pair<Point3D, Object> po = {{-4, 0, -15}, o};
+          s.AddObject(po);
+        }
+
+        {
+          Object o;
+
+          Point3D p1(-4, -4, -10);
+          Point3D p2(-4, 4, -10);
+          Point3D p3(4, -4, -10);
+          Point3D p4(4, 4, -10);
+
+          Point3D p5(-4, -4, 10);
+          Point3D p6(-4, 4, 10);
+          Point3D p7(4, -4, 10);
+          Point3D p8(4, 4, 10);
+
+          Square s1(p2, p4, p1, p3);
+          Square s2(p6, p8, p5, p7);
+
+          Square s3(p2, p6, p1, p5);
+          Square s4(p4, p8, p3, p7);
+
+          Square s5(p5, p7, p1, p3);
+          Square s6(p6, p8, p2, p4);
+
+          o.AddSquare(s1);
+          o.AddSquare(s2);
+          o.AddSquare(s3);
+          o.AddSquare(s4);
+          o.AddSquare(s5);
+          o.AddSquare(s6);
+
+          pair<Point3D, Object> po = {{10, 0, -15}, o};
+          s.AddObject(po);
+        }
+
+        {
+          Object o;
+
+          Point3D p1(-4, -4, -10);
+          Point3D p2(-4, 4, -10);
+          Point3D p3(4, -4, -10);
+          Point3D p4(4, 4, -10);
+
+          Point3D p5(-1, -1, 0);
+          Point3D p6(-1, 1, 0);
+          Point3D p7(1, -1, 0);
+          Point3D p8(1, 1, 0);
+
+          Square s1(p2, p4, p1, p3);
+          Square s2(p6, p8, p5, p7);
+
+          Square s3(p2, p6, p1, p5);
+          Square s4(p4, p8, p3, p7);
+
+          Square s5(p5, p7, p1, p3);
+          Square s6(p6, p8, p2, p4);
+
+          o.AddSquare(s1);
+          o.AddSquare(s2);
+          o.AddSquare(s3);
+          o.AddSquare(s4);
+          o.AddSquare(s5);
+          o.AddSquare(s6);
+
+          pair<Point3D, Object> po = {{10, 0, 5}, o};
+          s.AddObject(po);
+        }
+
+        {
+          Object o;
+
+          Point3D p1(-4, -4, -10);
+          Point3D p2(-4, 4, -10);
+          Point3D p3(4, -4, -10);
+          Point3D p4(4, 4, -10);
+
+          Point3D p5(-4, -4, 10);
+          Point3D p6(-4, 4, 10);
+          Point3D p7(4, -4, 10);
+          Point3D p8(4, 4, 10);
+
+          Square s1(p2, p4, p1, p3);
+          Square s2(p6, p8, p5, p7);
+
+          Square s3(p2, p6, p1, p5);
+          Square s4(p4, p8, p3, p7);
+
+          Square s5(p5, p7, p1, p3);
+          Square s6(p6, p8, p2, p4);
+
+          o.AddSquare(s1);
+          o.AddSquare(s2);
+          o.AddSquare(s3);
+          o.AddSquare(s4);
+          o.AddSquare(s5);
+          o.AddSquare(s6);
+
+          pair<Point3D, Object> po = {{-10, 0, -15}, o};
+          s.AddObject(po);
+        }
+
+        {
+          Object o;
+
+          Point3D p1(-4, -4, -10);
+          Point3D p2(-4, 4, -10);
+          Point3D p3(4, -4, -10);
+          Point3D p4(4, 4, -10);
+
+          Point3D p5(-1, -1, 0);
+          Point3D p6(-1, 1, 0);
+          Point3D p7(1, -1, 0);
+          Point3D p8(1, 1, 0);
+
+          Square s1(p2, p4, p1, p3);
+          Square s2(p6, p8, p5, p7);
+
+          Square s3(p2, p6, p1, p5);
+          Square s4(p4, p8, p3, p7);
+
+          Square s5(p5, p7, p1, p3);
+          Square s6(p6, p8, p2, p4);
+
+          o.AddSquare(s1);
+          o.AddSquare(s2);
+          o.AddSquare(s3);
+          o.AddSquare(s4);
+          o.AddSquare(s5);
+          o.AddSquare(s6);
+
+          pair<Point3D, Object> po = {{-10, 0, 5}, o};
+          s.AddObject(po);
+        }
+      }
+      pair<Point3D, Structure> ps = {{0, 0, 0}, s};
+      rEng.AddStructure(ps);
+    }*/
     
     {
       Structure s;
@@ -119,7 +396,7 @@ int main() {
           Point3D p4(10, 10, -10);
 
           Point3D p5(-10, -10, 10);
-          Point3D p6(-10, 10, 10);
+          Point3D p6(-10, 20, 10);
           Point3D p7(10, -10, 10);
           Point3D p8(10, 10, 10);
 
@@ -142,7 +419,7 @@ int main() {
           pair<Point3D, Object> po = {{0, 0, 0}, o};
           s.AddObject(po);
         }
-
+        /*
         {
           Object o;
 
@@ -207,9 +484,9 @@ int main() {
 
           pair<Point3D, Object> po = {{-15, 0, 0}, o};
           s.AddObject(po);
-        }
+        }*/
       }
-      pair<Point3D, Structure> ps = {{0, 0, 90}, s};
+      pair<Point3D, Structure> ps = {{0, 0, 0}, s};
       rEng.AddStructure(ps);
     }
 

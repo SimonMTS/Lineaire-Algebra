@@ -152,7 +152,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Camera2D.cpp" />
     <ClCompile Include="CameraPerspective.cpp" />
     <ClCompile Include="linal.cpp" />

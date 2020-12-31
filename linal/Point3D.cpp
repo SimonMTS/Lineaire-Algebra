@@ -51,7 +51,33 @@ Point3D Point3D::operator-(Point3D other) {
   return p;
 }
 
+Point3D Point3D::operator+(Point3D other) {
+  Point3D p(this->X, this->Y, this->Z);
+  p.X = this->X + other.X;
+  p.Y = this->Y + other.Y;
+  p.Z = this->Z + other.Z;
+
+  return p;
+}
+
+Point3D Point3D::operator-(int n) {
+  Point3D p(this->X, this->Y, this->Z);
+  p.X = this->X + n;
+  p.Y = this->Y + n;
+  p.Z = this->Z + n;
+
+  return p;
+}
+
+Point3D Point3D::operator+(int n) {
+  Point3D p(this->X, this->Y, this->Z);
+  p.X = this->X + n;
+  p.Y = this->Y + n;
+  p.Z = this->Z + n;
+
+  return p;
+}
+
 ostream& operator<<(ostream& Str, Point3D p) {
-  // print something from v to str, e.g: Str << v.getX();
   return Str << "[" << p.X << ", " << p.Y << ", " << p.Z << "]";
 }

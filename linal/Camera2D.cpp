@@ -16,8 +16,10 @@ void Camera2D::DrawGrid(SDL2Wrapper& Sdl, Point3D& pos) {
   for (int y = (int)(pos.X) % 20; y < Sdl.Width; y += 20) {
     Sdl.DrawLine(y, 0, y, Sdl.Height, gridColor);
   }
-  Sdl.DrawLine(pos.X * GridStep, 0, pos.X * GridStep, Sdl.Height, gridOriginColor);
-  Sdl.DrawLine(0, pos.Y * GridStep, Sdl.Width, pos.Y * GridStep, gridOriginColor);
+  Sdl.DrawLine(pos.X * GridStep, 0, pos.X * GridStep, Sdl.Height,
+               gridOriginColor);
+  Sdl.DrawLine(0, pos.Y * GridStep, Sdl.Width, pos.Y * GridStep,
+               gridOriginColor);
 }
 
 void Camera2D::DrawStructures(SDL2Wrapper& Sdl,
@@ -49,12 +51,27 @@ void Camera2D::DrawStructures(SDL2Wrapper& Sdl,
         l4x = (l4x * GridStep) + (pos.X * GridStep);
         l4y = (l4y * GridStep) + (pos.Y * GridStep);
 
-        //Sdl.DrawLine(l1x, l1y, l2x, l2y, {0, 0, 0});
+        // Sdl.DrawLine(l1x, l1y, l2x, l2y, {0, 0, 0});
         Sdl.DrawLine(l1x, l1y, l2x, l2y, {0, 0, 0});
         Sdl.DrawLine(l1x, l1y, l3x, l3y, {0, 0, 0});
         Sdl.DrawLine(l4x, l4y, l2x, l2y, {0, 0, 0});
         Sdl.DrawLine(l4x, l4y, l3x, l3y, {0, 0, 0});
       }
     }
+  }
+}
+
+void Camera2D::MousePassthrough(int event, int x, int y, std::string& rendEng) {
+  if (event == SDL_MOUSEBUTTONDOWN) {
+    IsDragging = {true, x, y};
+  }
+  if (event == SDL_MOUSEBUTTONUP) {
+    IsDragging = {false, 0, 0};
+  }
+  if (event == SDL_MOUSEMOTION && get<0>(IsDragging)) {
+    //rendEng.Cameras[rendEng.ActiveCamera].first.X += x - get<1>(IsDragging);
+    //rendEng.Cameras[rendEng.ActiveCamera].first.X.Y -= y - get<2>(IsDragging);
+
+    IsDragging = {true, x, y};
   }
 }

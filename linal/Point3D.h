@@ -20,6 +20,10 @@ class Point3D {
   Point3D operator+(Matrix3D m);
 
   Point3D operator-(Point3D m);
+  Point3D operator+(Point3D m);
+
+  Point3D operator-(int n);
+  Point3D operator+(int n);
 };
 
 ostream& operator<<(ostream& Str, Point3D p);

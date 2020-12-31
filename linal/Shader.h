@@ -2,6 +2,7 @@
 #include <memory>
 #include "SDL2Wrapper.h"
 using std::unique_ptr;
+using std::pair;
 
 class Shader : public SDL2Wrapper {
  public:

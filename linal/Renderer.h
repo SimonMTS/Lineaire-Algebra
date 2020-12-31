@@ -1,5 +1,6 @@
 #pragma once
 #include "Line3D.h"
+using std::pair;
 
 class Renderer {
  public:

@@ -3,7 +3,9 @@
 #include <vector>
 #define _USE_MATH_DEFINES
 #include <math.h>
+#include <ostream>
 using std::vector;
+using std::ostream;
 
 class Matrix3D {
  private:
@@ -20,6 +22,8 @@ class Matrix3D {
   static Matrix3D GetProjectionMatrix(const double near, const double far,
                                       const double fovy);
 
+  static Matrix3D RotationInverse(Matrix3D& m);
+
   vector<double> operator[](int i);
   auto begin() const { return State.begin(); }
   auto end() const { return State.end(); }
@@ -30,3 +34,5 @@ class Matrix3D {
   Matrix3D operator*(int i);
   Matrix3D operator*(Matrix3D m);
 };
+
+ostream& operator<<(ostream& Str, Matrix3D m);
