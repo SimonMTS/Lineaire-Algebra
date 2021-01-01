@@ -6,7 +6,7 @@ cVector::cVector(const double x, const double y, const double z)
 double cVector::Length() const { return sqrt((X*X) + (Y*Y) + (Z*Z)); }
 
 cVector cVector::Normalized() const {
-  int len = Length();
+  double len = Length();
 
   if (len == 1) {
     return {X, Y, Z};

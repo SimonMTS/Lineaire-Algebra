@@ -37,7 +37,7 @@ int main() {
       //r.Player.State = r.Player.State * rm;
       //r.Player.tmp = r.Player.tmp * rm;
 
-      r.Player.Dir = r.Player.Dir * cMatrix::GetRotationMatrix(2, 1);
+      //r.Player.Dir = r.Player.Dir * cMatrix::GetRotationMatrix(2, 1);
       //std::cout << r.Player.Dir << "\n";
     }
     if (key == 4) { r.Key_A = down; }
@@ -49,9 +49,10 @@ int main() {
       //r.Player.State = r.Player.State * rm;
       //r.Player.tmp = r.Player.tmp * rm;
 
-      r.Player.Dir = r.Player.Dir * cMatrix::GetRotationMatrix(2, -1);
+      //r.Player.Dir = r.Player.Dir * cMatrix::GetRotationMatrix(2, -1);
     }
-
+    
+    if (key == 26) { r.Key_W = down; }
     if (key == 26) {  // W
       //auto rm = cMatrix::GetRotationMatrix(1, 1);
 
@@ -60,8 +61,9 @@ int main() {
       //r.Player.State = r.Player.State * rm;
       //r.Player.tmp = r.Player.tmp * rm;
 
-      r.Player.Dir = r.Player.Dir * cMatrix::GetRotationMatrix(1, 1);
+      //r.Player.Dir = r.Player.Dir * cMatrix::GetRotationMatrix(1, 1);
     }
+    if (key == 22) { r.Key_S = down; }
     if (key == 22) {  // S
       //auto rm = cMatrix::GetRotationMatrix(1, -1);
 
@@ -70,9 +72,9 @@ int main() {
       //r.Player.State = r.Player.State * rm;
       //r.Player.tmp = r.Player.tmp * rm;
 
-      r.Player.Dir = r.Player.Dir * cMatrix::GetRotationMatrix(1, -1);
+      //r.Player.Dir = r.Player.Dir * cMatrix::GetRotationMatrix(1, -1);
     }
-
+    if (key == 20) { r.Key_Q = down; }
     if (key == 20) {  // Q
       //auto rm = cMatrix::GetRotationMatrix(3, 1);
 
@@ -81,6 +83,7 @@ int main() {
       //r.Player.State = r.Player.State * rm;
       //r.Player.tmp = r.Player.tmp * rm;
     }
+    if (key == 8) { r.Key_E = down; }
     if (key == 8) {  // E
       //auto rm = cMatrix::GetRotationMatrix(3, -1);
 

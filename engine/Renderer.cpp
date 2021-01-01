@@ -18,8 +18,14 @@ void Renderer::Init() {
     // before each frame
     if (type == -2) {
       { // move player
-        if (Key_A) Player.Dir = Player.Dir * cMatrix::GetRotationMatrix(2, -1);
-        if (Key_D) Player.Dir = Player.Dir * cMatrix::GetRotationMatrix(2, 1);
+        if (Key_A) Player.Dir = Player.Dir * cMatrix::GetRotationMatrix(2, -2);
+        if (Key_D) Player.Dir = Player.Dir * cMatrix::GetRotationMatrix(2, 2);
+
+        if (Key_W) Player.Dir = Player.Dir * cMatrix::GetRotationMatrix(1, -2);
+        if (Key_S) Player.Dir = Player.Dir * cMatrix::GetRotationMatrix(1, 2);
+
+        if (Key_Q) Player.Rot = Player.Rot + 2;
+        if (Key_E) Player.Rot = Player.Rot - 2;
 
         Player.Pos = Player.Pos + (Player.Dir * Speed);
         Speed = Key_Shift ? Speed + 0.5 : Speed * 0.97;

@@ -25,9 +25,17 @@ class Renderer {
   vector<Structure> Structures;
   Structure Player;
   double Speed = 0;
+
   bool Key_Shift = false;
+
   bool Key_A = false;
   bool Key_D = false;
+
+  bool Key_Q = false;
+  bool Key_E = false;
+
+  bool Key_W = false;
+  bool Key_S = false;
 
   Renderer(const Structure& p);
   void Init();

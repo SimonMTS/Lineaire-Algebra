@@ -33,35 +33,70 @@ void Camera2D::DrawStructures(SDL2Wrapper& drawer,
       for (auto square : component.Squares) {
         {
           drawer.DrawLine(structure.Pos.X + pos.X, structure.Pos.Z + pos.Z,
-                          structure.Pos.X + pos.X + (structure.Dir.X * 100),
-                          structure.Pos.Z + pos.Z + (structure.Dir.Z * 100),
+                          structure.Pos.X + pos.X + (structure.Dir * 100).X,
+                          structure.Pos.Z + pos.Z + (structure.Dir * 100).Z,
                           {250, 0, 0});
 
-          auto p1 = structure.Pos;
-          cVector p2 = {100, 100, 100};
+          //auto p1 = structure.Pos;
+          //cVector p2 = {100, 100, 100};
 
-          double a = 0;  // 360.0 * structure.Dir.Z;
-          double n = (p1.Length() *
-                    p2.Length());
-          if (n != 0) {
-            std::cout << acos(p1.DotProduct(p2) / n) << "\n";
+          //double a = 0;  // 360.0 * structure.Dir.Z;
+          //double n = (p1.Length() *
+          //          p2.Length());
+          //if (n != 0) {
+            //std::cout << acos(p1.DotProduct(p2) / n) << "\n";
 
-            double prod = p1.DotProduct(p2);
-            double asd = prod / n;
-            a = acos(asd);
-            a = acos(asd);
-          }
+            //double prod = p1.DotProduct(p2);
+            //double asd = prod / n;
+            //a = acos(asd);
+            //a = acos(asd);
+          //}
           // std::cout << structure.Dir.DotProduct(structure.Pos) << "\n";
           // std::cout << structure.Dir.CrossProduct(structure.Pos) << "\n";
           // std::cout << () / () << "\n";
           // std::cout << structure.Dir.Length() << "\n\n";
-          auto rm = cMatrix::GetRotationMatrix(2, 360 * a);
+          //auto rm = cMatrix::GetRotationMatrix(2, 360 * a);
+
+          // apply Dir
+          {
+            cVector from = {0, 0, 1};
+            cVector to = structure.Dir;
+
+            cVector distance = from - to;
+            if (distance.Length() > 0.001) {
+              cVector directionA = {0, 0, 1};
+              cVector directionB = to;
+
+              double rotationAngle =
+                  acos(directionA.DotProduct(directionB)) * (180.0 / M_PI);
+              cVector rotationAxis =
+                  directionA.CrossProduct(directionB).Normalized();
+
+              std::cout << rotationAxis << " ";
+              // std::cout << rotationAxis.Length() << "\n";
+              // std::cout << rotationAxis.Normalized() << "\n";
+              std::cout << rotationAngle << "\n";
+
+              if (abs(rotationAngle) > 0.001) {
+                auto rm = cMatrix::GetRotationMatrix(rotationAxis, -rotationAngle);
+                square.P1 = square.P1 * rm;
+                square.P2 = square.P2 * rm;
+                square.P3 = square.P3 * rm;
+                square.P4 = square.P4 * rm;
+
+                // std::cout << rm << "\n\n";
+              }
+            }
+          }
+
+          // apply Rot
+          auto rm = cMatrix::GetRotationMatrix(structure.Dir, structure.Rot);
           square.P1 = square.P1 * rm;
           square.P2 = square.P2 * rm;
           square.P3 = square.P3 * rm;
           square.P4 = square.P4 * rm;
 
-          //std::cout << structure.Pos.Length() << "  \r";
+          //std::cout << structure.Pos << "  \r";
         }
 
         double l1x = square.P1.X;  // + oOffset.X + sOffset.X;

@@ -1,9 +1,13 @@
 #include "cMatrix.hpp"
 
+#include <iostream>
+
+#include "cVector.hpp"
+
 cMatrix::cMatrix(vector<vector<double>> state) : State(state) {}
 
 cMatrix cMatrix::GetTranslationMatrix(const double x, const double y,
-                                        const double z) {
+                                      const double z) {
   vector<vector<double>> s(4, vector<double>(4, 0));
   s[0][0] = 1.0;
   s[1][1] = 1.0;
@@ -18,13 +22,23 @@ cMatrix cMatrix::GetTranslationMatrix(const double x, const double y,
 }
 
 cMatrix cMatrix::GetScalingMatrix(const double x, const double y,
-                                    const double z) {
+                                  const double z) {
   vector<vector<double>> s(4, vector<double>(4, 0));
   s[0][0] = x;
   s[1][1] = y;
   s[2][2] = z;
 
   s[3][3] = 1.0;
+
+  return cMatrix(s);
+}
+
+cMatrix cMatrix::GetIdentityMatrix() {
+  vector<vector<double>> s(4, vector<double>(4, 0));
+  s[0][0] = 1;
+  s[1][1] = 1;
+  s[2][2] = 1;
+  s[3][3] = 1;
 
   return cMatrix(s);
 }
@@ -59,8 +73,70 @@ cMatrix cMatrix::GetRotationMatrix(const int axis, const double angle) {
   return cMatrix(s);
 }
 
+cMatrix cMatrix::GetRotationMatrix(const cVector& axis, const double angle) {
+  cMatrix res = GetIdentityMatrix();
+
+  // step 1 - rotate to xy plane
+  cMatrix step1 = GetIdentityMatrix();
+  {
+    double cos = axis.X / sqrt((axis.X * axis.X) + (axis.Z * axis.Z));
+    double sin = axis.Z / sqrt((axis.X * axis.X) + (axis.Z * axis.Z));
+
+    {
+      vector<vector<double>> s(4, vector<double>(4, 0));
+      s[0][0] = cos != cos ? 1 : cos;
+      s[2][0] = sin != sin ? 0 : sin;
+      s[0][2] = -(sin != sin ? 0 : sin);
+      s[2][2] = cos != cos ? 1 : cos;
+
+      s[1][1] = 1;
+      s[3][3] = 1;
+
+      step1 = cMatrix(s);
+    }
+
+    res = res * step1;
+  }
+
+  // step 2 - rotate to x axis
+  cMatrix step2 = GetIdentityMatrix();
+  {
+    double cos =
+        sqrt((axis.X * axis.X) + (axis.Z * axis.Z)) /
+        sqrt((axis.X * axis.X) + (axis.Y * axis.Y) + (axis.Z * axis.Z));
+    double sin = axis.Y / sqrt((axis.X * axis.X) + (axis.Y * axis.Y) +
+                               (axis.Z * axis.Z));
+
+    {
+      vector<vector<double>> s(4, vector<double>(4, 0));
+      s[0][0] = cos != cos ? 1 : cos;
+      s[1][0] = sin != sin ? 0 : sin;
+      s[0][1] = -(sin != sin ? 0 : sin);
+      s[1][1] = cos != cos ? 1 : cos;
+
+      s[2][2] = 1;
+      s[3][3] = 1;
+
+      step2 = cMatrix(s);
+    }
+
+    res = res * step2;
+  }
+
+  // step 3 - rotate about the x axix
+  res = res * GetRotationMatrix(1, angle);
+
+  // step 4
+  res = res * RotationInverse(step2);
+
+  // step 5
+  res = res * RotationInverse(step1);
+
+  return res;
+}
+
 cMatrix cMatrix::GetProjectionMatrix(const double near, const double far,
-                                       const double fovy) {
+                                     const double fovy) {
   vector<vector<double>> s(4, vector<double>(4, 0));
   double scale = near * tan(fovy * 0.5);
 
@@ -164,7 +240,7 @@ cMatrix cMatrix::TranslationOnly(cMatrix& m) {
   return cMatrix(s);
 }
 
-vector<double> cMatrix::operator[](int i) { return State.at(i); }
+vector<double>& cMatrix::operator[](int i) { return State[i]; }
 
 vector<double> cMatrix::at(const int i) const { return State.at(i); }
 
@@ -217,9 +293,7 @@ cMatrix cMatrix::operator*(cMatrix m) {
   return cMatrix(s);
 }
 
-void cMatrix::operator*=(cMatrix m) {
-  (*this) = m * (*this);
-}
+void cMatrix::operator*=(cMatrix m) { (*this) = m * (*this); }
 
 ostream& operator<<(ostream& Str, cMatrix m) {
   Str << std::fixed;
