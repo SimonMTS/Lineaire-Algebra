@@ -23,9 +23,9 @@ SDL2Wrapper::SDL2Wrapper(int width, int height, const RGB& backgroundColor)
       SDLWindow(InitWindow(width, height)),
       SDLRenderer(InitRenderer()) {
   // SDL_RenderSetScale(SDLRenderer.get(), 2.0f, 2.0f);
+  // SDL_SetRelativeMouseMode(SDL_TRUE);
   SetBackground();
   SDL_RenderPresent(SDLRenderer.get());
-  // SDL_SetRelativeMouseMode(SDL_TRUE);
 }
 
 SDL2Wrapper::~SDL2Wrapper() { SDL_Quit(); }

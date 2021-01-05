@@ -1,17 +1,21 @@
 #pragma once
+#include <map>
 #include <memory>
 #include <vector>
 
-#include "Shader.hpp"
 #include "Camera.hpp"
+#include "Shader.hpp"
 #include "Structure.hpp"
 using namespace std;
+using std::map;
 using std::vector;
 
 class Renderer {
+  using KeyCallback =
+      pair<bool, function<void(const bool down, const int key, Renderer& r)>>;
+
  private:
-  vector<function<void(const bool down, const int key, Renderer& r)>>
-      OnKeyCallbacks;
+  map<int, KeyCallback> OnKeyCallbacks;
 
  public:
   double OriginX = 5;
@@ -26,22 +30,12 @@ class Renderer {
   Structure Player;
   double Speed = 0;
 
-  bool Key_Shift = false;
-
-  bool Key_A = false;
-  bool Key_D = false;
-
-  bool Key_Q = false;
-  bool Key_E = false;
-
-  bool Key_W = false;
-  bool Key_S = false;
-
   Renderer(const Structure& p);
   void Init();
 
   void OnResize(const int width, const int height);
-  void OnKey(const function<void(const bool down, const int key, Renderer& r)>&
+  void OnKey(const int key,
+             const function<void(const bool down, const int key, Renderer& r)>&
                  callback);
   void OnMouse(const function<void()>& callback);
 
