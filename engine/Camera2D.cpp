@@ -10,7 +10,7 @@ void Camera2D::DrawGrid(SDL2Wrapper& drawer, const cVector& pos) {
   RGB colorY = RGB(33, 150, 243);
   RGB colorZ = RGB(76, 175, 80);
 
-  for (int x = (int)(pos.Y) % 20; x < drawer.Height; x += 20) {
+  for (int x = (int)(pos.Z) % 20; x < drawer.Height; x += 20) {
     drawer.DrawLine(0, x, drawer.Width, x, gridColor);
   }
   for (int y = (int)(pos.X) % 20; y < drawer.Width; y += 20) {
@@ -19,7 +19,7 @@ void Camera2D::DrawGrid(SDL2Wrapper& drawer, const cVector& pos) {
 
   drawer.DrawLine(pos.X * GridStep, 0, pos.X * GridStep, drawer.Height,
                   gridOriginColor);
-  drawer.DrawLine(0, pos.Y * GridStep, drawer.Width, pos.Y * GridStep,
+  drawer.DrawLine(0, pos.Z * GridStep, drawer.Width, pos.Z * GridStep,
                   gridOriginColor);
 }
 
@@ -27,68 +27,47 @@ void Camera2D::DrawStructures(SDL2Wrapper& drawer,
                               vector<Structure>& structures,
                               const cVector& pos) {
   for (auto& structure : structures) {
+    // Structure direction
+    drawer.DrawLine(structure.Pos.X + pos.X, structure.Pos.Z + pos.Z,
+                    structure.Pos.X + pos.X + (structure.Dir * 100).X,
+                    structure.Pos.Z + pos.Z + (structure.Dir * 100).Z,
+                    {250, 0, 0});
+
     for (auto& component : structure.Components) {
       for (auto square : component.Squares) {
-        {
-          drawer.DrawLine(structure.Pos.X + pos.X, structure.Pos.Z + pos.Z,
-                          structure.Pos.X + pos.X + (structure.Dir * 100).X,
-                          structure.Pos.Z + pos.Z + (structure.Dir * 100).Z,
-                          {250, 0, 0});
+        // Calc real position
+        square.P1 = square.P1 + component.Pos + structure.Pos + pos;
+        square.P2 = square.P2 + component.Pos + structure.Pos + pos;
+        square.P3 = square.P3 + component.Pos + structure.Pos + pos;
+        square.P4 = square.P4 + component.Pos + structure.Pos + pos;
 
-          square.P1 = square.P1 + component.Pos;
-          square.P2 = square.P2 + component.Pos;
-          square.P3 = square.P3 + component.Pos;
-          square.P4 = square.P4 + component.Pos;
-
-          // apply Dir
-          {
-            cVector from = {0, 0, 1};
-            cVector to = structure.Dir;
-
-            cVector distance = from - to;
-            if (distance.Length() > 0.001) {
-              cVector directionA = {0, 0, 1};
-              cVector directionB = to;
-
-              double rotationAngle =
-                  acos(directionA.DotProduct(directionB)) * (180.0 / M_PI);
-              cVector rotationAxis =
-                  directionA.CrossProduct(directionB).Normalized();
-
-              if (abs(rotationAngle) > 0.001) {
-                auto rm =
-                    cMatrix::GetRotationMatrix(rotationAxis, -rotationAngle);
-                square.P1 = square.P1 * rm;
-                square.P2 = square.P2 * rm;
-                square.P3 = square.P3 * rm;
-                square.P4 = square.P4 * rm;
-              }
-            }
-          }
-
-          // apply Rot
-          auto rm = cMatrix::GetRotationMatrix(structure.Dir, structure.Rot);
-          square.P1 = square.P1 * rm;
-          square.P2 = square.P2 * rm;
-          square.P3 = square.P3 * rm;
-          square.P4 = square.P4 * rm;
-        }
-
-        double l1x = square.P1.X + pos.X + structure.Pos.X;
-        double l1y = square.P1.Z + pos.Z + structure.Pos.Z;
-        double l2x = square.P2.X + pos.X + structure.Pos.X;
-        double l2y = square.P2.Z + pos.Z + structure.Pos.Z;
-
-        double l3x = square.P3.X + pos.X + structure.Pos.X;
-        double l3y = square.P3.Z + pos.Z + structure.Pos.Z;
-        double l4x = square.P4.X + pos.X + structure.Pos.X;
-        double l4y = square.P4.Z + pos.Z + structure.Pos.Z;
-
-        drawer.DrawLine(l1x, l1y, l2x, l2y, {0, 0, 0});
-        drawer.DrawLine(l1x, l1y, l3x, l3y, {0, 0, 0});
-        drawer.DrawLine(l4x, l4y, l2x, l2y, {0, 0, 0});
-        drawer.DrawLine(l4x, l4y, l3x, l3y, {0, 0, 0});
+        // Draw square
+        drawer.DrawLine(square.P1.X, square.P1.Z, square.P2.X, square.P2.Z, {0, 0, 0});
+        drawer.DrawLine(square.P1.X, square.P1.Z, square.P3.X, square.P3.Z, {0, 0, 0});
+        drawer.DrawLine(square.P4.X, square.P4.Z, square.P2.X, square.P2.Z, {0, 0, 0});
+        drawer.DrawLine(square.P4.X, square.P4.Z, square.P3.X, square.P3.Z, {0, 0, 0});
       }
     }
   }
+}
+
+cVector Camera2D::HandleMouseEvent(const int type, const int d1, const int d2) {
+  // Mouse down
+  if (type == 1025) {
+    std::cout << "\ndrag start\n";
+    IsDragging = {true, d1, d2};
+  }
+  // Mouse up
+  if (type == 1026) {
+    std::cout << "\ndrag end\n";
+    IsDragging = {false, 0, 0};
+  }
+  if (type == 1024 && get<0>(IsDragging)) {
+    double delta_x = (double)get<1>(IsDragging) - (double)d1;
+    double delta_z = (double)get<2>(IsDragging) - (double)d2;
+    IsDragging = {true, d1, d2};
+    return {-delta_x, 0, delta_z};
+  }
+
+  return {0, 0, 0};
 }

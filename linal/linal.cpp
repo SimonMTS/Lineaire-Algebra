@@ -5,18 +5,17 @@
 
 int main() {
   auto player = PlayerBuilder::GetPlayer();
+  player.Pos = {0, 0, 0};
 
   auto thing = PlayerBuilder::GetPlayer();
-  thing.Pos = {100, 100, 100};
+  thing.Pos = {100, 0, 100};
 
   Renderer r{player};
   r.AddStructure(thing);
-  //r.Player *= cMatrix::GetTranslationMatrix(0, 0, 0);
-  //r.Player.State = r.Player.State * cMatrix::GetTranslationMatrix(0, 0, 0);
 
   auto perCam = make_unique<CameraPerspective>();
   perCam->Rotation = {90, 180, 0};
-  r.AddCamera({100, -1000, 100}, move(perCam));
+  r.AddCamera({0, 1000, 0}, move(perCam));
 
   r.AddCamera({50, 50, 50}, make_unique<Camera2D>());
 
@@ -35,31 +34,39 @@ int main() {
   r.OnKey(4, [](const bool down, const int key, Renderer& r) {
     cVector at90deg = {0, 1, 0};
     r.Player.Dir = r.Player.Dir * cMatrix::GetRotationMatrix(at90deg, 3);
+    r.Player *= cMatrix::GetRotationMatrix(at90deg, 3);
   });
   // D
   r.OnKey(7, [](const bool down, const int key, Renderer& r) {
     cVector at90deg = {0, 1, 0};
     r.Player.Dir = r.Player.Dir * cMatrix::GetRotationMatrix(at90deg, -3);
+    r.Player *= cMatrix::GetRotationMatrix(at90deg, -3);
   });
 
   // W
   r.OnKey(26, [](const bool down, const int key, Renderer& r) {
-    r.Player.Dir = r.Player.Dir * cMatrix::GetRotationMatrix(cVector{1, 0, 0}, -3);
+    cVector at90deg = {1, 0, 0};
+    r.Player.Dir = r.Player.Dir * cMatrix::GetRotationMatrix(at90deg, -3);
+    r.Player *= cMatrix::GetRotationMatrix(at90deg, -3);
   });
   // S
   r.OnKey(22, [](const bool down, const int key, Renderer& r) {
-    r.Player.Dir = r.Player.Dir * cMatrix::GetRotationMatrix(cVector{1, 0, 0}, 3);
+    cVector at90deg = {1, 0, 0};
+    r.Player.Dir = r.Player.Dir * cMatrix::GetRotationMatrix(at90deg, 3);
+    r.Player *= cMatrix::GetRotationMatrix(at90deg, 3);
   });
 
   // Q
   r.OnKey(20, [](const bool down, const int key, Renderer& r) {
     r.Player.Rot -= 3;
     r.Player.Rot += r.Player.Rot < 0 ? 360 : 0;
+    r.Player *= cMatrix::GetRotationMatrix(r.Player.Dir, -3);
   });
   // E
   r.OnKey(8, [](const bool down, const int key, Renderer& r) {
     r.Player.Rot += 3;
     r.Player.Rot -= r.Player.Rot > 360 ? 360 : 0;
+    r.Player *= cMatrix::GetRotationMatrix(r.Player.Dir, 3);
   });
 
 
@@ -70,9 +77,29 @@ int main() {
 
   // R
   r.OnKey(21, [](const bool down, const int key, Renderer& r) {
-    std::cout << "\nReset\n";
 
+    r.Player *= cMatrix::GetRotationMatrix(r.Player.Dir, -r.Player.Rot);
     r.Player.Rot = 0;
+
+    {
+      cVector from = r.Player.Dir;
+      cVector to = {0, 0, 1};
+      cVector distance = from - to;
+
+      if (distance.Length() > 0.001) {
+        cVector directionA = from;
+        cVector directionB = to;
+
+        double rotationAngle =
+            acos(directionA.DotProduct(directionB)) * (180.0 / M_PI);
+        cVector rotationAxis = directionA.CrossProduct(directionB).Normalized();
+
+        if (abs(rotationAngle) > 0.001) {
+          auto rm = cMatrix::GetRotationMatrix(rotationAxis, -rotationAngle);
+          r.Player *= rm;
+        }
+      }
+    }
     r.Player.Dir = {0, 0, 1};
 
   });

@@ -58,7 +58,15 @@ void Renderer::Init() {
     // key up/down event
     if ((type == -3 || type == -4) &&
         OnKeyCallbacks.find(d2) != OnKeyCallbacks.end()) {
-        OnKeyCallbacks[d2].first = type == -4;
+      OnKeyCallbacks[d2].first = type == -4;
+    }
+
+    // mouse events
+    if (type == 1024 || type == 1025 || type == 1026 || type == 1027) {
+      // not very neat yet
+      Cameras[ActiveCamera].first =
+          Cameras[ActiveCamera].first +
+          Cameras[ActiveCamera].second->HandleMouseEvent(type, d1, d2);
     }
   });
 }
@@ -69,7 +77,8 @@ void Renderer::OnResize(const int width, const int height) {
   OriginZ = 0;
 }
 
-void Renderer::OnKey(const int key, const function<void(const bool down, const int key,
+void Renderer::OnKey(const int key,
+                     const function<void(const bool down, const int key,
                                          Renderer& r)>& callback) {
   OnKeyCallbacks[key] = {false, callback};
 }
