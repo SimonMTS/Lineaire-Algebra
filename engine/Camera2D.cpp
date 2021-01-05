@@ -28,30 +28,30 @@ void Camera2D::DrawStructures(SDL2Wrapper& drawer,
                               const cVector& pos) {
   for (auto& structure : structures) {
     // Structure direction
-    //drawer.DrawLine(structure.Pos.X + pos.X, structure.Pos.Z + pos.Z,
+    // drawer.DrawLine(structure.Pos.X + pos.X, structure.Pos.Z + pos.Z,
     //                structure.Pos.X + pos.X + (structure.Dir * 100).X,
     //                structure.Pos.Z + pos.Z + (structure.Dir * 100).Z,
     //                {250, 0, 0});
 
     for (auto& component : structure.Components) {
-      for (auto square : component.Squares) {
+      for (auto sqr : component.Squares) {
         // Calc position in structure
-        square.P1 = square.P1 + component.Pos;
-        square.P2 = square.P2 + component.Pos;
-        square.P3 = square.P3 + component.Pos;
-        square.P4 = square.P4 + component.Pos;
+        sqr.P1 = sqr.P1 + component.Pos;
+        sqr.P2 = sqr.P2 + component.Pos;
+        sqr.P3 = sqr.P3 + component.Pos;
+        sqr.P4 = sqr.P4 + component.Pos;
 
         // Set orientation
-        square.P1 = (square.P1 * structure.State) + pos;
-        square.P2 = (square.P2 * structure.State) + pos;
-        square.P3 = (square.P3 * structure.State) + pos;
-        square.P4 = (square.P4 * structure.State) + pos;
+        sqr.P1 = (sqr.P1 * structure.State) + pos;
+        sqr.P2 = (sqr.P2 * structure.State) + pos;
+        sqr.P3 = (sqr.P3 * structure.State) + pos;
+        sqr.P4 = (sqr.P4 * structure.State) + pos;
 
         // Draw square
-        drawer.DrawLine(square.P1.X, square.P1.Z, square.P2.X, square.P2.Z, {0, 0, 0});
-        drawer.DrawLine(square.P1.X, square.P1.Z, square.P3.X, square.P3.Z, {0, 0, 0});
-        drawer.DrawLine(square.P4.X, square.P4.Z, square.P2.X, square.P2.Z, {0, 0, 0});
-        drawer.DrawLine(square.P4.X, square.P4.Z, square.P3.X, square.P3.Z, {0, 0, 0});
+        drawer.DrawLine(sqr.P1.X, sqr.P1.Z, sqr.P2.X, sqr.P2.Z, {0, 0, 0});
+        drawer.DrawLine(sqr.P1.X, sqr.P1.Z, sqr.P3.X, sqr.P3.Z, {0, 0, 0});
+        drawer.DrawLine(sqr.P4.X, sqr.P4.Z, sqr.P2.X, sqr.P2.Z, {0, 0, 0});
+        drawer.DrawLine(sqr.P4.X, sqr.P4.Z, sqr.P3.X, sqr.P3.Z, {0, 0, 0});
       }
     }
   }

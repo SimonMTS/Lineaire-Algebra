@@ -1,6 +1,6 @@
 #pragma once
-#include "SDL2Wrapper.hpp"
 #include "../math/cVector.hpp"
+#include "SDL2Wrapper.hpp"
 #include "Structure.hpp"
 
 class Camera {

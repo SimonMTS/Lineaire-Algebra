@@ -3,7 +3,7 @@
 cVector::cVector(const double x, const double y, const double z)
     : X(x), Y(y), Z(z) {}
 
-double cVector::Length() const { return sqrt((X*X) + (Y*Y) + (Z*Z)); }
+double cVector::Length() const { return sqrt((X * X) + (Y * Y) + (Z * Z)); }
 
 cVector cVector::Normalized() const {
   double len = Length();
@@ -12,7 +12,7 @@ cVector cVector::Normalized() const {
     return {X, Y, Z};
   }
 
-  return { X/len, Y/len, Z/len };
+  return {X / len, Y / len, Z / len};
 }
 
 double cVector::DotProduct(const cVector& other) {

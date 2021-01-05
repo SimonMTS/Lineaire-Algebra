@@ -1,7 +1,7 @@
 #include "PlayerBuilder.hpp"
 
 Structure PlayerBuilder::GetPlayer() {
-  //Structure s;
+  // Structure s;
   //{
   //    Component c;
 
@@ -38,7 +38,7 @@ Structure PlayerBuilder::GetPlayer() {
   //    s.AddComponent(c);
   //}
 
-  //return s; /*
+  // return s; /*
 
   Structure s;
   {
@@ -306,5 +306,5 @@ Structure PlayerBuilder::GetPlayer() {
     }
   }
 
-  return s; //*/
+  return s;  //*/
 }

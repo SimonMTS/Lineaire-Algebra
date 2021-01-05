@@ -1,7 +1,7 @@
 #pragma once
 #include "Camera.hpp"
-using std::tuple;
 using std::get;
+using std::tuple;
 
 class Camera2D : public Camera {
  private:
