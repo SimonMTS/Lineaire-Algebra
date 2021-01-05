@@ -6,11 +6,17 @@ void CameraPerspective::DrawStructures(SDL2Wrapper& drawer,
   for (auto& structure : structures) {
     for (auto& component : structure.Components) {
       for (auto square : component.Squares) {
-        // Calc real position
-        square.P1 = square.P1 + component.Pos + structure.Pos;
-        square.P2 = square.P2 + component.Pos + structure.Pos;
-        square.P3 = square.P3 + component.Pos + structure.Pos;
-        square.P4 = square.P4 + component.Pos + structure.Pos;
+        // Calc position in structure
+        square.P1 = square.P1 + component.Pos;
+        square.P2 = square.P2 + component.Pos;
+        square.P3 = square.P3 + component.Pos;
+        square.P4 = square.P4 + component.Pos;
+
+        // Set orientation
+        square.P1 = square.P1 * structure.State;
+        square.P2 = square.P2 * structure.State;
+        square.P3 = square.P3 * structure.State;
+        square.P4 = square.P4 * structure.State;
 
         // Calc on screen pos
         cMatrix pm = cMatrix::GetProjectionMatrix(1, 2000, 60);

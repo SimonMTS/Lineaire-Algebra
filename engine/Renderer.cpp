@@ -18,7 +18,13 @@ void Renderer::Init() {
     // before each frame
     if (type == -2) {
       // Update player position
-      Player.Pos = Player.Pos + (Player.Dir * Speed);
+      {
+        cVector fw = {0, 0, 1};
+        fw = fw * Speed;
+        Player.State =
+            Player.State *
+                       cMatrix::GetTranslationMatrix(fw.X, fw.Y, fw.Z);
+      }
       Speed *= 0.97;
       Speed = Speed < 0.2 ? 0 : Speed;
 
@@ -38,16 +44,6 @@ void Renderer::Init() {
       vector<Structure> p = {Player};
       Cameras[ActiveCamera].second->DrawStructures(*Drawer, p,
                                                    Cameras[ActiveCamera].first);
-
-      // Update cli info
-      std::cout << "\r";
-      std::cout << std::fixed;
-      std::cout << std::setprecision(4);
-      std::cout << "Speed: " << Speed;
-      std::cout << " Pos: " << Player.Pos;
-      std::cout << " Dir: " << Player.Dir;
-      std::cout << " Rot: " << Player.Rot;
-      std::cout << "                \r";
     }
 
     // resize event

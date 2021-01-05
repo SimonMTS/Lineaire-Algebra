@@ -28,18 +28,24 @@ void Camera2D::DrawStructures(SDL2Wrapper& drawer,
                               const cVector& pos) {
   for (auto& structure : structures) {
     // Structure direction
-    drawer.DrawLine(structure.Pos.X + pos.X, structure.Pos.Z + pos.Z,
-                    structure.Pos.X + pos.X + (structure.Dir * 100).X,
-                    structure.Pos.Z + pos.Z + (structure.Dir * 100).Z,
-                    {250, 0, 0});
+    //drawer.DrawLine(structure.Pos.X + pos.X, structure.Pos.Z + pos.Z,
+    //                structure.Pos.X + pos.X + (structure.Dir * 100).X,
+    //                structure.Pos.Z + pos.Z + (structure.Dir * 100).Z,
+    //                {250, 0, 0});
 
     for (auto& component : structure.Components) {
       for (auto square : component.Squares) {
-        // Calc real position
-        square.P1 = square.P1 + component.Pos + structure.Pos + pos;
-        square.P2 = square.P2 + component.Pos + structure.Pos + pos;
-        square.P3 = square.P3 + component.Pos + structure.Pos + pos;
-        square.P4 = square.P4 + component.Pos + structure.Pos + pos;
+        // Calc position in structure
+        square.P1 = square.P1 + component.Pos;
+        square.P2 = square.P2 + component.Pos;
+        square.P3 = square.P3 + component.Pos;
+        square.P4 = square.P4 + component.Pos;
+
+        // Set orientation
+        square.P1 = (square.P1 * structure.State) + pos;
+        square.P2 = (square.P2 * structure.State) + pos;
+        square.P3 = (square.P3 * structure.State) + pos;
+        square.P4 = (square.P4 * structure.State) + pos;
 
         // Draw square
         drawer.DrawLine(square.P1.X, square.P1.Z, square.P2.X, square.P2.Z, {0, 0, 0});
