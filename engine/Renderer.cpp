@@ -18,14 +18,24 @@ void Renderer::Init() {
     // before each frame
     if (type == -2) {
       { // move player
-        if (Key_A) Player.Dir = Player.Dir * cMatrix::GetRotationMatrix(2, -2);
-        if (Key_D) Player.Dir = Player.Dir * cMatrix::GetRotationMatrix(2, 2);
+        if (Key_A) {
+          cVector at90deg = {0, 1, 0};
+          //at90deg = at90deg * cMatrix::GetRotationMatrix(3, Player.Rot);
+          //std::cout << at90deg << "\n";
+          Player.Dir = Player.Dir * cMatrix::GetRotationMatrix(at90deg, 3);
+        }
+        if (Key_D) {
+          cVector at90deg = {0, 1, 0};
+          //at90deg = at90deg * cMatrix::GetRotationMatrix(3, Player.Rot);
+          //std::cout << at90deg << "\n";
+          Player.Dir = Player.Dir * cMatrix::GetRotationMatrix(at90deg, -3);
+        }
 
-        if (Key_W) Player.Dir = Player.Dir * cMatrix::GetRotationMatrix(1, -2);
-        if (Key_S) Player.Dir = Player.Dir * cMatrix::GetRotationMatrix(1, 2);
+        if (Key_W) Player.Dir = Player.Dir * cMatrix::GetRotationMatrix(cVector{1, 0, 0}, -3);
+        if (Key_S) Player.Dir = Player.Dir * cMatrix::GetRotationMatrix(cVector{1, 0, 0}, 3);
 
-        if (Key_Q) Player.Rot = Player.Rot + 2;
-        if (Key_E) Player.Rot = Player.Rot - 2;
+        if (Key_Q) Player.Rot = Player.Rot + 3;
+        if (Key_E) Player.Rot = Player.Rot - 3;
 
         Player.Pos = Player.Pos + (Player.Dir * Speed);
         Speed = Key_Shift ? Speed + 0.5 : Speed * 0.97;
@@ -78,6 +88,8 @@ void Renderer::OnKey(const function<void(const bool down, const int key,
 }
 
 void Renderer::OnMouse(const function<void()>& callback) {}
+
+void Renderer::AddStructure(const Structure& s) { Structures.push_back(s); }
 
 void Renderer::AddCamera(const cVector& pos, unique_ptr<Camera> cam) {
   Cameras.push_back({pos, move(cam)});

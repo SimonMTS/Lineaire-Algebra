@@ -6,15 +6,19 @@
 int main() {
   auto player = PlayerBuilder::GetPlayer();
 
+  auto thing = PlayerBuilder::GetPlayer();
+  thing.Pos = {100, 100, 100};
+
   Renderer r{player};
+  r.AddStructure(thing);
   //r.Player *= cMatrix::GetTranslationMatrix(0, 0, 0);
   //r.Player.State = r.Player.State * cMatrix::GetTranslationMatrix(0, 0, 0);
 
-  r.AddCamera({50, 50, 50}, make_unique<Camera2D>());
-
   auto perCam = make_unique<CameraPerspective>();
   perCam->Rotation = {90, 180, 0};
-  r.AddCamera({0, -1000, 0}, move(perCam));
+  r.AddCamera({100, -1000, 100}, move(perCam));
+
+  r.AddCamera({50, 50, 50}, make_unique<Camera2D>());
 
   r.OnKey([](const bool down, const int key, Renderer& r) {
     // std::cout << down << " " << key << "\n";

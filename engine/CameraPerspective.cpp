@@ -4,6 +4,83 @@ void CameraPerspective::DrawStructures(SDL2Wrapper& drawer,
                                        vector<Structure>& structures,
                                        const cVector& pos) {
   for (auto& structure : structures) {
+    for (auto& component : structure.Components) {
+      for (auto square : component.Squares) {
+        {
+          square.P1 = square.P1 + component.Pos;
+          square.P2 = square.P2 + component.Pos;
+          square.P3 = square.P3 + component.Pos;
+          square.P4 = square.P4 + component.Pos;
+
+          // apply Dir
+          {
+            cVector from = {0, 0, 1};
+            cVector to = structure.Dir;
+
+            cVector distance = from - to;
+            if (distance.Length() > 0.001) {
+              cVector directionA = {0, 0, 1};
+              cVector directionB = to;
+
+              double rotationAngle =
+                  acos(directionA.DotProduct(directionB)) * (180.0 / M_PI);
+              cVector rotationAxis =
+                  directionA.CrossProduct(directionB).Normalized();
+
+              if (abs(rotationAngle) > 0.001) {
+                auto rm =
+                    cMatrix::GetRotationMatrix(rotationAxis, -rotationAngle);
+                square.P1 = square.P1 * rm;
+                square.P2 = square.P2 * rm;
+                square.P3 = square.P3 * rm;
+                square.P4 = square.P4 * rm;
+              }
+            }
+          }
+
+          // apply Rot
+          auto rm = cMatrix::GetRotationMatrix(structure.Dir, structure.Rot);
+          square.P1 = square.P1 * rm;
+          square.P2 = square.P2 * rm;
+          square.P3 = square.P3 * rm;
+          square.P4 = square.P4 * rm;
+        }
+
+        square.P1 = square.P1 + structure.Pos;
+        square.P2 = square.P2 + structure.Pos;
+        square.P3 = square.P3 + structure.Pos;
+        square.P4 = square.P4 + structure.Pos;
+
+        cMatrix pm = cMatrix::GetProjectionMatrix(1, 200, 60);
+        cMatrix rm = cMatrix::GetRotationMatrix(1, get<0>(Rotation)) *
+                     cMatrix::GetRotationMatrix(2, get<1>(Rotation)) *
+                     cMatrix::GetRotationMatrix(3, get<2>(Rotation));
+
+        square.P1 = square.P1 * rm * pm;
+        square.P2 = square.P2 * rm * pm;
+        square.P3 = square.P3 * rm * pm;
+        square.P4 = square.P4 * rm * pm;
+
+        {
+          cVector asd = structure.Pos + pos;
+
+          //std::cout << structure.Pos << "\n";
+          drawer.DrawLine(asd.X, asd.Z, asd.X + (structure.Dir * 100).X,
+                          asd.Z + (structure.Dir * 100).Z, {250, 0, 0});
+        }
+
+        if (square.P1.W < 0 || square.P2.W < 0 || square.P3.W < 0 ||
+            square.P4.W < 0) {
+          continue;
+        }
+
+        drawer.DrawSquare(square.P1.X, square.P1.Y, square.P2.X, square.P2.Y,
+                          square.P3.X, square.P3.Y, square.P4.X, square.P4.Y,
+                          {0, 0, 0});
+      }
+    }
+  }
+  /*for (auto& structure : structures) {
     for (auto& object : structure.Components) {
       for (auto& square : object.Squares) {
         cVector p1 = square.P1;
@@ -64,5 +141,5 @@ void CameraPerspective::DrawStructures(SDL2Wrapper& drawer,
                        {0, 0, 0});
       }
     }
-  }
+  }*/
 }
