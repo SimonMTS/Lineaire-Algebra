@@ -7,9 +7,13 @@ using std::tuple;
 
 class CameraPerspective : public Camera {
  public:
-  tuple<double, double, double> Rotation = {0, 0, 0};
+  void DrawGrid(SDL2Wrapper& drawer) override{};
+  void DrawStructures(SDL2Wrapper& drawer,
+                      vector<Structure>& structures) override;
 
-  void DrawGrid(SDL2Wrapper& drawer, const cVector& pos) override{};
-  void DrawStructures(SDL2Wrapper& drawer, vector<Structure>& structures,
-                      const cVector& pos) override;
+  void HandleMouseEvent(const int type, const int d1, const int d2) override;
+
+  virtual void RegisterKeyCallbacks();
+  void CallKeyCallbacks() override;
+  void HandleKeyEvent(const int type, const int d1, const int d2) override;
 };

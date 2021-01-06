@@ -6,7 +6,6 @@
 #include "Camera.hpp"
 #include "Shader.hpp"
 #include "Structure.hpp"
-using namespace std;
 using std::map;
 using std::vector;
 
@@ -18,12 +17,9 @@ class Renderer {
   map<int, KeyCallback> OnKeyCallbacks;
 
  public:
-  double OriginX = 5;
-  double OriginY = 5;
-  double OriginZ = 5;
   unique_ptr<Shader> Drawer;
 
-  vector<pair<cVector, unique_ptr<Camera>>> Cameras;
+  vector<unique_ptr<Camera>> Cameras;
   int ActiveCamera = 0;
 
   vector<Structure> Structures;
@@ -33,13 +29,11 @@ class Renderer {
   Renderer(const Structure& p);
   void Init();
 
-  void OnResize(const int width, const int height);
   void OnKey(const int key,
              const function<void(const bool down, const int key, Renderer& r)>&
                  callback);
-  void OnMouse(const function<void()>& callback);
 
   void AddStructure(const Structure& s);
 
-  void AddCamera(const cVector& pos, unique_ptr<Camera> cam);
+  void AddCamera(unique_ptr<Camera> cam);
 };
