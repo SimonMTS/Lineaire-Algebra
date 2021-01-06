@@ -12,8 +12,7 @@ void Renderer::Init() {
       {  // Update player position
         cVector fw = {0, 0, 1};
         fw = fw * Speed;
-        Player.State =
-            Player.State * cMatrix::GetTranslationMatrix(fw.X, fw.Y, fw.Z);
+        Player.State *= cMatrix::GetTranslationMatrix(fw.X, fw.Y, fw.Z);
       }
       Speed *= 0.97;
       Speed = Speed < 0.2 ? 0 : Speed;

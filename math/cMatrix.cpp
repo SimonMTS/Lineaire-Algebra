@@ -244,7 +244,7 @@ vector<double>& cMatrix::operator[](int i) { return State[i]; }
 
 vector<double> cMatrix::at(const int i) const { return State.at(i); }
 
-cMatrix cMatrix::operator-(cMatrix m) {
+cMatrix cMatrix::operator-(cMatrix& m) {
   vector<vector<double>> s(4, vector<double>(4, 0));
 
   for (int i = 0; i < (*this).size(); i++) {
@@ -256,7 +256,7 @@ cMatrix cMatrix::operator-(cMatrix m) {
   return cMatrix(s);
 }
 
-cMatrix cMatrix::operator+(cMatrix m) {
+cMatrix cMatrix::operator+(cMatrix& m) {
   vector<vector<double>> s(4, vector<double>(4, 0));
 
   for (int i = 0; i < (*this).size(); i++) {
@@ -293,9 +293,9 @@ cMatrix cMatrix::operator*(cMatrix m) {
   return cMatrix(s);
 }
 
-void cMatrix::operator*=(cMatrix m) { (*this) = m * (*this); }
+void cMatrix::operator*=(cMatrix m) { (*this) = (*this) * m; }
 
-ostream& operator<<(ostream& Str, cMatrix m) {
+ostream& operator<<(ostream& Str, cMatrix& m) {
   Str << std::fixed;
   Str << std::setprecision(4);
 

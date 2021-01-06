@@ -6,23 +6,23 @@ void CameraPerspective::DrawStructures(SDL2Wrapper& drawer,
     for (auto& component : structure.Components) {
       for (auto sqr : component.Squares) {
         // Calc position in structure
-        sqr.P1 = sqr.P1 + component.Pos;
-        sqr.P2 = sqr.P2 + component.Pos;
-        sqr.P3 = sqr.P3 + component.Pos;
-        sqr.P4 = sqr.P4 + component.Pos;
+        sqr.P1 += component.Pos;
+        sqr.P2 += component.Pos;
+        sqr.P3 += component.Pos;
+        sqr.P4 += component.Pos;
 
         // Apply state
-        sqr.P1 = sqr.P1 * structure.State;
-        sqr.P2 = sqr.P2 * structure.State;
-        sqr.P3 = sqr.P3 * structure.State;
-        sqr.P4 = sqr.P4 * structure.State;
+        sqr.P1 *= structure.State;
+        sqr.P2 *= structure.State;
+        sqr.P3 *= structure.State;
+        sqr.P4 *= structure.State;
 
         // Calc on screen pos
         cMatrix pm = cMatrix::GetProjectionMatrix(1, 2000, 60) * State;
-        sqr.P1 = sqr.P1 * pm;
-        sqr.P2 = sqr.P2 * pm;
-        sqr.P3 = sqr.P3 * pm;
-        sqr.P4 = sqr.P4 * pm;
+        sqr.P1 *= pm;
+        sqr.P2 *= pm;
+        sqr.P3 *= pm;
+        sqr.P4 *= pm;
 
         if (sqr.P1.W < 0 || sqr.P2.W < 0 || sqr.P3.W < 0 || sqr.P4.W < 0) {
           continue;
@@ -59,33 +59,27 @@ void CameraPerspective::HandleMouseEvent(const int type, const int d1,
 
 void CameraPerspective::RegisterKeyCallbacks() {
   OnKeyCallbacks[75] = {false, [](const bool down, Camera& c) {  // PageUp
-                          c.State =
-                              c.State * cMatrix::GetTranslationMatrix(0, 3, 0);
+                          c.State *= cMatrix::GetTranslationMatrix(0, 3, 0);
                         }};
 
   OnKeyCallbacks[78] = {false, [](const bool down, Camera& c) {  // PageDown
-                          c.State =
-                              c.State * cMatrix::GetTranslationMatrix(0, -3, 0);
+                          c.State *= cMatrix::GetTranslationMatrix(0, -3, 0);
                         }};
 
   OnKeyCallbacks[82] = {false, [](const bool down, Camera& c) {  // ArrowUp
-                          c.State =
-                              c.State * cMatrix::GetTranslationMatrix(0, 0, -3);
+                          c.State *= cMatrix::GetTranslationMatrix(0, 0, -3);
                         }};
 
   OnKeyCallbacks[81] = {false, [](const bool down, Camera& c) {  // ArrowDown
-                          c.State =
-                              c.State * cMatrix::GetTranslationMatrix(0, 0, 3);
+                          c.State *= cMatrix::GetTranslationMatrix(0, 0, 3);
                         }};
 
   OnKeyCallbacks[80] = {false, [](const bool down, Camera& c) {  // ArrowLeft
-                          c.State =
-                              c.State * cMatrix::GetTranslationMatrix(3, 0, 0);
+                          c.State *= cMatrix::GetTranslationMatrix(3, 0, 0);
                         }};
 
   OnKeyCallbacks[79] = {false, [](const bool down, Camera& c) {  // ArrowRight
-                          c.State =
-                              c.State * cMatrix::GetTranslationMatrix(-3, 0, 0);
+                          c.State *= cMatrix::GetTranslationMatrix(-3, 0, 0);
                         }};
 }
 

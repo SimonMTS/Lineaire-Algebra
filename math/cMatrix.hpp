@@ -40,8 +40,8 @@ class cMatrix {
   auto end() const { return State.end(); }
   auto size() const { return State.size(); }
 
-  cMatrix operator-(cMatrix m);
-  cMatrix operator+(cMatrix m);
+  cMatrix operator-(cMatrix& m);
+  cMatrix operator+(cMatrix& m);
 
   cMatrix operator*(int i);
   cMatrix operator*(cMatrix m);
@@ -49,4 +49,4 @@ class cMatrix {
   void operator*=(cMatrix m);
 };
 
-ostream& operator<<(ostream& Str, cMatrix m);
+ostream& operator<<(ostream& Str, cMatrix& m);

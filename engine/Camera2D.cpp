@@ -37,10 +37,10 @@ void Camera2D::DrawStructures(SDL2Wrapper& drawer,
     for (auto& component : structure.Components) {
       for (auto sqr : component.Squares) {
         // Calc position in structure
-        sqr.P1 = sqr.P1 + component.Pos;
-        sqr.P2 = sqr.P2 + component.Pos;
-        sqr.P3 = sqr.P3 + component.Pos;
-        sqr.P4 = sqr.P4 + component.Pos;
+        sqr.P1 += component.Pos;
+        sqr.P2 += component.Pos;
+        sqr.P3 += component.Pos;
+        sqr.P4 += component.Pos;
 
         // Set orientation
         sqr.P1 = (sqr.P1 * structure.State) +

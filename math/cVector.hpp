@@ -28,6 +28,9 @@ class cVector {
   cVector operator-(const int n);
   cVector operator+(const int n);
   cVector operator*(const int n);
+
+  void operator+=(cVector& other);
+  void operator*=(cMatrix& m);
 };
 
 ostream& operator<<(ostream& Str, const cVector& p);
