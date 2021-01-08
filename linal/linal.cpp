@@ -69,15 +69,15 @@ int main() {
   {
     auto perCam = make_unique<CameraPerspective>();
     perCam->State *= cMatrix::GetRotationMatrix({1, 0, 0}, -90);
-    perCam->State *= cMatrix::GetRotationMatrix({0, 0, 1}, 180);
-    perCam->State *= cMatrix::GetTranslationMatrix(0, +1000, 0);
+    perCam->State *= cMatrix::GetTranslationMatrix(0, -2000, 0);
     perCam->RegisterKeyCallbacks();
     r.AddCamera(move(perCam));
   }
 
   {
     auto cam2D = make_unique<Camera2D>();
-    cam2D->State *= cMatrix::GetTranslationMatrix(50, 50, 50);
+    //cam2D->State *= cMatrix::GetRotationMatrix({0, 0, 1}, 90);
+    //cam2D->State *= cMatrix::GetTranslationMatrix(-50, -50, -50);
     r.AddCamera(move(cam2D));
   }
 
@@ -102,11 +102,11 @@ int main() {
   const double delta = 3;
   {  // Turn right and left
     r.OnKey(4, [delta](const bool down, const int key, Renderer& r) {  // A
-      r.Player.State *= cMatrix::GetRotationMatrix({0, 1, 0}, delta);
+      r.Player.State *= cMatrix::GetRotationMatrix({0, 1, 0}, -delta);
     });
 
     r.OnKey(7, [delta](const bool down, const int key, Renderer& r) {  // D
-      r.Player.State *= cMatrix::GetRotationMatrix({0, 1, 0}, -delta);
+      r.Player.State *= cMatrix::GetRotationMatrix({0, 1, 0}, delta);
     });
   }
 
