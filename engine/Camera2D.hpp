@@ -1,5 +1,7 @@
 #pragma once
+#include <limits>
 #include "Camera.hpp"
+using std::numeric_limits;
 using std::get;
 using std::tuple;
 

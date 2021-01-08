@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="rotation.cpp">
+      <Filter>matrix</Filter>
+    </ClCompile>
+    <ClCompile Include="creation.cpp">
+      <Filter>matrix</Filter>
+    </ClCompile>
+    <ClCompile Include="identity.cpp">
+      <Filter>matrix</Filter>
+    </ClCompile>
+    <ClCompile Include="rotation_any.cpp">
+      <Filter>matrix</Filter>
+    </ClCompile>
+    <ClCompile Include="projection.cpp">
+      <Filter>matrix</Filter>
+    </ClCompile>
+    <ClCompile Include="inverse_and_only.cpp">
+      <Filter>matrix</Filter>
+    </ClCompile>
+    <ClCompile Include="dot_cross_product.cpp">
+      <Filter>vector</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="matrix">
+      <UniqueIdentifier>{32cc27c1-febb-447e-9313-7db45c7df17c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vector">
+      <UniqueIdentifier>{25720515-8752-4cd6-82f6-646400725677}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

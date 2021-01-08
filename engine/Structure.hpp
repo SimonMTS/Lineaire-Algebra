@@ -1,18 +1,26 @@
 #pragma once
-#include <vector>
 #include <functional>
+#include <vector>
+#include <limits>
 
 #include "Component.hpp"
-using std::vector;
 using std::function;
+using std::numeric_limits;
+using std::vector;
 class Renderer;
 
 class Structure {
  private:
-  function<void(const int tick, Structure& structure, Renderer& r)> PerTickAction;
+  function<void(const int tick, Structure& structure, Renderer& r)>
+      PerTickAction;
+
+  double GetMinPoint(const int axis);
+  double GetMaxPoint(const int axis);
 
  public:
   cMatrix State = cMatrix::GetIdentityMatrix();
+  vector<double> AABB = {0, 0, 0, 0, 0, 0};
+  bool WasCollidingLastCheck = false;
 
   vector<Component> Components;
 
@@ -24,4 +32,7 @@ class Structure {
   void ExecutePerTickAction(const int tick, Renderer& r);
 
   void operator*=(const cMatrix& m);
+
+  void CalcAABB();
+  bool IsCollidingWith(const Structure& other);
 };

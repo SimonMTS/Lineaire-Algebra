@@ -154,7 +154,7 @@ cMatrix cMatrix::RotationInverse(cMatrix& m) {
 
   {
     s[3][0] = m[3][0];
-    s[3][1] = m[3][2];
+    s[3][1] = m[3][1];
     s[3][2] = m[3][2];
 
     s[3][3] = m[3][3];

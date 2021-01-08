@@ -7,7 +7,7 @@ using std::make_unique;
 
 int main() {
   auto player = PlayerBuilder::GetPlayer();
-  player.State *= cMatrix::GetTranslationMatrix(0, 0, 0);
+  player.State *= cMatrix::GetTranslationMatrix(-100, 0, -100);
   player.RegisterPerTickAction(
       [](const int tick, Structure& structure, Renderer& r) {
         auto camPos = structure.State;
@@ -21,14 +21,16 @@ int main() {
   {
     auto thing = GoalBuilder::GetGoal();
     thing.State *= cMatrix::GetTranslationMatrix(100, -50, 100);
+    thing.State *= cMatrix::GetRotationMatrix((cVector{1, 1, 1}).Normalized(), 45);
     thing.RegisterPerTickAction(
         [](const int tick, Structure& structure, Renderer& r) {
           const double scale = 1.0 - ((tick - 50.0) / 4000);
-          structure.State *= cMatrix::GetScalingMatrix(scale, scale, scale);
+          //structure.State *= cMatrix::GetScalingMatrix(scale, scale, scale);
 
           if (tick == 100) {
             structure.State = cMatrix::GetIdentityMatrix() *
-                              cMatrix::GetTranslationMatrix(100, -50, 100);
+                cMatrix::GetTranslationMatrix(100, -50, 100) *
+                cMatrix::GetRotationMatrix((cVector{1, 1, 1}).Normalized(), 45);
           }
         });
     r.AddStructure(thing);
@@ -37,14 +39,17 @@ int main() {
   {
     auto thing = GoalBuilder::GetGoal();
     thing.State *= cMatrix::GetTranslationMatrix(-100, -50, 100);
+    thing.State *=
+        cMatrix::GetRotationMatrix((cVector{1, 1, 1}).Normalized(), 45);
     thing.RegisterPerTickAction(
         [](const int tick, Structure& structure, Renderer& r) {
           const double scale = 1.0 - ((tick - 50.0) / 4000);
-          structure.State *= cMatrix::GetScalingMatrix(scale, scale, scale);
+          //structure.State *= cMatrix::GetScalingMatrix(scale, scale, scale);
 
           if (tick == 100) {
             structure.State = cMatrix::GetIdentityMatrix() *
-                              cMatrix::GetTranslationMatrix(-100, -50, 100);
+                cMatrix::GetTranslationMatrix(-100, -50, 100) *
+                cMatrix::GetRotationMatrix((cVector{1, 1, 1}).Normalized(), 45);
           }
         });
     r.AddStructure(thing);
@@ -52,15 +57,18 @@ int main() {
 
   {
     auto thing = GoalBuilder::GetGoal();
-    thing.State *= cMatrix::GetTranslationMatrix(0, 50, 100);
+    thing.State *= cMatrix::GetTranslationMatrix(0, 0, 150);
+    thing.State *=
+        cMatrix::GetRotationMatrix((cVector{1, 1, 1}).Normalized(), 45);
     thing.RegisterPerTickAction(
         [](const int tick, Structure& structure, Renderer& r) {
           const double scale = 1.0 - ((tick - 50.0) / 4000);
-          structure.State *= cMatrix::GetScalingMatrix(scale, scale, scale);
+          //structure.State *= cMatrix::GetScalingMatrix(scale, scale, scale);
 
           if (tick == 100) {
             structure.State = cMatrix::GetIdentityMatrix() *
-                              cMatrix::GetTranslationMatrix(0, 50, 100);
+                cMatrix::GetTranslationMatrix(0, 0, 150) *
+                cMatrix::GetRotationMatrix((cVector{1, 1, 1}).Normalized(), 45);
           }
         });
     r.AddStructure(thing);
@@ -85,6 +93,14 @@ int main() {
     r.AddCamera(make_unique<CameraPerspective>());
   }
 
+  {
+    auto perCam = make_unique<CameraPerspective>();
+    perCam->State *= cMatrix::GetRotationMatrix({1, 0, 0}, 2);
+    perCam->State *= cMatrix::GetTranslationMatrix(50, 50, -800);
+    perCam->RegisterKeyCallbacks();
+    r.AddCamera(move(perCam));
+  }
+
   {  // Switch camera
     r.OnKey(58, [](const bool down, const int key, Renderer& r) {  // F1
       r.ActiveCamera = 0;
@@ -96,6 +112,10 @@ int main() {
 
     r.OnKey(60, [](const bool down, const int key, Renderer& r) {  // F3
       r.ActiveCamera = 2;
+    });
+
+    r.OnKey(61, [](const bool down, const int key, Renderer& r) {  // F4
+      r.ActiveCamera = 3;
     });
   }
 

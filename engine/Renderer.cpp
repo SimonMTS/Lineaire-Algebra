@@ -24,6 +24,21 @@ void Renderer::Init() {
       Speed *= 0.97;
       Speed = Speed < 0.2 ? 0 : Speed;
 
+      {  // Detect collisions
+        bool playerCollision = false;
+        for (auto& structure : Structures) {
+          structure.WasCollidingLastCheck = structure.IsCollidingWith(Player);
+          if (Player.IsCollidingWith(structure)) {
+            std::cout << "Hit ";
+            playerCollision = true;
+          } else {
+            std::cout << "Miss ";
+          }
+        }
+        Player.WasCollidingLastCheck = playerCollision;
+        std::cout << "    \r";
+      }
+
       // Execute callbacks for active keys
       for (const auto& [key, onKeyCallback] : OnKeyCallbacks) {
         if (onKeyCallback.first) {
