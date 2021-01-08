@@ -1,14 +1,8 @@
 #include "Camera2D.hpp"
 
 void Camera2D::DrawGrid(SDL2Wrapper& drawer) {
-  const double GridStep = 1;
-
   RGB gridColor = RGB(245, 245, 245);
-
   RGB gridOriginColor = RGB(224, 224, 224);
-  RGB colorX = RGB(255, 152, 0);
-  RGB colorY = RGB(33, 150, 243);
-  RGB colorZ = RGB(76, 175, 80);
 
   for (int x = (int)(State[2][3]) % 20; x < drawer.Height; x += 20) {
     drawer.DrawLine(0, x, drawer.Width, x, gridColor);
@@ -17,23 +11,14 @@ void Camera2D::DrawGrid(SDL2Wrapper& drawer) {
     drawer.DrawLine(y, 0, y, drawer.Height, gridColor);
   }
 
-  drawer.DrawLine(State[0][3] * GridStep, 0, State[0][3] * GridStep,
-                  drawer.Height,
-                  gridOriginColor);
-  drawer.DrawLine(0, State[2][3] * GridStep, drawer.Width,
-                  State[2][3] * GridStep,
-                  gridOriginColor);
+  drawer.DrawLine(State[0][3], 0, State[0][3], drawer.Height, gridOriginColor);
+  drawer.DrawLine(0, State[2][3], drawer.Width, State[2][3], gridOriginColor);
 }
 
 void Camera2D::DrawStructures(SDL2Wrapper& drawer,
-                              vector<Structure>& structures) {
+                              vector<Structure>& structures,
+                              vector<unique_ptr<Camera>>& cameras) {
   for (auto& structure : structures) {
-    // Structure direction
-    // drawer.DrawLine(structure.Pos.X + pos.X, structure.Pos.Z + pos.Z,
-    //                structure.Pos.X + pos.X + (structure.Dir * 100).X,
-    //                structure.Pos.Z + pos.Z + (structure.Dir * 100).Z,
-    //                {250, 0, 0});
-
     for (auto& component : structure.Components) {
       for (auto sqr : component.Squares) {
         // Calc position in structure
@@ -53,11 +38,88 @@ void Camera2D::DrawStructures(SDL2Wrapper& drawer,
                  cVector(State[0][3], State[1][3], State[2][3]);
 
         // Draw square
-        drawer.DrawLine(sqr.P1.X, sqr.P1.Z, sqr.P2.X, sqr.P2.Z, {0, 0, 0});
-        drawer.DrawLine(sqr.P1.X, sqr.P1.Z, sqr.P3.X, sqr.P3.Z, {0, 0, 0});
-        drawer.DrawLine(sqr.P4.X, sqr.P4.Z, sqr.P2.X, sqr.P2.Z, {0, 0, 0});
-        drawer.DrawLine(sqr.P4.X, sqr.P4.Z, sqr.P3.X, sqr.P3.Z, {0, 0, 0});
+        drawer.DrawLine(sqr.P1.X, sqr.P1.Z, sqr.P2.X, sqr.P2.Z, {21, 21, 21});
+        drawer.DrawLine(sqr.P1.X, sqr.P1.Z, sqr.P3.X, sqr.P3.Z, {21, 21, 21});
+        drawer.DrawLine(sqr.P4.X, sqr.P4.Z, sqr.P2.X, sqr.P2.Z, {21, 21, 21});
+        drawer.DrawLine(sqr.P4.X, sqr.P4.Z, sqr.P3.X, sqr.P3.Z, {21, 21, 21});
       }
+    }
+  }
+
+
+  // Draw direction
+  for (auto& structure : structures) {
+    cVector camOffset = {State[0][3], State[1][3], State[2][3]};
+
+    cVector origin = {0, 0, 0};
+    origin *= structure.State;
+
+    const double len = 50;
+
+    // Forward
+    {
+      cVector dir = {0, 0, len};
+      dir *= structure.State;
+      drawer.DrawLine(origin.X + camOffset.X, origin.Z + camOffset.Z,
+                      dir.X + camOffset.X,
+                      dir.Z + camOffset.Z, {250, 0, 0});
+    }
+
+    // Up
+    {
+      cVector dir = {0, len, 0};
+      dir *= structure.State;
+      drawer.DrawLine(origin.X + camOffset.X, origin.Z + camOffset.Z,
+                      dir.X + camOffset.X, dir.Z + camOffset.Z, {0, 250, 0});
+    }
+
+    // Side
+    {
+      cVector dir = {len, 0, 0};
+      dir *= structure.State;
+      drawer.DrawLine(origin.X + camOffset.X, origin.Z + camOffset.Z,
+                      dir.X + camOffset.X, dir.Z + camOffset.Z, {0, 0, 250});
+    }
+  }
+
+
+  // Draw Cameras
+  for (auto& camera : cameras) {
+    if (camera.get() == this) continue;
+
+    auto camState = camera->State;
+    //camState *= cMatrix::RotationInverse(camState);
+    //camState *= cMatrix::TranslationInverse(camState);
+
+    cVector camOffset = {State[0][3], State[1][3], State[2][3]};
+
+    cVector origin = {0, 0, 0};
+    origin *= camState;
+
+    const double len = 50;
+
+    // Forward
+    {
+      cVector dir = {0, 0, len};
+      dir *= camState;
+      drawer.DrawLine(origin.X + camOffset.X, origin.Z + camOffset.Z,
+                      dir.X + camOffset.X, dir.Z + camOffset.Z, {250, 0, 0});
+    }
+
+    // Up
+    {
+      cVector dir = {0, len/2, 0};
+      dir *= camState;
+      drawer.DrawLine(origin.X + camOffset.X, origin.Z + camOffset.Z,
+                      dir.X + camOffset.X, dir.Z + camOffset.Z, {0, 250, 0});
+    }
+
+    // Side
+    {
+      cVector dir = {len/2, 0, 0};
+      dir *= camState;
+      drawer.DrawLine(origin.X + camOffset.X, origin.Z + camOffset.Z,
+                      dir.X + camOffset.X, dir.Z + camOffset.Z, {0, 0, 250});
     }
   }
 }

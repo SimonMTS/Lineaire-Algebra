@@ -9,6 +9,13 @@ void Renderer::Init() {
   Drawer->OnEvent([this](const int type, const int d1, const int d2) {
     // before each frame
     if (type == -2) {
+      // Call per tick actions
+      Player.ExecutePerTickAction(Tick, *this);
+      for (auto& structure : Structures) {
+        structure.ExecutePerTickAction(Tick, *this);
+      }
+      Tick = Tick == 100 ? 1 : Tick + 1;
+
       {  // Update player position
         cVector fw = {0, 0, 1};
         fw = fw * Speed;
@@ -24,13 +31,14 @@ void Renderer::Init() {
         }
       }
       Cameras[ActiveCamera]->CallKeyCallbacks();
+      Cameras[0]->CallKeyCallbacks();  // tmp
 
       // Render structures
       Drawer->SetBackground();
       Cameras[ActiveCamera]->DrawGrid(*Drawer);
-      Cameras[ActiveCamera]->DrawStructures(*Drawer, Structures);
+      Cameras[ActiveCamera]->DrawStructures(*Drawer, Structures, Cameras);
       vector<Structure> p = {Player};
-      Cameras[ActiveCamera]->DrawStructures(*Drawer, p);
+      Cameras[ActiveCamera]->DrawStructures(*Drawer, p, Cameras);
     }
 
     // key up/down event
@@ -39,6 +47,7 @@ void Renderer::Init() {
       OnKeyCallbacks[d2].first = type == -4;
     } else if (type == -3 || type == -4) {
       Cameras[ActiveCamera]->HandleKeyEvent(type, d1, d2);
+      Cameras[0]->HandleKeyEvent(type, d1, d2);  // tmp
     }
 
     // mouse events

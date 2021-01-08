@@ -102,7 +102,7 @@ cVector cVector::operator*(const int n) {
 
 void cVector::operator+=(cVector& other) { (*this) = (*this) + other; }
 
-void cVector::operator*=(cMatrix& m) { (*this) = (*this) * m; }
+void cVector::operator*=(const cMatrix& m) { (*this) = (*this) * m; }
 
 ostream& operator<<(ostream& Str, const cVector& p) {
   return Str << "[" << p.X << ", " << p.Y << ", " << p.Z << "]";

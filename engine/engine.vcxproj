@@ -163,6 +163,7 @@
     <ClCompile Include="Camera2D.cpp" />
     <ClCompile Include="CameraPerspective.cpp" />
     <ClCompile Include="Component.cpp" />
+    <ClCompile Include="GoalBuilder.cpp" />
     <ClCompile Include="PlayerBuilder.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="RGB.cpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="Camera2D.hpp" />
     <ClInclude Include="CameraPerspective.hpp" />
     <ClInclude Include="Component.hpp" />
+    <ClInclude Include="GoalBuilder.hpp" />
     <ClInclude Include="PlayerBuilder.hpp" />
     <ClInclude Include="Renderer.hpp" />
     <ClInclude Include="RGB.hpp" />

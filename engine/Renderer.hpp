@@ -15,6 +15,7 @@ class Renderer {
 
  private:
   map<int, KeyCallback> OnKeyCallbacks;
+  unsigned char Tick = 1;
 
  public:
   unique_ptr<Shader> Drawer;

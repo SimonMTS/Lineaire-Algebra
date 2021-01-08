@@ -19,7 +19,8 @@ class Camera {
 
   virtual void DrawGrid(SDL2Wrapper& drawer) = 0;
   virtual void DrawStructures(SDL2Wrapper& drawer,
-                              vector<Structure>& structures) = 0;
+                              vector<Structure>& structures,
+                              vector<unique_ptr<Camera>>& cameras) = 0;
 
   virtual void HandleMouseEvent(const int type, const int d1, const int d2){};
 
