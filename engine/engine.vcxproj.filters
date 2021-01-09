@@ -65,6 +65,9 @@
     <ClCompile Include="GoalBuilder.cpp">
       <Filter>Source Files\builders</Filter>
     </ClCompile>
+    <ClCompile Include="BulletBuilder.cpp">
+      <Filter>Source Files\builders</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SDL2Wrapper.hpp">
@@ -101,6 +104,9 @@
       <Filter>Header Files\builders</Filter>
     </ClInclude>
     <ClInclude Include="GoalBuilder.hpp">
+      <Filter>Header Files\builders</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletBuilder.hpp">
       <Filter>Header Files\builders</Filter>
     </ClInclude>
   </ItemGroup>

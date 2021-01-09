@@ -241,5 +241,5 @@ void CameraPerspective::HandleKeyEvent(const int type, const int d1,
     OnKeyCallbacks[d2].first = type == -4;
   }
 
-  std::cout << State << "\n";
+  //std::cout << State << "\n";
 }

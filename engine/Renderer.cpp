@@ -29,14 +29,14 @@ void Renderer::Init() {
         for (auto& structure : Structures) {
           structure.WasCollidingLastCheck = structure.IsCollidingWith(Player);
           if (Player.IsCollidingWith(structure)) {
-            std::cout << "Hit ";
+            //std::cout << "Hit ";
             playerCollision = true;
           } else {
-            std::cout << "Miss ";
+            //std::cout << "Miss ";
           }
         }
         Player.WasCollidingLastCheck = playerCollision;
-        std::cout << "    \r";
+        //std::cout << "    \r";
       }
 
       // Execute callbacks for active keys

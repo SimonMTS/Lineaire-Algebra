@@ -159,6 +159,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BulletBuilder.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Camera2D.cpp" />
     <ClCompile Include="CameraPerspective.cpp" />
@@ -173,6 +174,7 @@
     <ClCompile Include="Structure.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BulletBuilder.hpp" />
     <ClInclude Include="Camera.hpp" />
     <ClInclude Include="Camera2D.hpp" />
     <ClInclude Include="CameraPerspective.hpp" />

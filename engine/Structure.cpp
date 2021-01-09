@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+int Structure::PrevIDs = 0;
+
 void Structure::AddComponent(const Component& c) { Components.push_back(c); }
 
 void Structure::RegisterPerTickAction(
@@ -69,6 +71,8 @@ bool Structure::IsCollidingWith(const Structure& other) {
 
    return coll;
 }
+
+bool Structure::operator==(const Structure& other) { return this->ID == other.ID; }
 
 double Structure::GetMinPoint(const int axis) {
   double lowest = numeric_limits<double>::max();

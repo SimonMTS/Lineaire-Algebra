@@ -1,9 +1,14 @@
+#include <algorithm>
+#include <chrono>
+
+#include "../engine/BulletBuilder.hpp"
 #include "../engine/Camera2D.hpp"
 #include "../engine/CameraPerspective.hpp"
 #include "../engine/GoalBuilder.hpp"
 #include "../engine/PlayerBuilder.hpp"
 #include "../engine/Renderer.hpp"
 using std::make_unique;
+using namespace std::chrono;
 
 int main() {
   auto player = PlayerBuilder::GetPlayer();
@@ -21,14 +26,16 @@ int main() {
   {
     auto thing = GoalBuilder::GetGoal();
     thing.State *= cMatrix::GetTranslationMatrix(100, -50, 100);
-    thing.State *= cMatrix::GetRotationMatrix((cVector{1, 1, 1}).Normalized(), 45);
+    thing.State *=
+        cMatrix::GetRotationMatrix((cVector{1, 1, 1}).Normalized(), 45);
     thing.RegisterPerTickAction(
         [](const int tick, Structure& structure, Renderer& r) {
           const double scale = 1.0 - ((tick - 50.0) / 4000);
-          //structure.State *= cMatrix::GetScalingMatrix(scale, scale, scale);
+           structure.State *= cMatrix::GetScalingMatrix(scale, scale, scale);
 
           if (tick == 100) {
-            structure.State = cMatrix::GetIdentityMatrix() *
+            structure.State =
+                cMatrix::GetIdentityMatrix() *
                 cMatrix::GetTranslationMatrix(100, -50, 100) *
                 cMatrix::GetRotationMatrix((cVector{1, 1, 1}).Normalized(), 45);
           }
@@ -44,10 +51,11 @@ int main() {
     thing.RegisterPerTickAction(
         [](const int tick, Structure& structure, Renderer& r) {
           const double scale = 1.0 - ((tick - 50.0) / 4000);
-          //structure.State *= cMatrix::GetScalingMatrix(scale, scale, scale);
+           structure.State *= cMatrix::GetScalingMatrix(scale, scale, scale);
 
           if (tick == 100) {
-            structure.State = cMatrix::GetIdentityMatrix() *
+            structure.State =
+                cMatrix::GetIdentityMatrix() *
                 cMatrix::GetTranslationMatrix(-100, -50, 100) *
                 cMatrix::GetRotationMatrix((cVector{1, 1, 1}).Normalized(), 45);
           }
@@ -63,10 +71,11 @@ int main() {
     thing.RegisterPerTickAction(
         [](const int tick, Structure& structure, Renderer& r) {
           const double scale = 1.0 - ((tick - 50.0) / 4000);
-          //structure.State *= cMatrix::GetScalingMatrix(scale, scale, scale);
+           structure.State *= cMatrix::GetScalingMatrix(scale, scale, scale);
 
           if (tick == 100) {
-            structure.State = cMatrix::GetIdentityMatrix() *
+            structure.State =
+                cMatrix::GetIdentityMatrix() *
                 cMatrix::GetTranslationMatrix(0, 0, 150) *
                 cMatrix::GetRotationMatrix((cVector{1, 1, 1}).Normalized(), 45);
           }
@@ -84,14 +93,12 @@ int main() {
 
   {
     auto cam2D = make_unique<Camera2D>();
-    //cam2D->State *= cMatrix::GetRotationMatrix({0, 0, 1}, 90);
-    //cam2D->State *= cMatrix::GetTranslationMatrix(-50, -50, -50);
+    // cam2D->State *= cMatrix::GetRotationMatrix({0, 0, 1}, 90);
+    // cam2D->State *= cMatrix::GetTranslationMatrix(-50, -50, -50);
     r.AddCamera(move(cam2D));
   }
 
-  {
-    r.AddCamera(make_unique<CameraPerspective>());
-  }
+  { r.AddCamera(make_unique<CameraPerspective>()); }
 
   {
     auto perCam = make_unique<CameraPerspective>();
@@ -140,7 +147,7 @@ int main() {
     });
   }
 
-  {                                                                // Roll
+  {                                                                     // Roll
     r.OnKey(20, [delta](const bool down, const int key, Renderer& r) {  // Q
       r.Player.State *= cMatrix::GetRotationMatrix({0, 0, 1}, delta);
     });
@@ -150,9 +157,38 @@ int main() {
     });
   }
 
-  {  // Move and reset
+  {  // Move, shoot, and reset
     r.OnKey(225, [](const bool down, const int key, Renderer& r) {  // Shift
       r.Speed += r.Speed > 5 ? 0 : 0.5;
+    });
+
+    int lastShot =
+        duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
+    r.OnKey(44, [&lastShot](const bool down, const int key,
+                             Renderer& r) {  // Space
+      int now =
+          duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
+      if (lastShot > now - 100) {
+        return;
+      }
+      lastShot = now;
+
+      Structure bullet = BulletBuilder::GetBullet();
+      bullet.State *= r.Player.State;
+      bullet.RegisterPerTickAction(
+          [bullet](const int tick, Structure& structure,
+                             Renderer& r) {
+            structure.State *= cMatrix::GetTranslationMatrix(0, 0, 10);
+            structure.Count++;
+
+            if (structure.Count > 100) {
+              r.Structures.erase(
+                  std::remove(r.Structures.begin(), r.Structures.end(), bullet),
+                  r.Structures.end());
+            }
+          });
+
+      r.AddStructure(bullet);
     });
 
     r.OnKey(21, [](const bool down, const int key, Renderer& r) {  // R
