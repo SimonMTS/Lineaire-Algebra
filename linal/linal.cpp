@@ -28,18 +28,21 @@ int main() {
     thing.State *= cMatrix::GetTranslationMatrix(100, -50, 100);
     thing.State *=
         cMatrix::GetRotationMatrix((cVector{1, 1, 1}).Normalized(), 45);
-    thing.RegisterPerTickAction(
-        [](const int tick, Structure& structure, Renderer& r) {
-          const double scale = 1.0 - ((tick - 50.0) / 4000);
-           structure.State *= cMatrix::GetScalingMatrix(scale, scale, scale);
+    thing.RegisterPerTickAction([](const int tick, Structure& structure,
+                                   Renderer& r) {
+      const double scale = 1.0 - ((tick - 50.0) / 4000);
+      structure.State *= cMatrix::GetScalingMatrix(scale, scale, scale);
 
-          if (tick == 100) {
-            structure.State =
-                cMatrix::GetIdentityMatrix() *
-                cMatrix::GetTranslationMatrix(100, -50, 100) *
-                cMatrix::GetRotationMatrix((cVector{1, 1, 1}).Normalized(), 45);
-          }
-        });
+      structure.Components.at(1) *= cMatrix::GetRotationMatrix({0, 1, 0}, 3);
+      structure.Components.at(2) *= cMatrix::GetRotationMatrix({0, 1, 0}, 3);
+
+      if (tick == 100) {
+        structure.State =
+            cMatrix::GetIdentityMatrix() *
+            cMatrix::GetTranslationMatrix(100, -50, 100) *
+            cMatrix::GetRotationMatrix((cVector{1, 1, 1}).Normalized(), 45);
+      }
+    });
     r.AddStructure(thing);
   }
 
@@ -48,18 +51,21 @@ int main() {
     thing.State *= cMatrix::GetTranslationMatrix(-100, -50, 100);
     thing.State *=
         cMatrix::GetRotationMatrix((cVector{1, 1, 1}).Normalized(), 45);
-    thing.RegisterPerTickAction(
-        [](const int tick, Structure& structure, Renderer& r) {
-          const double scale = 1.0 - ((tick - 50.0) / 4000);
-           structure.State *= cMatrix::GetScalingMatrix(scale, scale, scale);
+    thing.RegisterPerTickAction([](const int tick, Structure& structure,
+                                   Renderer& r) {
+      const double scale = 1.0 - ((tick - 50.0) / 4000);
+      structure.State *= cMatrix::GetScalingMatrix(scale, scale, scale);
 
-          if (tick == 100) {
-            structure.State =
-                cMatrix::GetIdentityMatrix() *
-                cMatrix::GetTranslationMatrix(-100, -50, 100) *
-                cMatrix::GetRotationMatrix((cVector{1, 1, 1}).Normalized(), 45);
-          }
-        });
+      structure.Components.at(1) *= cMatrix::GetRotationMatrix({0, 1, 0}, 3);
+      structure.Components.at(2) *= cMatrix::GetRotationMatrix({0, 1, 0}, 3);
+
+      if (tick == 100) {
+        structure.State =
+            cMatrix::GetIdentityMatrix() *
+            cMatrix::GetTranslationMatrix(-100, -50, 100) *
+            cMatrix::GetRotationMatrix((cVector{1, 1, 1}).Normalized(), 45);
+      }
+    });
     r.AddStructure(thing);
   }
 
@@ -68,18 +74,21 @@ int main() {
     thing.State *= cMatrix::GetTranslationMatrix(0, 0, 150);
     thing.State *=
         cMatrix::GetRotationMatrix((cVector{1, 1, 1}).Normalized(), 45);
-    thing.RegisterPerTickAction(
-        [](const int tick, Structure& structure, Renderer& r) {
-          const double scale = 1.0 - ((tick - 50.0) / 4000);
-           structure.State *= cMatrix::GetScalingMatrix(scale, scale, scale);
+    thing.RegisterPerTickAction([](const int tick, Structure& structure,
+                                   Renderer& r) {
+      const double scale = 1.0 - ((tick - 50.0) / 4000);
+      structure.State *= cMatrix::GetScalingMatrix(scale, scale, scale);
 
-          if (tick == 100) {
-            structure.State =
-                cMatrix::GetIdentityMatrix() *
-                cMatrix::GetTranslationMatrix(0, 0, 150) *
-                cMatrix::GetRotationMatrix((cVector{1, 1, 1}).Normalized(), 45);
-          }
-        });
+      structure.Components.at(1) *= cMatrix::GetRotationMatrix({0, 1, 0}, 3);
+      structure.Components.at(2) *= cMatrix::GetRotationMatrix({0, 1, 0}, 3);
+
+      if (tick == 100) {
+        structure.State =
+            cMatrix::GetIdentityMatrix() *
+            cMatrix::GetTranslationMatrix(0, 0, 150) *
+            cMatrix::GetRotationMatrix((cVector{1, 1, 1}).Normalized(), 45);
+      }
+    });
     r.AddStructure(thing);
   }
 
@@ -163,11 +172,13 @@ int main() {
     });
 
     int lastShot =
-        duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
+        duration_cast<milliseconds>(system_clock::now().time_since_epoch())
+            .count();
     r.OnKey(44, [&lastShot](const bool down, const int key,
-                             Renderer& r) {  // Space
+                            Renderer& r) {  // Space
       int now =
-          duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
+          duration_cast<milliseconds>(system_clock::now().time_since_epoch())
+              .count();
       if (lastShot > now - 100) {
         return;
       }
@@ -176,8 +187,7 @@ int main() {
       Structure bullet = BulletBuilder::GetBullet();
       bullet.State *= r.Player.State;
       bullet.RegisterPerTickAction(
-          [bullet](const int tick, Structure& structure,
-                             Renderer& r) {
+          [bullet](const int tick, Structure& structure, Renderer& r) {
             structure.State *= cMatrix::GetTranslationMatrix(0, 0, 10);
             structure.Count++;
 

@@ -12,7 +12,5 @@ class Component {
 
   void AddSquare(const Square& l);
 
-  // void Scale(const double x, const double y, const double z);
-  // void Move(const double x, const double y, const double z);
-  // void Rotate(const int dir);
+  void operator*=(const cMatrix& m);
 };

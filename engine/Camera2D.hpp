@@ -1,8 +1,9 @@
 #pragma once
 #include <limits>
+
 #include "Camera.hpp"
-using std::numeric_limits;
 using std::get;
+using std::numeric_limits;
 using std::tuple;
 
 class Camera2D : public Camera {

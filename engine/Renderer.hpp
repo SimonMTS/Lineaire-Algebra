@@ -4,7 +4,6 @@
 #include <vector>
 
 #include "Camera.hpp"
-#include "Shader.hpp"
 #include "Structure.hpp"
 using std::map;
 using std::vector;
@@ -18,7 +17,7 @@ class Renderer {
   unsigned char Tick = 1;
 
  public:
-  unique_ptr<Shader> Drawer;
+  unique_ptr<SDL2Wrapper> Drawer;
 
   vector<unique_ptr<Camera>> Cameras;
   int ActiveCamera = 0;

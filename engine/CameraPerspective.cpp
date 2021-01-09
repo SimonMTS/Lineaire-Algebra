@@ -129,11 +129,9 @@ void CameraPerspective::DrawStructures(SDL2Wrapper& drawer,
       c7.Y = (d.Height / 2) + ((c7.Y / c7.W) * (d.Height / 2));
       c8.X = (d.Height / 2) + ((c8.X / c8.W) * (d.Height / 2)) + ro;
       c8.Y = (d.Height / 2) + ((c8.Y / c8.W) * (d.Height / 2));
-
     }
 
-    RGB col =
-        structure.WasCollidingLastCheck ? RGB{255, 0, 0} : RGB{0, 0, 255};
+    RGB col = structure.WasCollidingLastCheck ? RGB{255, 0, 0} : RGB{0, 0, 255};
 
     drawer.DrawSquare(c1.X, c1.Y, c2.X, c2.Y, c3.X, c3.Y, c4.X, c4.Y, col);
     drawer.DrawSquare(c5.X, c5.Y, c6.X, c6.Y, c7.X, c7.Y, c8.X, c8.Y, col);
@@ -241,5 +239,5 @@ void CameraPerspective::HandleKeyEvent(const int type, const int d1,
     OnKeyCallbacks[d2].first = type == -4;
   }
 
-  //std::cout << State << "\n";
+  // std::cout << State << "\n";
 }

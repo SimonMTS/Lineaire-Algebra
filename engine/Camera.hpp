@@ -8,8 +8,7 @@ using std::map;
 using std::pair;
 
 class Camera {
-  using KeyCallback =
-      pair<bool, function<void(const bool down, Camera& r)>>;
+  using KeyCallback = pair<bool, function<void(const bool down, Camera& r)>>;
 
  protected:
   map<int, KeyCallback> OnKeyCallbacks;

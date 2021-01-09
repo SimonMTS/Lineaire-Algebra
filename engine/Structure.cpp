@@ -41,38 +41,42 @@ void Structure::CalcAABB() {
 }
 
 bool Structure::IsCollidingWith(const Structure& other) {
-  //return ((this->AABB[0] + this->State[0][3]) <=
-  //            (other.AABB[3] + other.State.at(0)[3]) &&
-  //        (this->AABB[3] + this->State[0][3]) >=
-  //            (other.AABB[0] + other.State.at(0)[3])) &&
-  //       ((this->AABB[1] + this->State[1][3]) <=
-  //            (other.AABB[4] + other.State.at(1)[3]) &&
-  //        (this->AABB[4] + this->State[1][3]) >=
-  //            (other.AABB[1] + other.State.at(1)[3])) &&
-  //       ((this->AABB[2] + this->State[2][3]) <=
-  //            (other.AABB[5] + other.State.at(2)[3]) &&
-  //        (this->AABB[5] + this->State[2][3]) >=
-  //            (other.AABB[2] + other.State.at(2)[3]));
+  if (*this == other) return false;
 
-   bool coll = false;
+  return ((this->AABB[0] + this->State[0][3]) <=
+              (other.AABB[3] + other.State.at(0)[3]) &&
+          (this->AABB[3] + this->State[0][3]) >=
+              (other.AABB[0] + other.State.at(0)[3])) &&
+         ((this->AABB[1] + this->State[1][3]) <=
+              (other.AABB[4] + other.State.at(1)[3]) &&
+          (this->AABB[4] + this->State[1][3]) >=
+              (other.AABB[1] + other.State.at(1)[3])) &&
+         ((this->AABB[2] + this->State[2][3]) <=
+              (other.AABB[5] + other.State.at(2)[3]) &&
+          (this->AABB[5] + this->State[2][3]) >=
+              (other.AABB[2] + other.State.at(2)[3]));
 
-   auto mySmallestX = (this->AABB[0] + this->State[0][3]);
-   auto myLargestX = (this->AABB[3] + this->State[0][3]);
+  bool coll = false;
 
-   auto otherSmallestX = (other.AABB[0] + other.State.at(0)[3]);
-   auto otherLargestX = (other.AABB[3] + other.State.at(0)[3]);
+  auto mySmallestX = (this->AABB[0] + this->State[0][3]);
+  auto myLargestX = (this->AABB[3] + this->State[0][3]);
 
-   if (mySmallestX >= otherSmallestX && mySmallestX <= otherLargestX) {
-     coll = true;
+  auto otherSmallestX = (other.AABB[0] + other.State.at(0)[3]);
+  auto otherLargestX = (other.AABB[3] + other.State.at(0)[3]);
+
+  if (mySmallestX >= otherSmallestX && mySmallestX <= otherLargestX) {
+    coll = true;
   }
-   if (myLargestX <= otherSmallestX && myLargestX >= otherLargestX) {
+  if (myLargestX <= otherSmallestX && myLargestX >= otherLargestX) {
     coll = true;
   }
 
-   return coll;
+  return coll;
 }
 
-bool Structure::operator==(const Structure& other) { return this->ID == other.ID; }
+bool Structure::operator==(const Structure& other) {
+  return this->ID == other.ID;
+}
 
 double Structure::GetMinPoint(const int axis) {
   double lowest = numeric_limits<double>::max();

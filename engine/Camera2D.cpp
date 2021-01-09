@@ -150,18 +150,12 @@ void Camera2D::DrawStructures(SDL2Wrapper& drawer,
       origin += camOffset;
     }
 
-    
     RGB col = structure.WasCollidingLastCheck ? RGB{255, 0, 0} : RGB{0, 0, 255};
 
-    drawer.DrawSquare(
-      origin.X - AABB[0],
-      origin.Z + AABB[2],
-      origin.X - AABB[0],
-      origin.Z + AABB[5],
-      origin.X - AABB[3],
-      origin.Z + AABB[2],
-      origin.X - AABB[3],
-      origin.Z + AABB[5], col);
+    drawer.DrawSquare(origin.X - AABB[0], origin.Z + AABB[2],
+                      origin.X - AABB[0], origin.Z + AABB[5],
+                      origin.X - AABB[3], origin.Z + AABB[2],
+                      origin.X - AABB[3], origin.Z + AABB[5], col);
   }
 }
 

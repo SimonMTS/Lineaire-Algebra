@@ -1,7 +1,7 @@
 #pragma once
 #include <functional>
-#include <vector>
 #include <limits>
+#include <vector>
 
 #include "Component.hpp"
 using std::function;

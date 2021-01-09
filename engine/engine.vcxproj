@@ -169,7 +169,6 @@
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="RGB.cpp" />
     <ClCompile Include="SDL2Wrapper.cpp" />
-    <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Square.cpp" />
     <ClCompile Include="Structure.cpp" />
   </ItemGroup>
@@ -184,7 +183,6 @@
     <ClInclude Include="Renderer.hpp" />
     <ClInclude Include="RGB.hpp" />
     <ClInclude Include="SDL2Wrapper.hpp" />
-    <ClInclude Include="Shader.hpp" />
     <ClInclude Include="Square.hpp" />
     <ClInclude Include="Structure.hpp" />
   </ItemGroup>

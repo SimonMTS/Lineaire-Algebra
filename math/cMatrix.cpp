@@ -209,16 +209,16 @@ bool gluInvertMatrix(const double m[16], double invOut[16]);
 cMatrix cMatrix::Inverse(cMatrix& m) {
   double in[16];
   {
-    in[ 0] = m[0][0];
-    in[ 1] = m[1][0];
-    in[ 2] = m[2][0];
-    in[ 3] = m[3][0];
-    in[ 4] = m[0][1];
-    in[ 5] = m[1][1];
-    in[ 6] = m[2][1];
-    in[ 7] = m[3][1];
-    in[ 8] = m[0][2];
-    in[ 9] = m[1][2];
+    in[0] = m[0][0];
+    in[1] = m[1][0];
+    in[2] = m[2][0];
+    in[3] = m[3][0];
+    in[4] = m[0][1];
+    in[5] = m[1][1];
+    in[6] = m[2][1];
+    in[7] = m[3][1];
+    in[8] = m[0][2];
+    in[9] = m[1][2];
     in[10] = m[2][2];
     in[11] = m[3][2];
     in[12] = m[0][3];
@@ -248,13 +248,13 @@ cMatrix cMatrix::Inverse(cMatrix& m) {
     s[2][3] = out[14];
     s[3][3] = out[15];
 
-    //delete[] in;
-    //delete[] out;
+    // delete[] in;
+    // delete[] out;
     return cMatrix(s);
   }
 
-  //delete[] in;
-  //delete[] out;
+  // delete[] in;
+  // delete[] out;
   return m;
 }
 
@@ -363,7 +363,6 @@ ostream& operator<<(ostream& Str, cMatrix& m) {
 
   return Str;
 }
-
 
 bool gluInvertMatrix(const double m[16], double invOut[16]) {
   double inv[16], det;

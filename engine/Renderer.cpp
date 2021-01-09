@@ -2,7 +2,7 @@
 
 Renderer::Renderer(const Structure& p) : Player(p) {
   SDL_Init(SDL_INIT_VIDEO);
-  Drawer = std::make_unique<Shader>(600, 600, RGB(255, 255, 255));
+  Drawer = std::make_unique<SDL2Wrapper>(600, 600, RGB(255, 255, 255));
 }
 
 void Renderer::Init() {
@@ -25,18 +25,20 @@ void Renderer::Init() {
       Speed = Speed < 0.2 ? 0 : Speed;
 
       {  // Detect collisions
-        bool playerCollision = false;
+        // doing this without a raw pointer would have been a lot of work
+        vector<Structure*> all_structs_inc_player;
+        all_structs_inc_player.push_back(&Player);
         for (auto& structure : Structures) {
-          structure.WasCollidingLastCheck = structure.IsCollidingWith(Player);
-          if (Player.IsCollidingWith(structure)) {
-            //std::cout << "Hit ";
-            playerCollision = true;
-          } else {
-            //std::cout << "Miss ";
-          }
+          all_structs_inc_player.push_back(&structure);
         }
-        Player.WasCollidingLastCheck = playerCollision;
-        //std::cout << "    \r";
+
+        for (auto& s1 : all_structs_inc_player) {
+          bool s1_any_coll = false;
+          for (auto& s2 : all_structs_inc_player) {
+            s1_any_coll = s1->IsCollidingWith(*s2) ? true : s1_any_coll;
+          }
+          s1->WasCollidingLastCheck = s1_any_coll;
+        }
       }
 
       // Execute callbacks for active keys

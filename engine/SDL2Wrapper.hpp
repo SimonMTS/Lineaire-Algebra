@@ -27,15 +27,14 @@ class SDL2Wrapper {
   SDL2Wrapper(const int width, const int height, const RGB& backgroundColor);
   ~SDL2Wrapper();
 
-  virtual void OnEvent(
-      const function<void(const int, const int, const int)>& callback);
+  void OnEvent(const function<void(const int, const int, const int)>& callback);
 
-  virtual void SetBackground();
+  void SetBackground();
 
-  virtual void DrawLine(const int ax, const int ay, const int bx, const int by,
-                        const RGB& rgb);
+  void DrawLine(const int ax, const int ay, const int bx, const int by,
+                const RGB& rgb);
 
-  virtual void DrawSquare(const int ax, const int ay, const int bx,
-                          const int by, const int cx, const int cy,
-                          const int dx, const int dy, const RGB& rgb){};
+  void DrawSquare(const int ax, const int ay, const int bx, const int by,
+                  const int cx, const int cy, const int dx, const int dy,
+                  const RGB& rgb);
 };

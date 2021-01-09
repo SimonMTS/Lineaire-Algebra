@@ -93,3 +93,14 @@ void SDL2Wrapper::DrawLine(const int ax, const int ay, const int bx,
   SDL_SetRenderDrawColor(SDLRenderer.get(), rgb.R, rgb.G, rgb.B, rgb.A);
   SDL_RenderDrawLine(SDLRenderer.get(), sdl_ax, sdl_ay, sdl_bx, sdl_by);
 }
+
+void SDL2Wrapper::DrawSquare(int ax, int ay, int bx, int by, int cx, int cy,
+                             int dx, int dy, const RGB& rgb) {
+  // SDL2Wrapper::DrawLine(ax, ay, dx, dy, {255, 210, 210});
+  // SDL2Wrapper::DrawLine(bx, by, cx, cy, {255, 210, 210});
+
+  SDL2Wrapper::DrawLine(ax, ay, bx, by, rgb);
+  SDL2Wrapper::DrawLine(ax, ay, cx, cy, rgb);
+  SDL2Wrapper::DrawLine(dx, dy, bx, by, rgb);
+  SDL2Wrapper::DrawLine(dx, dy, cx, cy, rgb);
+}
