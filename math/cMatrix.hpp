@@ -30,7 +30,6 @@ class cMatrix {
 
   static cMatrix RotationInverse(cMatrix& m);
   static cMatrix TranslationInverse(cMatrix& m);
-  static cMatrix Inverse(cMatrix& m);
 
   static cMatrix RotationOnly(cMatrix& m);
   static cMatrix TranslationOnly(cMatrix& m);

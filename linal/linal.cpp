@@ -186,9 +186,12 @@ int main() {
 
       Structure bullet = BulletBuilder::GetBullet();
       bullet.State *= r.Player.State;
+      bullet.State *= cMatrix::GetTranslationMatrix(0, 0, 25);
+      double speed = r.Speed;
+
       bullet.RegisterPerTickAction(
-          [bullet](const int tick, Structure& structure, Renderer& r) {
-            structure.State *= cMatrix::GetTranslationMatrix(0, 0, 10);
+          [bullet, speed](const int tick, Structure& structure, Renderer& r) {
+            structure.State *= cMatrix::GetTranslationMatrix(0, 0, 3 + speed);
             structure.Count++;
 
             if (structure.Count > 100) {
