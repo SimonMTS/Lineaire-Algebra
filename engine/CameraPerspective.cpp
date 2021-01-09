@@ -22,10 +22,9 @@ void CameraPerspective::DrawStructures(SDL2Wrapper& drawer,
         cMatrix appliedState = State;
 
         // seems to work for cam1, atleast
-        appliedState = cMatrix::RotationInverse(appliedState);
-        appliedState *= cMatrix::GetRotationMatrix({0, 1, 0}, 180);
-        appliedState *= cMatrix::GetRotationMatrix({0, 0, 1}, 180);
-
+        // appliedState = cMatrix::RotationInverse(appliedState);
+        // appliedState *= cMatrix::GetRotationMatrix({0, 1, 0}, 180);
+        // appliedState *= cMatrix::GetRotationMatrix({0, 0, 1}, 180);
         // appliedState = cMatrix::Inverse(appliedState);
         // appliedState *= cMatrix::GetRotationMatrix({1, 0, 0}, 180);
         // appliedState = cMatrix::TranslationInverse(appliedState);
@@ -60,84 +59,123 @@ void CameraPerspective::DrawStructures(SDL2Wrapper& drawer,
     }
   }
 
+  // Draw helpline
+  if (Renderer::show_helpline && structures.size() == 1 &&
+      structures.at(0).Components.size() > 4) {
+    const double len = 2000;
+    cVector origin = {0, 0, 25};
+    cVector dir = {0, 0, len};
+
+    // Apply state
+    origin *= structures.at(0).State;
+    dir *= structures.at(0).State;
+
+    // Calc on screen pos
+    cMatrix appliedState = State;
+
+    // seems to work for cam1, atleast
+    // appliedState = cMatrix::RotationInverse(appliedState);
+    // appliedState *= cMatrix::GetRotationMatrix({0, 1, 0}, 180);
+    // appliedState *= cMatrix::GetRotationMatrix({0, 0, 1}, 180);
+    // appliedState = cMatrix::Inverse(appliedState);
+    // appliedState *= cMatrix::GetRotationMatrix({1, 0, 0}, 180);
+    // appliedState = cMatrix::TranslationInverse(appliedState);
+
+    cMatrix pm = cMatrix::GetProjectionMatrix(1, 2000, 60) * appliedState;
+    origin *= pm;
+    dir *= pm;
+
+    auto& d = drawer;
+    int ro = +((drawer.Width - drawer.Height) / 2);
+
+    origin.X = (d.Height / 2) + ((origin.X / origin.W) * (d.Height / 2)) + ro;
+    origin.Y = (d.Height / 2) + ((origin.Y / origin.W) * (d.Height / 2));
+    dir.X = (d.Height / 2) + ((dir.X / dir.W) * (d.Height / 2)) + ro;
+    dir.Y = (d.Height / 2) + ((dir.Y / dir.W) * (d.Height / 2));
+
+    drawer.DrawLine(origin.X, origin.Y, dir.X, dir.Y, {100, 255, 100});
+  }
+
   // Draw AABB
-  for (auto& structure : structures) {
-    structure.CalcAABB();
-    auto AABB = structure.AABB;
+  if (Renderer::show_AABB) {
+    for (auto& structure : structures) {
+      auto AABB = structure.AABB;
 
-    // Corners
-    cVector c1 = {AABB[0], AABB[1], AABB[2]};
-    cVector c2 = {AABB[3], AABB[1], AABB[2]};
-    cVector c3 = {AABB[0], AABB[4], AABB[2]};
-    cVector c4 = {AABB[3], AABB[4], AABB[2]};
+      // Corners
+      cVector c1 = {AABB[0], AABB[1], AABB[2]};
+      cVector c2 = {AABB[3], AABB[1], AABB[2]};
+      cVector c3 = {AABB[0], AABB[4], AABB[2]};
+      cVector c4 = {AABB[3], AABB[4], AABB[2]};
 
-    cVector c5 = {AABB[0], AABB[1], AABB[5]};
-    cVector c6 = {AABB[3], AABB[1], AABB[5]};
-    cVector c7 = {AABB[0], AABB[4], AABB[5]};
-    cVector c8 = {AABB[3], AABB[4], AABB[5]};
-    {
-      // Apply state
-      c1 *= cMatrix::TranslationOnly(structure.State);
-      c2 *= cMatrix::TranslationOnly(structure.State);
-      c3 *= cMatrix::TranslationOnly(structure.State);
-      c4 *= cMatrix::TranslationOnly(structure.State);
-      c5 *= cMatrix::TranslationOnly(structure.State);
-      c6 *= cMatrix::TranslationOnly(structure.State);
-      c7 *= cMatrix::TranslationOnly(structure.State);
-      c8 *= cMatrix::TranslationOnly(structure.State);
+      cVector c5 = {AABB[0], AABB[1], AABB[5]};
+      cVector c6 = {AABB[3], AABB[1], AABB[5]};
+      cVector c7 = {AABB[0], AABB[4], AABB[5]};
+      cVector c8 = {AABB[3], AABB[4], AABB[5]};
+      {
+        // Apply state
+        c1 *= cMatrix::TranslationOnly(structure.State);
+        c2 *= cMatrix::TranslationOnly(structure.State);
+        c3 *= cMatrix::TranslationOnly(structure.State);
+        c4 *= cMatrix::TranslationOnly(structure.State);
+        c5 *= cMatrix::TranslationOnly(structure.State);
+        c6 *= cMatrix::TranslationOnly(structure.State);
+        c7 *= cMatrix::TranslationOnly(structure.State);
+        c8 *= cMatrix::TranslationOnly(structure.State);
 
-      // Calc on screen pos
-      cMatrix appliedState = State;
+        // Calc on screen pos
+        cMatrix appliedState = State;
 
-      // seems to work for cam1, atleast
-      appliedState = cMatrix::RotationInverse(appliedState);
-      appliedState *= cMatrix::GetRotationMatrix({0, 1, 0}, 180);
-      appliedState *= cMatrix::GetRotationMatrix({0, 0, 1}, 180);
+        // seems to work for cam1, atleast
+        // appliedState = cMatrix::RotationInverse(appliedState);
+        // appliedState *= cMatrix::GetRotationMatrix({0, 1, 0}, 180);
+        // appliedState *= cMatrix::GetRotationMatrix({0, 0, 1}, 180);
 
-      cMatrix pm = cMatrix::GetProjectionMatrix(1, 2000, 60) * appliedState;
-      c1 *= pm;
-      c2 *= pm;
-      c3 *= pm;
-      c4 *= pm;
-      c5 *= pm;
-      c6 *= pm;
-      c7 *= pm;
-      c8 *= pm;
+        cMatrix pm = cMatrix::GetProjectionMatrix(1, 2000, 60) * appliedState;
+        c1 *= pm;
+        c2 *= pm;
+        c3 *= pm;
+        c4 *= pm;
+        c5 *= pm;
+        c6 *= pm;
+        c7 *= pm;
+        c8 *= pm;
 
-      if (c1.W < 0 || c2.W < 0 || c3.W < 0 || c4.W < 0 || c5.W < 0 ||
-          c6.W < 0 || c7.W < 0 || c8.W < 0) {
-        continue;
+        if (c1.W < 0 || c2.W < 0 || c3.W < 0 || c4.W < 0 || c5.W < 0 ||
+            c6.W < 0 || c7.W < 0 || c8.W < 0) {
+          continue;
+        }
+
+        auto& d = drawer;
+        int ro = +((drawer.Width - drawer.Height) / 2);
+
+        c1.X = (d.Height / 2) + ((c1.X / c1.W) * (d.Height / 2)) + ro;
+        c1.Y = (d.Height / 2) + ((c1.Y / c1.W) * (d.Height / 2));
+        c2.X = (d.Height / 2) + ((c2.X / c2.W) * (d.Height / 2)) + ro;
+        c2.Y = (d.Height / 2) + ((c2.Y / c2.W) * (d.Height / 2));
+        c3.X = (d.Height / 2) + ((c3.X / c3.W) * (d.Height / 2)) + ro;
+        c3.Y = (d.Height / 2) + ((c3.Y / c3.W) * (d.Height / 2));
+        c4.X = (d.Height / 2) + ((c4.X / c4.W) * (d.Height / 2)) + ro;
+        c4.Y = (d.Height / 2) + ((c4.Y / c4.W) * (d.Height / 2));
+
+        c5.X = (d.Height / 2) + ((c5.X / c5.W) * (d.Height / 2)) + ro;
+        c5.Y = (d.Height / 2) + ((c5.Y / c5.W) * (d.Height / 2));
+        c6.X = (d.Height / 2) + ((c6.X / c6.W) * (d.Height / 2)) + ro;
+        c6.Y = (d.Height / 2) + ((c6.Y / c6.W) * (d.Height / 2));
+        c7.X = (d.Height / 2) + ((c7.X / c7.W) * (d.Height / 2)) + ro;
+        c7.Y = (d.Height / 2) + ((c7.Y / c7.W) * (d.Height / 2));
+        c8.X = (d.Height / 2) + ((c8.X / c8.W) * (d.Height / 2)) + ro;
+        c8.Y = (d.Height / 2) + ((c8.Y / c8.W) * (d.Height / 2));
       }
 
-      auto& d = drawer;
-      int ro = +((drawer.Width - drawer.Height) / 2);
+      RGB col =
+          structure.WasCollidingLastCheck ? RGB{255, 0, 0} : RGB{0, 0, 255};
 
-      c1.X = (d.Height / 2) + ((c1.X / c1.W) * (d.Height / 2)) + ro;
-      c1.Y = (d.Height / 2) + ((c1.Y / c1.W) * (d.Height / 2));
-      c2.X = (d.Height / 2) + ((c2.X / c2.W) * (d.Height / 2)) + ro;
-      c2.Y = (d.Height / 2) + ((c2.Y / c2.W) * (d.Height / 2));
-      c3.X = (d.Height / 2) + ((c3.X / c3.W) * (d.Height / 2)) + ro;
-      c3.Y = (d.Height / 2) + ((c3.Y / c3.W) * (d.Height / 2));
-      c4.X = (d.Height / 2) + ((c4.X / c4.W) * (d.Height / 2)) + ro;
-      c4.Y = (d.Height / 2) + ((c4.Y / c4.W) * (d.Height / 2));
+      drawer.DrawSquare(c1.X, c1.Y, c2.X, c2.Y, c3.X, c3.Y, c4.X, c4.Y, col);
+      drawer.DrawSquare(c5.X, c5.Y, c6.X, c6.Y, c7.X, c7.Y, c8.X, c8.Y, col);
 
-      c5.X = (d.Height / 2) + ((c5.X / c5.W) * (d.Height / 2)) + ro;
-      c5.Y = (d.Height / 2) + ((c5.Y / c5.W) * (d.Height / 2));
-      c6.X = (d.Height / 2) + ((c6.X / c6.W) * (d.Height / 2)) + ro;
-      c6.Y = (d.Height / 2) + ((c6.Y / c6.W) * (d.Height / 2));
-      c7.X = (d.Height / 2) + ((c7.X / c7.W) * (d.Height / 2)) + ro;
-      c7.Y = (d.Height / 2) + ((c7.Y / c7.W) * (d.Height / 2));
-      c8.X = (d.Height / 2) + ((c8.X / c8.W) * (d.Height / 2)) + ro;
-      c8.Y = (d.Height / 2) + ((c8.Y / c8.W) * (d.Height / 2));
+      drawer.DrawSquare(c1.X, c1.Y, c2.X, c2.Y, c5.X, c5.Y, c6.X, c6.Y, col);
+      drawer.DrawSquare(c3.X, c3.Y, c4.X, c4.Y, c7.X, c7.Y, c8.X, c8.Y, col);
     }
-
-    RGB col = structure.WasCollidingLastCheck ? RGB{255, 0, 0} : RGB{0, 0, 255};
-
-    drawer.DrawSquare(c1.X, c1.Y, c2.X, c2.Y, c3.X, c3.Y, c4.X, c4.Y, col);
-    drawer.DrawSquare(c5.X, c5.Y, c6.X, c6.Y, c7.X, c7.Y, c8.X, c8.Y, col);
-
-    drawer.DrawSquare(c1.X, c1.Y, c2.X, c2.Y, c5.X, c5.Y, c6.X, c6.Y, col);
-    drawer.DrawSquare(c3.X, c3.Y, c4.X, c4.Y, c7.X, c7.Y, c8.X, c8.Y, col);
   }
 }
 

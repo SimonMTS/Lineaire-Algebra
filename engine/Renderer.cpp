@@ -1,5 +1,11 @@
 #include "Renderer.hpp"
 
+
+bool Renderer::show_helpline = false;
+bool Renderer::show_orientation = false;
+bool Renderer::show_AABB = false;
+bool Renderer::show_camera_orientation = false;
+
 Renderer::Renderer(const Structure& p) : Player(p) {
   SDL_Init(SDL_INIT_VIDEO);
   Drawer = std::make_unique<SDL2Wrapper>(600, 600, RGB(255, 255, 255));
@@ -25,11 +31,15 @@ void Renderer::Init() {
       Speed = Speed < 0.2 ? 0 : Speed;
 
       {  // Detect collisions
-        // doing this without a raw pointer would have been a lot of work
+        // doing this without a raw pointer would have been a lot more work
         vector<Structure*> all_structs_inc_player;
         all_structs_inc_player.push_back(&Player);
         for (auto& structure : Structures) {
           all_structs_inc_player.push_back(&structure);
+        }
+
+        for (auto structure : all_structs_inc_player) {
+          structure->CalcAABB();
         }
 
         for (auto& s1 : all_structs_inc_player) {
@@ -44,18 +54,24 @@ void Renderer::Init() {
       // Execute callbacks for active keys
       for (const auto& [key, onKeyCallback] : OnKeyCallbacks) {
         if (onKeyCallback.first) {
-          onKeyCallback.second(onKeyCallback.first, d2, *this);
+          onKeyCallback.second(*this);
         }
       }
       Cameras[ActiveCamera]->CallKeyCallbacks();
       Cameras[0]->CallKeyCallbacks();  // tmp
 
       // Render structures
-      Drawer->SetBackground();
-      Cameras[ActiveCamera]->DrawGrid(*Drawer);
-      Cameras[ActiveCamera]->DrawStructures(*Drawer, Structures, Cameras);
-      vector<Structure> p = {Player};
-      Cameras[ActiveCamera]->DrawStructures(*Drawer, p, Cameras);
+      if (Dead == 0) {
+        Drawer->SetBackground({255, 255, 255});
+        Cameras[ActiveCamera]->DrawGrid(*Drawer);
+        Cameras[ActiveCamera]->DrawStructures(*Drawer, Structures, Cameras);
+        vector<Structure> p = {Player};
+        Cameras[ActiveCamera]->DrawStructures(*Drawer, p, Cameras);
+      } else {
+        Dead--;
+        RGB color = Won ? RGB{76, 175, 80} : RGB{244, 67, 54};
+        Drawer->SetBackground(color);
+      }
     }
 
     // key up/down event
@@ -71,12 +87,42 @@ void Renderer::Init() {
     if (type == 1024 || type == 1025 || type == 1026 || type == 1027) {
       Cameras[ActiveCamera]->HandleMouseEvent(type, d1, d2);
     }
+
+    // Game mechanics
+    {
+      if (Player.WasCollidingLastCheck) {
+        Player.State = cMatrix::GetIdentityMatrix();
+        Speed = 0;
+
+        Structures.clear();
+        Adder::AddGoals(*this);
+        Dead = 60;
+        Won = false;
+      }
+
+      for (auto& structure : Structures) {
+        if (structure.WasCollidingLastCheck) {
+          Structures.erase(
+              std::remove(Structures.begin(), Structures.end(), structure),
+              Structures.end());
+        }
+      }
+
+      if (Structures.size() == 0) {
+        Player.State = cMatrix::GetIdentityMatrix();
+        Speed = 0;
+
+        Structures.clear();
+        Adder::AddGoals(*this);
+        Dead = 60;
+        Won = true;
+      }
+    }
   });
 }
 
 void Renderer::OnKey(const int key,
-                     const function<void(const bool down, const int key,
-                                         Renderer& r)>& callback) {
+                     const function<void(Renderer& r)>& callback) {
   OnKeyCallbacks[key] = {false, callback};
 }
 

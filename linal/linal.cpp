@@ -1,212 +1,155 @@
-#include <algorithm>
-#include <chrono>
+#include "../engine/Adder.hpp"
 
-#include "../engine/BulletBuilder.hpp"
-#include "../engine/Camera2D.hpp"
-#include "../engine/CameraPerspective.hpp"
-#include "../engine/GoalBuilder.hpp"
-#include "../engine/PlayerBuilder.hpp"
-#include "../engine/Renderer.hpp"
-using std::make_unique;
-using namespace std::chrono;
+auto getMS() {
+  return duration_cast<milliseconds>(system_clock::now().time_since_epoch())
+      .count();
+}
 
 int main() {
-  auto player = PlayerBuilder::GetPlayer();
-  player.State *= cMatrix::GetTranslationMatrix(-100, 0, -100);
-  player.RegisterPerTickAction(
-      [](const int tick, Structure& structure, Renderer& r) {
-        auto camPos = structure.State;
-        camPos *= cMatrix::GetTranslationMatrix(0, 0, -100);
+  std::cout << "       W : pitch down\n";
+  std::cout << "       S : pitch up\n";
+  std::cout << "         : \n";
+  std::cout << "       Q : roll left\n";
+  std::cout << "       E : roll right\n";
+  std::cout << "         : \n";
+  std::cout << "       A : turn left\n";
+  std::cout << "       D : turn right\n";
+  std::cout << "         : \n";
+  std::cout << "   Shift : increase speed\n";
+  std::cout << "   Space : shoot\n";
+  std::cout << "         : \n";
+  std::cout << " F{1..4} : switch camera\n";
+  std::cout << "       Z : toggle shooting helpline\n";
+  std::cout << "       X : toggle orientation lines\n";
+  std::cout << "       C : toggle AABB\n";
+  std::cout << "       V : toggle camera orientation lines\n";
 
-        r.Cameras[2]->State = camPos;
+  Renderer r = Adder::AddPlayer();
+  Adder::AddGoals(r);
+  Adder::AddCameras(r);
+
+  // Add KeyBindings
+  {
+    const double delta = 3;
+    {                                    // Turn right and left
+      r.OnKey(4, [delta](Renderer& r) {  // A
+        r.Player.State *= cMatrix::GetRotationMatrix({0, 1, 0}, -delta);
       });
 
-  Renderer r{player};
+      r.OnKey(7, [delta](Renderer& r) {  // D
+        r.Player.State *= cMatrix::GetRotationMatrix({0, 1, 0}, delta);
+      });
+    }
 
-  {
-    auto thing = GoalBuilder::GetGoal();
-    thing.State *= cMatrix::GetTranslationMatrix(100, -50, 100);
-    thing.State *=
-        cMatrix::GetRotationMatrix((cVector{1, 1, 1}).Normalized(), 45);
-    thing.RegisterPerTickAction([](const int tick, Structure& structure,
-                                   Renderer& r) {
-      const double scale = 1.0 - ((tick - 50.0) / 4000);
-      structure.State *= cMatrix::GetScalingMatrix(scale, scale, scale);
+    {                                     // Turn up and down
+      r.OnKey(26, [delta](Renderer& r) {  // W
+        r.Player.State *= cMatrix::GetRotationMatrix({1, 0, 0}, -delta);
+      });
 
-      structure.Components.at(1) *= cMatrix::GetRotationMatrix({0, 1, 0}, 3);
-      structure.Components.at(2) *= cMatrix::GetRotationMatrix({0, 1, 0}, 3);
+      r.OnKey(22, [delta](Renderer& r) {  // S
+        r.Player.State *= cMatrix::GetRotationMatrix({1, 0, 0}, delta);
+      });
+    }
 
-      if (tick == 100) {
-        structure.State =
-            cMatrix::GetIdentityMatrix() *
-            cMatrix::GetTranslationMatrix(100, -50, 100) *
-            cMatrix::GetRotationMatrix((cVector{1, 1, 1}).Normalized(), 45);
-      }
-    });
-    r.AddStructure(thing);
-  }
+    {                                     // Roll
+      r.OnKey(20, [delta](Renderer& r) {  // Q
+        r.Player.State *= cMatrix::GetRotationMatrix({0, 0, 1}, delta);
+      });
 
-  {
-    auto thing = GoalBuilder::GetGoal();
-    thing.State *= cMatrix::GetTranslationMatrix(-100, -50, 100);
-    thing.State *=
-        cMatrix::GetRotationMatrix((cVector{1, 1, 1}).Normalized(), 45);
-    thing.RegisterPerTickAction([](const int tick, Structure& structure,
-                                   Renderer& r) {
-      const double scale = 1.0 - ((tick - 50.0) / 4000);
-      structure.State *= cMatrix::GetScalingMatrix(scale, scale, scale);
+      r.OnKey(8, [delta](Renderer& r) {  // E
+        r.Player.State *= cMatrix::GetRotationMatrix({0, 0, 1}, -delta);
+      });
+    }
 
-      structure.Components.at(1) *= cMatrix::GetRotationMatrix({0, 1, 0}, 3);
-      structure.Components.at(2) *= cMatrix::GetRotationMatrix({0, 1, 0}, 3);
+    {                                 // Move, shoot, and reset
+      r.OnKey(225, [](Renderer& r) {  // Shift
+        r.Speed += r.Speed > 5 ? 0 : 0.5;
+      });
 
-      if (tick == 100) {
-        structure.State =
-            cMatrix::GetIdentityMatrix() *
-            cMatrix::GetTranslationMatrix(-100, -50, 100) *
-            cMatrix::GetRotationMatrix((cVector{1, 1, 1}).Normalized(), 45);
-      }
-    });
-    r.AddStructure(thing);
-  }
+      auto lastShot = getMS();
+      r.OnKey(44, [&lastShot](Renderer& r) {  // Space
+        auto now = getMS();
+        if (lastShot > now - 100) return;
+        lastShot = now;
 
-  {
-    auto thing = GoalBuilder::GetGoal();
-    thing.State *= cMatrix::GetTranslationMatrix(0, 0, 150);
-    thing.State *=
-        cMatrix::GetRotationMatrix((cVector{1, 1, 1}).Normalized(), 45);
-    thing.RegisterPerTickAction([](const int tick, Structure& structure,
-                                   Renderer& r) {
-      const double scale = 1.0 - ((tick - 50.0) / 4000);
-      structure.State *= cMatrix::GetScalingMatrix(scale, scale, scale);
+        Structure bullet = BulletBuilder::GetBullet();
+        bullet.State *= r.Player.State;
+        bullet.State *= cMatrix::GetTranslationMatrix(0, 0, 35);
+        double speed = r.Speed;
 
-      structure.Components.at(1) *= cMatrix::GetRotationMatrix({0, 1, 0}, 3);
-      structure.Components.at(2) *= cMatrix::GetRotationMatrix({0, 1, 0}, 3);
+        bullet.RegisterPerTickAction(
+            [bullet, speed](const int tick, Structure& structure, Renderer& r) {
+              structure.State *= cMatrix::GetTranslationMatrix(0, 0, 5 + speed);
+              structure.Count++;
 
-      if (tick == 100) {
-        structure.State =
-            cMatrix::GetIdentityMatrix() *
-            cMatrix::GetTranslationMatrix(0, 0, 150) *
-            cMatrix::GetRotationMatrix((cVector{1, 1, 1}).Normalized(), 45);
-      }
-    });
-    r.AddStructure(thing);
-  }
+              if (structure.Count > 100) {
+                r.Structures.erase(std::remove(r.Structures.begin(),
+                                               r.Structures.end(), bullet),
+                                   r.Structures.end());
+              }
+            });
 
-  {
-    auto perCam = make_unique<CameraPerspective>();
-    perCam->State *= cMatrix::GetRotationMatrix({1, 0, 0}, -90);
-    perCam->State *= cMatrix::GetTranslationMatrix(0, -2000, 0);
-    perCam->RegisterKeyCallbacks();
-    r.AddCamera(move(perCam));
-  }
+        r.AddStructure(bullet);
+      });
 
-  {
-    auto cam2D = make_unique<Camera2D>();
-    // cam2D->State *= cMatrix::GetRotationMatrix({0, 0, 1}, 90);
-    // cam2D->State *= cMatrix::GetTranslationMatrix(-50, -50, -50);
-    r.AddCamera(move(cam2D));
-  }
+      r.OnKey(21, [](Renderer& r) {  // R
+        r.Player.State = cMatrix::GetIdentityMatrix();
+      });
 
-  { r.AddCamera(make_unique<CameraPerspective>()); }
+      auto lastZ = getMS();
+      r.OnKey(29, [&lastZ](Renderer& r) {  // Z
+        auto now = getMS();
+        if (lastZ > now - 500) return;
+        lastZ = now;
 
-  {
-    auto perCam = make_unique<CameraPerspective>();
-    perCam->State *= cMatrix::GetRotationMatrix({1, 0, 0}, 2);
-    perCam->State *= cMatrix::GetTranslationMatrix(50, 50, -800);
-    perCam->RegisterKeyCallbacks();
-    r.AddCamera(move(perCam));
-  }
+        r.show_helpline = !r.show_helpline;
+      });
 
-  {  // Switch camera
-    r.OnKey(58, [](const bool down, const int key, Renderer& r) {  // F1
-      r.ActiveCamera = 0;
-    });
+      auto lastX = getMS();
+      r.OnKey(27, [&lastX](Renderer& r) {  // X
+        auto now = getMS();
+        if (lastX > now - 500) return;
+        lastX = now;
 
-    r.OnKey(59, [](const bool down, const int key, Renderer& r) {  // F2
-      r.ActiveCamera = 1;
-    });
+        r.show_orientation = !r.show_orientation;
+      });
 
-    r.OnKey(60, [](const bool down, const int key, Renderer& r) {  // F3
-      r.ActiveCamera = 2;
-    });
+      auto lastC = getMS();
+      r.OnKey(6, [&lastC](Renderer& r) {  // C
+        auto now = getMS();
+        if (lastC > now - 500) return;
+        lastC = now;
 
-    r.OnKey(61, [](const bool down, const int key, Renderer& r) {  // F4
-      r.ActiveCamera = 3;
-    });
-  }
+        r.show_AABB = !r.show_AABB;
+      });
 
-  const double delta = 3;
-  {  // Turn right and left
-    r.OnKey(4, [delta](const bool down, const int key, Renderer& r) {  // A
-      r.Player.State *= cMatrix::GetRotationMatrix({0, 1, 0}, -delta);
-    });
+      auto lastV = getMS();
+      r.OnKey(25, [&lastV](Renderer& r) {  // V
+        auto now = getMS();
+        if (lastV > now - 500) return;
+        lastV = now;
 
-    r.OnKey(7, [delta](const bool down, const int key, Renderer& r) {  // D
-      r.Player.State *= cMatrix::GetRotationMatrix({0, 1, 0}, delta);
-    });
-  }
+        r.show_camera_orientation = !r.show_camera_orientation;
+      });
+    }
 
-  {  // Turn up and down
-    r.OnKey(26, [delta](const bool down, const int key, Renderer& r) {  // W
-      r.Player.State *= cMatrix::GetRotationMatrix({1, 0, 0}, -delta);
-    });
+    {                                // Switch camera
+      r.OnKey(58, [](Renderer& r) {  // F1
+        r.ActiveCamera = 0;
+      });
 
-    r.OnKey(22, [delta](const bool down, const int key, Renderer& r) {  // S
-      r.Player.State *= cMatrix::GetRotationMatrix({1, 0, 0}, delta);
-    });
-  }
+      r.OnKey(59, [](Renderer& r) {  // F2
+        r.ActiveCamera = 1;
+      });
 
-  {                                                                     // Roll
-    r.OnKey(20, [delta](const bool down, const int key, Renderer& r) {  // Q
-      r.Player.State *= cMatrix::GetRotationMatrix({0, 0, 1}, delta);
-    });
+      r.OnKey(60, [](Renderer& r) {  // F3
+        r.ActiveCamera = 2;
+      });
 
-    r.OnKey(8, [delta](const bool down, const int key, Renderer& r) {  // E
-      r.Player.State *= cMatrix::GetRotationMatrix({0, 0, 1}, -delta);
-    });
-  }
-
-  {  // Move, shoot, and reset
-    r.OnKey(225, [](const bool down, const int key, Renderer& r) {  // Shift
-      r.Speed += r.Speed > 5 ? 0 : 0.5;
-    });
-
-    int lastShot =
-        duration_cast<milliseconds>(system_clock::now().time_since_epoch())
-            .count();
-    r.OnKey(44, [&lastShot](const bool down, const int key,
-                            Renderer& r) {  // Space
-      int now =
-          duration_cast<milliseconds>(system_clock::now().time_since_epoch())
-              .count();
-      if (lastShot > now - 100) {
-        return;
-      }
-      lastShot = now;
-
-      Structure bullet = BulletBuilder::GetBullet();
-      bullet.State *= r.Player.State;
-      bullet.State *= cMatrix::GetTranslationMatrix(0, 0, 25);
-      double speed = r.Speed;
-
-      bullet.RegisterPerTickAction(
-          [bullet, speed](const int tick, Structure& structure, Renderer& r) {
-            structure.State *= cMatrix::GetTranslationMatrix(0, 0, 3 + speed);
-            structure.Count++;
-
-            if (structure.Count > 100) {
-              r.Structures.erase(
-                  std::remove(r.Structures.begin(), r.Structures.end(), bullet),
-                  r.Structures.end());
-            }
-          });
-
-      r.AddStructure(bullet);
-    });
-
-    r.OnKey(21, [](const bool down, const int key, Renderer& r) {  // R
-      r.Player.State = cMatrix::GetIdentityMatrix();
-    });
+      r.OnKey(61, [](Renderer& r) {  // F4
+        r.ActiveCamera = 3;
+      });
+    }
   }
 
   r.Init();

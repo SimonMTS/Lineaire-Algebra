@@ -54,108 +54,132 @@ void Camera2D::DrawStructures(SDL2Wrapper& drawer,
     }
   }
 
-  // Draw direction
-  for (auto& structure : structures) {
+  // Draw helpline
+  if (Renderer::show_helpline && structures.size() == 1 &&
+      structures.at(0).Components.size() > 4) {
     cVector camOffset = {-State[0][3], State[1][3], State[2][3]};
 
-    cVector origin = {0, 0, 0};
-    origin *= structure.State;
+    cVector origin = {0, 0, 25};
+    origin *= structures.at(0).State;
     origin *= cMatrix::GetRotationMatrix({0, 0, 1}, 180);
 
-    const double len = 50;
+    const double len = 2000;
+    
+    cVector dir = {0, 0, len};
+    dir *= structures.at(0).State;
+    dir *= cMatrix::GetRotationMatrix({0, 0, 1}, 180);
+    drawer.DrawLine(origin.X + camOffset.X, origin.Z + camOffset.Z,
+                    dir.X + camOffset.X, dir.Z + camOffset.Z, {100, 255, 100});
+  }
 
-    // Forward
-    {
-      cVector dir = {0, 0, len};
-      dir *= structure.State;
-      dir *= cMatrix::GetRotationMatrix({0, 0, 1}, 180);
-      drawer.DrawLine(origin.X + camOffset.X, origin.Z + camOffset.Z,
-                      dir.X + camOffset.X, dir.Z + camOffset.Z, {250, 0, 0});
-    }
+  // Draw direction
+  if (Renderer::show_orientation) {
+    for (auto& structure : structures) {
+      cVector camOffset = {-State[0][3], State[1][3], State[2][3]};
 
-    // Up
-    {
-      cVector dir = {0, len, 0};
-      dir *= structure.State;
-      dir *= cMatrix::GetRotationMatrix({0, 0, 1}, 180);
-      drawer.DrawLine(origin.X + camOffset.X, origin.Z + camOffset.Z,
-                      dir.X + camOffset.X, dir.Z + camOffset.Z, {0, 250, 0});
-    }
+      cVector origin = {0, 0, 0};
+      origin *= structure.State;
+      origin *= cMatrix::GetRotationMatrix({0, 0, 1}, 180);
 
-    // Side
-    {
-      cVector dir = {len, 0, 0};
-      dir *= structure.State;
-      dir *= cMatrix::GetRotationMatrix({0, 0, 1}, 180);
-      drawer.DrawLine(origin.X + camOffset.X, origin.Z + camOffset.Z,
-                      dir.X + camOffset.X, dir.Z + camOffset.Z, {0, 0, 250});
+      const double len = 50;
+
+      // Forward
+      {
+        cVector dir = {0, 0, len};
+        dir *= structure.State;
+        dir *= cMatrix::GetRotationMatrix({0, 0, 1}, 180);
+        drawer.DrawLine(origin.X + camOffset.X, origin.Z + camOffset.Z,
+                        dir.X + camOffset.X, dir.Z + camOffset.Z, {250, 0, 0});
+      }
+
+      // Up
+      {
+        cVector dir = {0, len, 0};
+        dir *= structure.State;
+        dir *= cMatrix::GetRotationMatrix({0, 0, 1}, 180);
+        drawer.DrawLine(origin.X + camOffset.X, origin.Z + camOffset.Z,
+                        dir.X + camOffset.X, dir.Z + camOffset.Z, {0, 250, 0});
+      }
+
+      // Side
+      {
+        cVector dir = {len, 0, 0};
+        dir *= structure.State;
+        dir *= cMatrix::GetRotationMatrix({0, 0, 1}, 180);
+        drawer.DrawLine(origin.X + camOffset.X, origin.Z + camOffset.Z,
+                        dir.X + camOffset.X, dir.Z + camOffset.Z, {0, 0, 250});
+      }
     }
   }
 
   // Draw Cameras
-  for (auto& camera : cameras) {
-    if (camera.get() == this) continue;
+  if (Renderer::show_camera_orientation) {
+    for (auto& camera : cameras) {
+      if (camera.get() == this) continue;
 
-    auto camState = camera->State;
-    // camState *= cMatrix::RotationInverse(camState);
-    // camState *= cMatrix::TranslationInverse(camState);
+      auto camState = camera->State;
+      // camState *= cMatrix::RotationInverse(camState);
+      // camState *= cMatrix::TranslationInverse(camState);
 
-    cVector camOffset = {-State[0][3], State[1][3], State[2][3]};
+      cVector camOffset = {-State[0][3], State[1][3], State[2][3]};
 
-    cVector origin = {0, 0, 0};
-    origin *= camState;
-    origin *= cMatrix::GetRotationMatrix({0, 0, 1}, 180);
+      cVector origin = {0, 0, 0};
+      origin *= camState;
+      origin *= cMatrix::GetRotationMatrix({0, 0, 1}, 180);
 
-    const double len = 50;
+      const double len = 50;
 
-    // Forward
-    {
-      cVector dir = {0, 0, len};
-      dir *= camState;
-      dir *= cMatrix::GetRotationMatrix({0, 0, 1}, 180);
-      drawer.DrawLine(origin.X + camOffset.X, origin.Z + camOffset.Z,
-                      dir.X + camOffset.X, dir.Z + camOffset.Z, {250, 0, 0});
-    }
+      // Forward
+      {
+        cVector dir = {0, 0, len};
+        dir *= camState;
+        dir *= cMatrix::GetRotationMatrix({0, 0, 1}, 180);
+        drawer.DrawLine(origin.X + camOffset.X, origin.Z + camOffset.Z,
+                        dir.X + camOffset.X, dir.Z + camOffset.Z, {250, 0, 0});
+      }
 
-    // Up
-    {
-      cVector dir = {0, len / 2, 0};
-      dir *= camState;
-      dir *= cMatrix::GetRotationMatrix({0, 0, 1}, 180);
-      drawer.DrawLine(origin.X + camOffset.X, origin.Z + camOffset.Z,
-                      dir.X + camOffset.X, dir.Z + camOffset.Z, {0, 250, 0});
-    }
+      // Up
+      {
+        cVector dir = {0, len / 2, 0};
+        dir *= camState;
+        dir *= cMatrix::GetRotationMatrix({0, 0, 1}, 180);
+        drawer.DrawLine(origin.X + camOffset.X, origin.Z + camOffset.Z,
+                        dir.X + camOffset.X, dir.Z + camOffset.Z, {0, 250, 0});
+      }
 
-    // Side
-    {
-      cVector dir = {len / 2, 0, 0};
-      dir *= camState;
-      dir *= cMatrix::GetRotationMatrix({0, 0, 1}, 180);
-      drawer.DrawLine(origin.X + camOffset.X, origin.Z + camOffset.Z,
-                      dir.X + camOffset.X, dir.Z + camOffset.Z, {0, 0, 250});
+      // Side
+      {
+        cVector dir = {len / 2, 0, 0};
+        dir *= camState;
+        dir *= cMatrix::GetRotationMatrix({0, 0, 1}, 180);
+        drawer.DrawLine(origin.X + camOffset.X, origin.Z + camOffset.Z,
+                        dir.X + camOffset.X, dir.Z + camOffset.Z, {0, 0, 250});
+      }
     }
   }
 
   // Draw AABB
-  for (auto& structure : structures) {
-    structure.CalcAABB();
-    auto AABB = structure.AABB;
+  if (Renderer::show_AABB) {
+    for (auto& structure : structures) {
+      auto AABB = structure.AABB;
 
-    cVector origin = {0, 0, 0};
-    {
-      origin *= cMatrix::TranslationOnly(structure.State);
-      origin *= cMatrix::GetRotationMatrix({0, 0, 1}, 180);
+      cVector origin = {0, 0, 0};
+      {
+        origin *= cMatrix::TranslationOnly(structure.State);
+        origin *= cMatrix::GetRotationMatrix({0, 0, 1}, 180);
 
-      cVector camOffset = {-State[0][3], State[1][3], State[2][3]};
-      origin += camOffset;
+        cVector camOffset = {-State[0][3], State[1][3], State[2][3]};
+        origin += camOffset;
+      }
+
+      RGB col =
+          structure.WasCollidingLastCheck ? RGB{255, 0, 0} : RGB{0, 0, 255};
+
+      drawer.DrawSquare(origin.X - AABB[0], origin.Z + AABB[2],
+                        origin.X - AABB[0], origin.Z + AABB[5],
+                        origin.X - AABB[3], origin.Z + AABB[2],
+                        origin.X - AABB[3], origin.Z + AABB[5], col);
     }
-
-    RGB col = structure.WasCollidingLastCheck ? RGB{255, 0, 0} : RGB{0, 0, 255};
-
-    drawer.DrawSquare(origin.X - AABB[0], origin.Z + AABB[2],
-                      origin.X - AABB[0], origin.Z + AABB[5],
-                      origin.X - AABB[3], origin.Z + AABB[2],
-                      origin.X - AABB[3], origin.Z + AABB[5], col);
   }
 }
 

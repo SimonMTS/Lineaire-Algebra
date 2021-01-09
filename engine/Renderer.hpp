@@ -5,18 +5,25 @@
 
 #include "Camera.hpp"
 #include "Structure.hpp"
+#include "Adder.hpp"
 using std::map;
 using std::vector;
 
 class Renderer {
-  using KeyCallback =
-      pair<bool, function<void(const bool down, const int key, Renderer& r)>>;
+  using KeyCallback = pair<bool, function<void(Renderer& r)>>;
 
  private:
   map<int, KeyCallback> OnKeyCallbacks;
   unsigned char Tick = 1;
+  int Dead = 0;
+  bool Won = false;
 
  public:
+  static bool show_helpline;
+  static bool show_orientation;
+  static bool show_AABB;
+  static bool show_camera_orientation;
+
   unique_ptr<SDL2Wrapper> Drawer;
 
   vector<unique_ptr<Camera>> Cameras;
@@ -30,7 +37,7 @@ class Renderer {
   void Init();
 
   void OnKey(const int key,
-             const function<void(const bool down, const int key, Renderer& r)>&
+             const function<void(Renderer& r)>&
                  callback);
 
   void AddStructure(const Structure& s);

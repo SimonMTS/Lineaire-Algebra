@@ -19,12 +19,11 @@ unique_ptr<SDL_Renderer, void (*)(SDL_Renderer*)> SDL2Wrapper::InitRenderer() {
 SDL2Wrapper::SDL2Wrapper(int width, int height, const RGB& backgroundColor)
     : Width(width),
       Height(height),
-      BackgroundColor(backgroundColor),
       SDLWindow(InitWindow(width, height)),
       SDLRenderer(InitRenderer()) {
   // SDL_RenderSetScale(SDLRenderer.get(), 2.0f, 2.0f);
   // SDL_SetRelativeMouseMode(SDL_TRUE);
-  SetBackground();
+  SetBackground(backgroundColor);
   SDL_RenderPresent(SDLRenderer.get());
 }
 
@@ -72,10 +71,10 @@ void SDL2Wrapper::OnEvent(
   }
 }
 
-void SDL2Wrapper::SetBackground() {
-  SDL_SetRenderDrawColor(SDLRenderer.get(), BackgroundColor.R,
-                         BackgroundColor.G, BackgroundColor.B,
-                         BackgroundColor.A);
+void SDL2Wrapper::SetBackground(const RGB& backgroundColor) {
+  SDL_SetRenderDrawColor(SDLRenderer.get(), backgroundColor.R,
+                         backgroundColor.G, backgroundColor.B,
+                         backgroundColor.A);
   SDL_Rect rect;
   rect.x = rect.y = 0;
   rect.w = Width;

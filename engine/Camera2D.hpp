@@ -1,6 +1,7 @@
 #pragma once
 #include <limits>
 
+#include "Renderer.hpp"
 #include "Camera.hpp"
 using std::get;
 using std::numeric_limits;

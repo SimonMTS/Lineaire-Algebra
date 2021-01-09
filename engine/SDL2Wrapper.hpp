@@ -22,14 +22,13 @@ class SDL2Wrapper {
  public:
   int Width;
   int Height;
-  RGB BackgroundColor;
 
   SDL2Wrapper(const int width, const int height, const RGB& backgroundColor);
   ~SDL2Wrapper();
 
   void OnEvent(const function<void(const int, const int, const int)>& callback);
 
-  void SetBackground();
+  void SetBackground(const RGB& backgroundColor);
 
   void DrawLine(const int ax, const int ay, const int bx, const int by,
                 const RGB& rgb);
