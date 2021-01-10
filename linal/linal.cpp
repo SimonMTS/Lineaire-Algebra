@@ -33,7 +33,8 @@ int main() {
   std::cout << "  PageUp : move camera ip\n";
   std::cout << "  PageDn : move camera down\n";
   std::cout << "         : \n";
-  std::cout << " F{1..4} : switch camera\n";
+  std::cout << " F{1..4} : switch camera (top3D, top2D, tracking3D, angled3D)\n";
+  std::cout << "   Mouse : camera F2 (2D) allows dragging\n";
   std::cout << "       Z : toggle shooting helpline\n";
   std::cout << "       X : toggle orientation lines\n";
   std::cout << "       C : toggle AABB\n";
