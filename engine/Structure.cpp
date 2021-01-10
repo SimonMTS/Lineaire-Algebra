@@ -43,35 +43,64 @@ void Structure::CalcAABB() {
 bool Structure::IsCollidingWith(const Structure& other) {
   if (*this == other) return false;
 
-  return ((this->AABB[0] + this->State[0][3]) <=
-              (other.AABB[3] + other.State.at(0)[3]) &&
-          (this->AABB[3] + this->State[0][3]) >=
-              (other.AABB[0] + other.State.at(0)[3])) &&
-         ((this->AABB[1] + this->State[1][3]) <=
-              (other.AABB[4] + other.State.at(1)[3]) &&
-          (this->AABB[4] + this->State[1][3]) >=
-              (other.AABB[1] + other.State.at(1)[3])) &&
-         ((this->AABB[2] + this->State[2][3]) <=
-              (other.AABB[5] + other.State.at(2)[3]) &&
-          (this->AABB[5] + this->State[2][3]) >=
-              (other.AABB[2] + other.State.at(2)[3]));
+  bool collX = false;
+  {
+    auto mySmallestX = (this->AABB[0] + this->State[0][3]);
+    auto myLargestX = (this->AABB[3] + this->State[0][3]);
 
-  bool coll = false;
+    auto otherSmallestX = (other.AABB[0] + other.State.at(0)[3]);
+    auto otherLargestX = (other.AABB[3] + other.State.at(0)[3]);
 
-  auto mySmallestX = (this->AABB[0] + this->State[0][3]);
-  auto myLargestX = (this->AABB[3] + this->State[0][3]);
-
-  auto otherSmallestX = (other.AABB[0] + other.State.at(0)[3]);
-  auto otherLargestX = (other.AABB[3] + other.State.at(0)[3]);
-
-  if (mySmallestX >= otherSmallestX && mySmallestX <= otherLargestX) {
-    coll = true;
-  }
-  if (myLargestX <= otherSmallestX && myLargestX >= otherLargestX) {
-    coll = true;
+    if (mySmallestX >= otherSmallestX && mySmallestX <= otherLargestX) {
+      collX = true;
+    }
+    if (myLargestX >= otherSmallestX && myLargestX <= otherLargestX) {
+      collX = true;
+    }
+    if (mySmallestX <= otherSmallestX && myLargestX >= otherLargestX) {
+      collX = true;
+    }
   }
 
-  return coll;
+  bool collY = false;
+  {
+    auto mySmallestY = (this->AABB[1] + this->State[1][3]);
+    auto myLargestY = (this->AABB[4] + this->State[1][3]);
+
+    auto otherSmallestY = (other.AABB[1] + other.State.at(1)[3]);
+    auto otherLargestY = (other.AABB[4] + other.State.at(1)[3]);
+
+    if (mySmallestY >= otherSmallestY && mySmallestY <= otherLargestY) {
+      collY = true;
+    }
+    if (myLargestY >= otherSmallestY && myLargestY <= otherLargestY) {
+      collY = true;
+    }
+    if (mySmallestY <= otherSmallestY && myLargestY >= otherLargestY) {
+      collY = true;
+    }
+  }
+
+  bool collZ = false;
+  {
+    auto mySmallestZ = (this->AABB[2] + this->State[2][3]);
+    auto myLargestZ = (this->AABB[5] + this->State[2][3]);
+
+    auto otherSmallestZ = (other.AABB[2] + other.State.at(2)[3]);
+    auto otherLargestZ = (other.AABB[5] + other.State.at(2)[3]);
+
+    if (mySmallestZ >= otherSmallestZ && mySmallestZ <= otherLargestZ) {
+      collZ = true;
+    }
+    if (myLargestZ >= otherSmallestZ && myLargestZ <= otherLargestZ) {
+      collZ = true;
+    }
+    if (mySmallestZ <= otherSmallestZ && myLargestZ >= otherLargestZ) {
+      collZ = true;
+    }
+  }
+
+  return collX && collY && collZ;
 }
 
 bool Structure::operator==(const Structure& other) {
