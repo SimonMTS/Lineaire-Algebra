@@ -175,10 +175,10 @@ Structure PlayerBuilder::GetPlayer() {
       cVector p3(4, -4, -10);
       cVector p4(4, 4, -10);
 
-      cVector p5(-1, -1, 0);
-      cVector p6(-1, 1, 0);
-      cVector p7(1, -1, 0);
-      cVector p8(1, 1, 0);
+      cVector p5(-1, -1, 4);
+      cVector p6(-1, 1, 4);
+      cVector p7(1, -1, 4);
+      cVector p8(1, 1, 4);
 
       Square s1(p2, p4, p1, p3);
       Square s2(p6, p8, p5, p7);

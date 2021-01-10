@@ -18,7 +18,7 @@ int main() {
   std::cout << "   Space : shoot\n";
   std::cout << "         : \n";
   std::cout << "         : \n";
-  std::cout << "   Lctrl : move backward";
+  std::cout << "   Lctrl : move backward\n";
   std::cout << "         : \n";
   std::cout << "       Y : pitch camera down\n";
   std::cout << "       H : pitch camera up\n";
