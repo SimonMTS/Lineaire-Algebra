@@ -19,17 +19,7 @@ void CameraPerspective::DrawStructures(SDL2Wrapper& drawer,
         square.P4 *= structure.State;
 
         // Calc on screen pos
-        cMatrix appliedState = State;
-
-        // seems to work for cam1, atleast
-        // appliedState = cMatrix::RotationInverse(appliedState);
-        // appliedState *= cMatrix::GetRotationMatrix({0, 1, 0}, 180);
-        // appliedState *= cMatrix::GetRotationMatrix({0, 0, 1}, 180);
-        // appliedState = cMatrix::Inverse(appliedState);
-        // appliedState *= cMatrix::GetRotationMatrix({1, 0, 0}, 180);
-        // appliedState = cMatrix::TranslationInverse(appliedState);
-
-        cMatrix pm = cMatrix::GetProjectionMatrix(1, 2000, 60) * appliedState;
+        cMatrix pm = cMatrix::GetProjectionMatrix(1, 2000, 60) * State;
         square.P1 *= pm;
         square.P2 *= pm;
         square.P3 *= pm;
@@ -71,17 +61,7 @@ void CameraPerspective::DrawStructures(SDL2Wrapper& drawer,
     dir *= structures.at(0).State;
 
     // Calc on screen pos
-    cMatrix appliedState = State;
-
-    // seems to work for cam1, atleast
-    // appliedState = cMatrix::RotationInverse(appliedState);
-    // appliedState *= cMatrix::GetRotationMatrix({0, 1, 0}, 180);
-    // appliedState *= cMatrix::GetRotationMatrix({0, 0, 1}, 180);
-    // appliedState = cMatrix::Inverse(appliedState);
-    // appliedState *= cMatrix::GetRotationMatrix({1, 0, 0}, 180);
-    // appliedState = cMatrix::TranslationInverse(appliedState);
-
-    cMatrix pm = cMatrix::GetProjectionMatrix(1, 2000, 60) * appliedState;
+    cMatrix pm = cMatrix::GetProjectionMatrix(1, 2000, 60) * State;
     origin *= pm;
     dir *= pm;
 
@@ -123,14 +103,7 @@ void CameraPerspective::DrawStructures(SDL2Wrapper& drawer,
         c8 *= cMatrix::TranslationOnly(structure.State);
 
         // Calc on screen pos
-        cMatrix appliedState = State;
-
-        // seems to work for cam1, atleast
-        // appliedState = cMatrix::RotationInverse(appliedState);
-        // appliedState *= cMatrix::GetRotationMatrix({0, 1, 0}, 180);
-        // appliedState *= cMatrix::GetRotationMatrix({0, 0, 1}, 180);
-
-        cMatrix pm = cMatrix::GetProjectionMatrix(1, 2000, 60) * appliedState;
+        cMatrix pm = cMatrix::GetProjectionMatrix(1, 2000, 60) * State;
         c1 *= pm;
         c2 *= pm;
         c3 *= pm;
@@ -184,75 +157,77 @@ void CameraPerspective::HandleMouseEvent(const int type, const int d1,
 
 void CameraPerspective::RegisterKeyCallbacks() {
   OnKeyCallbacks[75] = {false, [](const bool down, Camera& c) {  // PageUp
-                          c.State *= cMatrix::GetTranslationMatrix(0, -3, 0);
+                          c.State *= cMatrix::GetTranslationMatrix(0, -2, 0);
                         }};
 
   OnKeyCallbacks[78] = {false, [](const bool down, Camera& c) {  // PageDown
-                          c.State *= cMatrix::GetTranslationMatrix(0, 3, 0);
+                          c.State *= cMatrix::GetTranslationMatrix(0, 2, 0);
                         }};
 
   OnKeyCallbacks[82] = {false, [](const bool down, Camera& c) {  // ArrowUp
-                          c.State *= cMatrix::GetTranslationMatrix(0, 0, -3);
+                          c.State *= cMatrix::GetTranslationMatrix(0, 0, -2);
                         }};
 
   OnKeyCallbacks[81] = {false, [](const bool down, Camera& c) {  // ArrowDown
-                          c.State *= cMatrix::GetTranslationMatrix(0, 0, 3);
+                          c.State *= cMatrix::GetTranslationMatrix(0, 0, 2);
                         }};
 
   OnKeyCallbacks[80] = {false, [](const bool down, Camera& c) {  // ArrowLeft
-                          c.State *= cMatrix::GetTranslationMatrix(-3, 0, 0);
+                          c.State *= cMatrix::GetTranslationMatrix(-2, 0, 0);
                         }};
 
   OnKeyCallbacks[79] = {false, [](const bool down, Camera& c) {  // ArrowRight
-                          c.State *= cMatrix::GetTranslationMatrix(3, 0, 0);
+                          c.State *= cMatrix::GetTranslationMatrix(2, 0, 0);
                         }};
 
   {
+    double rotation_delta = 0.5;
+
     OnKeyCallbacks[SDL_SCANCODE_Y] = {
-        false, [](const bool down, Camera& c) {
+        false, [rotation_delta](const bool down, Camera& c) {
           auto tmp = c.State;
           c.State = cMatrix::GetIdentityMatrix();
-          c.State *= cMatrix::GetRotationMatrix({1, 0, 0}, -1);
+          c.State *= cMatrix::GetRotationMatrix({1, 0, 0}, -rotation_delta);
           c.State *= tmp;
         }};
 
     OnKeyCallbacks[SDL_SCANCODE_H] = {
-        false, [](const bool down, Camera& c) {
+        false, [rotation_delta](const bool down, Camera& c) {
           auto tmp = c.State;
           c.State = cMatrix::GetIdentityMatrix();
-          c.State *= cMatrix::GetRotationMatrix({1, 0, 0}, 1);
+          c.State *= cMatrix::GetRotationMatrix({1, 0, 0}, rotation_delta);
           c.State *= tmp;
         }};
 
     OnKeyCallbacks[SDL_SCANCODE_G] = {
-        false, [](const bool down, Camera& c) {
+        false, [rotation_delta](const bool down, Camera& c) {
           auto tmp = c.State;
           c.State = cMatrix::GetIdentityMatrix();
-          c.State *= cMatrix::GetRotationMatrix({0, 1, 0}, 1);
+          c.State *= cMatrix::GetRotationMatrix({0, 1, 0}, -rotation_delta);
           c.State *= tmp;
         }};
 
     OnKeyCallbacks[SDL_SCANCODE_J] = {
-        false, [](const bool down, Camera& c) {
+        false, [rotation_delta](const bool down, Camera& c) {
           auto tmp = c.State;
           c.State = cMatrix::GetIdentityMatrix();
-          c.State *= cMatrix::GetRotationMatrix({0, 1, 0}, -1);
+          c.State *= cMatrix::GetRotationMatrix({0, 1, 0}, rotation_delta);
           c.State *= tmp;
         }};
 
     OnKeyCallbacks[SDL_SCANCODE_T] = {
-        false, [](const bool down, Camera& c) {
+        false, [rotation_delta](const bool down, Camera& c) {
           auto tmp = c.State;
           c.State = cMatrix::GetIdentityMatrix();
-          c.State *= cMatrix::GetRotationMatrix({0, 0, 1}, 1);
+          c.State *= cMatrix::GetRotationMatrix({0, 0, 1}, rotation_delta);
           c.State *= tmp;
         }};
 
     OnKeyCallbacks[SDL_SCANCODE_U] = {
-        false, [](const bool down, Camera& c) {
+        false, [rotation_delta](const bool down, Camera& c) {
           auto tmp = c.State;
           c.State = cMatrix::GetIdentityMatrix();
-          c.State *= cMatrix::GetRotationMatrix({0, 0, 1}, -1);
+          c.State *= cMatrix::GetRotationMatrix({0, 0, 1}, -rotation_delta);
           c.State *= tmp;
         }};
 
@@ -276,6 +251,4 @@ void CameraPerspective::HandleKeyEvent(const int type, const int d1,
       OnKeyCallbacks.find(d2) != OnKeyCallbacks.end()) {
     OnKeyCallbacks[d2].first = type == -4;
   }
-
-  // std::cout << State << "\n";
 }

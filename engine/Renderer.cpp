@@ -108,7 +108,7 @@ void Renderer::Init() {
         }
       }
 
-      if (Structures.size() == 0) {
+      if (Structures.size() == 0 || Structures.at(0).Components.size() == 1) {
         Player.State = cMatrix::GetIdentityMatrix();
         Speed = 0;
 

@@ -5,10 +5,17 @@ Renderer Adder::AddPlayer() {
   player.State *= cMatrix::GetTranslationMatrix(0, 0, 0);
   player.RegisterPerTickAction(
       [](const int tick, Structure& structure, Renderer& r) {
-        auto camPos = structure.State;
-        camPos *= cMatrix::GetTranslationMatrix(0, 0, -100);
+        auto playerRot = cMatrix::RotationOnly(structure.State);
+        r.Cameras[2]->State = cMatrix::GetIdentityMatrix();
+        r.Cameras[2]->State *= cMatrix::GetTranslationMatrix(0, 0, -100);
+        playerRot = cMatrix::RotationInverse(playerRot);
+        r.Cameras[2]->State *= cMatrix::GetRotationMatrix({0, 1, 0}, 180);
+        r.Cameras[2]->State *= cMatrix::GetRotationMatrix({0, 0, 1}, 180);
+        r.Cameras[2]->State *= playerRot;
 
-        r.Cameras[2]->State = camPos;
+        auto playerPos = cMatrix::TranslationOnly(structure.State);
+        playerPos = cMatrix::TranslationInverse(playerPos);
+        r.Cameras[2]->State *= playerPos;
       });
 
   Renderer r{player};

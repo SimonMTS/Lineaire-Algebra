@@ -8,21 +8,36 @@ auto getMS() {
 int main() {
   std::cout << "       W : pitch down\n";
   std::cout << "       S : pitch up\n";
-  std::cout << "         : \n";
   std::cout << "       Q : roll left\n";
   std::cout << "       E : roll right\n";
-  std::cout << "         : \n";
   std::cout << "       A : turn left\n";
   std::cout << "       D : turn right\n";
   std::cout << "         : \n";
   std::cout << "   Shift : increase speed\n";
   std::cout << "   Space : shoot\n";
   std::cout << "         : \n";
+  std::cout << "         : \n";
+  std::cout << "   Lctrl : move backward";
+  std::cout << "         : \n";
+  std::cout << "       Y : pitch camera down\n";
+  std::cout << "       H : pitch camera up\n";
+  std::cout << "       T : roll camera left\n";
+  std::cout << "       U : roll camera right\n";
+  std::cout << "       G : turn camera left\n";
+  std::cout << "       J : turn camera right\n";
+  std::cout << "         : \n";
+  std::cout << "      Up : move camera forward\n";
+  std::cout << "    Down : move camera backward\n";
+  std::cout << "    Left : move camera left\n";
+  std::cout << "   Right : move camera right\n";
+  std::cout << "  PageUp : move camera ip\n";
+  std::cout << "  PageDn : move camera down\n";
+  std::cout << "         : \n";
   std::cout << " F{1..4} : switch camera\n";
   std::cout << "       Z : toggle shooting helpline\n";
   std::cout << "       X : toggle orientation lines\n";
   std::cout << "       C : toggle AABB\n";
-  std::cout << "       V : toggle camera orientation lines\n";
+  //std::cout << "       V : toggle camera orientation lines (wrong)\n";
 
   Renderer r = Adder::AddPlayer();
   Adder::AddGoals(r);
@@ -30,7 +45,7 @@ int main() {
 
   // Add KeyBindings
   {
-    const double delta = 3;
+    const double delta = 1;
     {                                    // Turn right and left
       r.OnKey(4, [delta](Renderer& r) {  // A
         r.Player.State *= cMatrix::GetRotationMatrix({0, 1, 0}, -delta);
@@ -64,6 +79,10 @@ int main() {
     {                                 // Move, shoot, and reset
       r.OnKey(225, [](Renderer& r) {  // Shift
         r.Speed += r.Speed > 5 ? 0 : 0.5;
+      });
+
+      r.OnKey(224, [](Renderer& r) {  // lCTRL
+        r.Player.State *= cMatrix::GetTranslationMatrix(0, 0, -5);
       });
 
       auto lastShot = getMS();

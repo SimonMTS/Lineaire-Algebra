@@ -118,14 +118,12 @@ void Camera2D::DrawStructures(SDL2Wrapper& drawer,
       if (camera.get() == this) continue;
 
       auto camState = camera->State;
-      // camState *= cMatrix::RotationInverse(camState);
-      // camState *= cMatrix::TranslationInverse(camState);
+      camState *= cMatrix::GetRotationMatrix({0, 0, 1}, 180);
 
       cVector camOffset = {-State[0][3], State[1][3], State[2][3]};
 
       cVector origin = {0, 0, 0};
       origin *= camState;
-      origin *= cMatrix::GetRotationMatrix({0, 0, 1}, 180);
 
       const double len = 50;
 
@@ -133,7 +131,6 @@ void Camera2D::DrawStructures(SDL2Wrapper& drawer,
       {
         cVector dir = {0, 0, len};
         dir *= camState;
-        dir *= cMatrix::GetRotationMatrix({0, 0, 1}, 180);
         drawer.DrawLine(origin.X + camOffset.X, origin.Z + camOffset.Z,
                         dir.X + camOffset.X, dir.Z + camOffset.Z, {250, 0, 0});
       }
@@ -142,7 +139,6 @@ void Camera2D::DrawStructures(SDL2Wrapper& drawer,
       {
         cVector dir = {0, len / 2, 0};
         dir *= camState;
-        dir *= cMatrix::GetRotationMatrix({0, 0, 1}, 180);
         drawer.DrawLine(origin.X + camOffset.X, origin.Z + camOffset.Z,
                         dir.X + camOffset.X, dir.Z + camOffset.Z, {0, 250, 0});
       }
@@ -151,7 +147,6 @@ void Camera2D::DrawStructures(SDL2Wrapper& drawer,
       {
         cVector dir = {len / 2, 0, 0};
         dir *= camState;
-        dir *= cMatrix::GetRotationMatrix({0, 0, 1}, 180);
         drawer.DrawLine(origin.X + camOffset.X, origin.Z + camOffset.Z,
                         dir.X + camOffset.X, dir.Z + camOffset.Z, {0, 0, 250});
       }
