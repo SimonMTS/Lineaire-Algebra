@@ -12,6 +12,7 @@ int main() {
   std::cout << "       E : roll right\n";
   std::cout << "       A : turn left\n";
   std::cout << "       D : turn right\n";
+  std::cout << "       R : reset player\n";
   std::cout << "         : \n";
   std::cout << "   Shift : increase speed\n";
   std::cout << "   Space : shoot\n";
@@ -25,6 +26,7 @@ int main() {
   std::cout << "       U : roll camera right\n";
   std::cout << "       G : turn camera left\n";
   std::cout << "       J : turn camera right\n";
+  std::cout << "       I : reset camera\n";
   std::cout << "         : \n";
   std::cout << "      Up : move camera forward\n";
   std::cout << "    Down : move camera backward\n";
@@ -33,12 +35,14 @@ int main() {
   std::cout << "  PageUp : move camera ip\n";
   std::cout << "  PageDn : move camera down\n";
   std::cout << "         : \n";
-  std::cout << " F{1..4} : switch camera (top3D, top2D, tracking3D, angled3D)\n";
+  std::cout
+      << " F{1..4} : switch camera (top3D, top2D, tracking3D, angled3D)\n";
   std::cout << "   Mouse : camera F2 (2D) allows dragging\n";
   std::cout << "       Z : toggle shooting helpline\n";
   std::cout << "       X : toggle orientation lines\n";
   std::cout << "       C : toggle AABB\n";
-  //std::cout << "       V : toggle camera orientation lines (wrong)\n";
+  std::cout << "       B : toggle dark mode\n";
+  // std::cout << "       V : toggle camera orientation lines (wrong)\n";
 
   Renderer r = Adder::AddPlayer();
   Adder::AddGoals(r);
@@ -150,6 +154,15 @@ int main() {
         lastV = now;
 
         r.show_camera_orientation = !r.show_camera_orientation;
+      });
+
+      auto lastB = getMS();
+      r.OnKey(5, [&lastB](Renderer& r) {  // B
+        auto now = getMS();
+        if (lastB > now - 500) return;
+        lastB = now;
+
+        r.dark_mode = !r.dark_mode;
       });
     }
 

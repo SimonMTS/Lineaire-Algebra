@@ -113,7 +113,7 @@ void Adder::AddGoals(Renderer& r) {
             cMatrix::GetRotationMatrix((cVector{1, 1, 1}).Normalized(), 45);
       }
     });
-    //r.AddStructure(thing);
+    // r.AddStructure(thing);
   }
 }
 

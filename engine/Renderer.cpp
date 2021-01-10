@@ -1,10 +1,10 @@
 #include "Renderer.hpp"
 
-
 bool Renderer::show_helpline = false;
 bool Renderer::show_orientation = false;
 bool Renderer::show_AABB = false;
 bool Renderer::show_camera_orientation = false;
+bool Renderer::dark_mode = false;
 
 Renderer::Renderer(const Structure& p) : Player(p) {
   SDL_Init(SDL_INIT_VIDEO);
@@ -58,15 +58,16 @@ void Renderer::Init() {
         }
       }
       Cameras[ActiveCamera]->CallKeyCallbacks();
-      Cameras[0]->CallKeyCallbacks();  // tmp
+      Cameras[0]->CallKeyCallbacks();
 
       // Render structures
       if (Dead == 0) {
-        Drawer->SetBackground({255, 255, 255});
-        Cameras[ActiveCamera]->DrawGrid(*Drawer);
-        Cameras[ActiveCamera]->DrawStructures(*Drawer, Structures, Cameras);
+        Drawer->SetBackground(dark_mode ? RGB{21, 21, 21} : RGB{255, 255, 255});
+        Cameras[ActiveCamera]->DrawGrid(*Drawer, dark_mode);
+        Cameras[ActiveCamera]->DrawStructures(*Drawer, Structures, Cameras,
+                                              dark_mode);
         vector<Structure> p = {Player};
-        Cameras[ActiveCamera]->DrawStructures(*Drawer, p, Cameras);
+        Cameras[ActiveCamera]->DrawStructures(*Drawer, p, Cameras, dark_mode);
       } else {
         Dead--;
         RGB color = Won ? RGB{76, 175, 80} : RGB{244, 67, 54};
@@ -80,7 +81,7 @@ void Renderer::Init() {
       OnKeyCallbacks[d2].first = type == -4;
     } else if (type == -3 || type == -4) {
       Cameras[ActiveCamera]->HandleKeyEvent(type, d1, d2);
-      Cameras[0]->HandleKeyEvent(type, d1, d2);  // tmp
+      Cameras[0]->HandleKeyEvent(type, d1, d2);
     }
 
     // mouse events

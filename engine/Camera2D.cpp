@@ -1,8 +1,8 @@
 #include "Camera2D.hpp"
 
-void Camera2D::DrawGrid(SDL2Wrapper& drawer) {
-  RGB gridColor = RGB(245, 245, 245);
-  RGB gridOriginColor = RGB(224, 224, 224);
+void Camera2D::DrawGrid(SDL2Wrapper& drawer, bool dark_mode) {
+  RGB gridColor = dark_mode ? RGB(42, 42, 42) : RGB(245, 245, 245);
+  RGB gridOriginColor = dark_mode ? RGB(61, 61, 61) : RGB(224, 224, 224);
 
   for (int x = (int)(State[2][3]) % 20; x < drawer.Height; x += 20) {
     drawer.DrawLine(0, x, drawer.Width, x, gridColor);
@@ -18,7 +18,8 @@ void Camera2D::DrawGrid(SDL2Wrapper& drawer) {
 
 void Camera2D::DrawStructures(SDL2Wrapper& drawer,
                               vector<Structure>& structures,
-                              vector<unique_ptr<Camera>>& cameras) {
+                              vector<unique_ptr<Camera>>& cameras,
+                              bool dark_mode) {
   for (auto& structure : structures) {
     for (auto& component : structure.Components) {
       for (auto sqr : component.Squares) {
@@ -46,10 +47,11 @@ void Camera2D::DrawStructures(SDL2Wrapper& drawer,
         sqr.P4 *= rm;
 
         // Draw square
-        drawer.DrawLine(sqr.P1.X, sqr.P1.Z, sqr.P2.X, sqr.P2.Z, {21, 21, 21});
-        drawer.DrawLine(sqr.P1.X, sqr.P1.Z, sqr.P3.X, sqr.P3.Z, {21, 21, 21});
-        drawer.DrawLine(sqr.P4.X, sqr.P4.Z, sqr.P2.X, sqr.P2.Z, {21, 21, 21});
-        drawer.DrawLine(sqr.P4.X, sqr.P4.Z, sqr.P3.X, sqr.P3.Z, {21, 21, 21});
+        RGB color = dark_mode ? RGB(250, 250, 250) : RGB(21, 21, 21);
+        drawer.DrawLine(sqr.P1.X, sqr.P1.Z, sqr.P2.X, sqr.P2.Z, color);
+        drawer.DrawLine(sqr.P1.X, sqr.P1.Z, sqr.P3.X, sqr.P3.Z, color);
+        drawer.DrawLine(sqr.P4.X, sqr.P4.Z, sqr.P2.X, sqr.P2.Z, color);
+        drawer.DrawLine(sqr.P4.X, sqr.P4.Z, sqr.P3.X, sqr.P3.Z, color);
       }
     }
   }
@@ -64,7 +66,7 @@ void Camera2D::DrawStructures(SDL2Wrapper& drawer,
     origin *= cMatrix::GetRotationMatrix({0, 0, 1}, 180);
 
     const double len = 2000;
-    
+
     cVector dir = {0, 0, len};
     dir *= structures.at(0).State;
     dir *= cMatrix::GetRotationMatrix({0, 0, 1}, 180);
@@ -188,9 +190,6 @@ void Camera2D::HandleMouseEvent(const int type, const int d1, const int d2) {
     IsDragging = {false, 0, 0};
   }
   if (type == 1024 && get<0>(IsDragging)) {
-    // std::cout << (double)get<1>(IsDragging) - (double)d1 << "\n";
-    // std::cout << (double)get<2>(IsDragging) - (double)d2 << "\n\n";
-
     State[0][3] += (double)get<1>(IsDragging) - (double)d1;
     State[2][3] += (double)get<2>(IsDragging) - (double)d2;
     IsDragging = {true, d1, d2};

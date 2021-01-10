@@ -2,7 +2,8 @@
 
 void CameraPerspective::DrawStructures(SDL2Wrapper& drawer,
                                        vector<Structure>& structures,
-                                       vector<unique_ptr<Camera>>& cameras) {
+                                       vector<unique_ptr<Camera>>& cameras,
+                                       bool dark_mode) {
   for (auto& structure : structures) {
     for (auto& component : structure.Components) {
       for (auto square : component.Squares) {
@@ -43,8 +44,9 @@ void CameraPerspective::DrawStructures(SDL2Wrapper& drawer,
         s.P4.X = (d.Height / 2) + ((s.P4.X / s.P4.W) * (d.Height / 2)) + ro;
         s.P4.Y = (d.Height / 2) + ((s.P4.Y / s.P4.W) * (d.Height / 2));
 
+        RGB color = dark_mode ? RGB(250, 250, 250) : RGB(21, 21, 21);
         drawer.DrawSquare(s.P1.X, s.P1.Y, s.P2.X, s.P2.Y, s.P3.X, s.P3.Y,
-                          s.P4.X, s.P4.Y, {21, 21, 21});
+                          s.P4.X, s.P4.Y, color);
       }
     }
   }

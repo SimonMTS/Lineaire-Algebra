@@ -16,10 +16,11 @@ class Camera {
  public:
   cMatrix State = cMatrix::GetIdentityMatrix();
 
-  virtual void DrawGrid(SDL2Wrapper& drawer) = 0;
+  virtual void DrawGrid(SDL2Wrapper& drawer, bool dark_mode) = 0;
   virtual void DrawStructures(SDL2Wrapper& drawer,
                               vector<Structure>& structures,
-                              vector<unique_ptr<Camera>>& cameras) = 0;
+                              vector<unique_ptr<Camera>>& cameras,
+                              bool dark_mode) = 0;
 
   virtual void HandleMouseEvent(const int type, const int d1, const int d2){};
 

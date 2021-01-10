@@ -3,9 +3,9 @@
 #include <memory>
 #include <vector>
 
+#include "Adder.hpp"
 #include "Camera.hpp"
 #include "Structure.hpp"
-#include "Adder.hpp"
 using std::map;
 using std::vector;
 
@@ -23,6 +23,7 @@ class Renderer {
   static bool show_orientation;
   static bool show_AABB;
   static bool show_camera_orientation;
+  static bool dark_mode;
 
   unique_ptr<SDL2Wrapper> Drawer;
 
@@ -36,9 +37,7 @@ class Renderer {
   Renderer(const Structure& p);
   void Init();
 
-  void OnKey(const int key,
-             const function<void(Renderer& r)>&
-                 callback);
+  void OnKey(const int key, const function<void(Renderer& r)>& callback);
 
   void AddStructure(const Structure& s);
 
