@@ -1,6 +1,7 @@
 #pragma once
 #include <functional>
 #include <iostream>
+#include <memory> 
 
 #include "../SDL2/include/SDL.h"
 #undef main
